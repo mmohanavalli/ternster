@@ -1,0 +1,59 @@
+<div *ngIf="!isCropDone">
+
+  <h1 mat-dialog-title class="text-center tern-bold text-uppercase">Upload & Crop Cover Image
+    <div class="float-right">
+      <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+  </h1>
+
+  <mat-dialog-content class="mat-typography">
+    <div class="text-center">
+      <label class="custom-file-upload btn btn-outline-primary-filled">
+        <input type="file" (change)="fileChangeEvent($event)" />
+        Select Picture <i class="fas fa-upload"></i> </label>
+    </div>
+
+    <div *ngIf="noImage" class="no_image text-center">
+      <img src="./assets/images/no-image.webp" height="300">
+    </div>
+
+    <div *ngIf="!noImage" class="text-center">
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="2 / 1"
+        [resizeToWidth]="1920" [cropperMinWidth]="1920" [onlyScaleDown]="true" [roundCropper]="false" format="png"
+        outputType="both" autoCrop=true (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"
+        [style.display]="showCropper ? null : 'none'"></image-cropper>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="select_exchanges m-0 p-0" align="center">
+
+    <div class="text-center py-2 w-100 d-block greybg mb-3 rotationbtns">
+      <button class="btn btn-outline-secondary btnsm" (click)="rotateLeft()"><i class="fa fa-undo"
+          aria-hidden="true"></i></button>
+
+      <button class="btn btn-outline-secondary btnsm" (click)="rotateRight()"><i class="fa fa-repeat"
+          aria-hidden="true"></i></button>
+
+      <button class="btn btn-outline-secondary btnsm" (click)="flipHorizontal()">Flip Horizontal</button>
+
+      <button class="btn btn-outline-secondary btnsm" (click)="flipVertical()">Flip Vertical</button>
+
+      <button class="btn btn-outline-danger btnsm" (click)="clearImage()">Clear</button>
+    </div>
+    <div class="text-center w-100 d-block">
+      <button type="button" class="btn btn-success" cdkFocusInitial [disabled]="!isCropBtnEnabled"
+        (click)="crop()">Crop</button>
+    </div>
+  </mat-dialog-actions>
+</div>
+
+<div *ngIf="isCropDone">
+  <h1 mat-dialog-title class="text-center tern-bold text-uppercase">Cropped Image</h1>
+  <mat-dialog-content class="mat-typography text-center"> <img [src]="croppedImage" class="w-100" />
+  </mat-dialog-content>
+  <mat-dialog-actions class="select_exchanges m-0" align="center">
+    <button class="btn btn-light mr-2" (click)="backToTrip()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+      to crop</button> <button type="button" class="btn btn-success" cdkFocusInitial
+      (click)="uploadImage()">Upload</button>
+  </mat-dialog-actions>
+</div>

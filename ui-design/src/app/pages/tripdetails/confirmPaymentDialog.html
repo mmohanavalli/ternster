@@ -1,0 +1,58 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase"> Payment
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div> 
+</h1>
+
+<mat-dialog-content class="mat-typography">
+<div *ngIf="type=='courier'">
+	<mat-form-field class="w-100" appearance="outline">
+		<mat-label>Amount (per kg) {{data.currency_symbol}}</mat-label>
+		<input matInput placeholder="Amount" name="amount" [(ngModel)]="data.budget" readonly>
+	</mat-form-field>
+
+	<mat-form-field class="w-100" appearance="outline">
+			<mat-label>Total Weight</mat-label>
+		<input matInput placeholder="Weight" name="weight" [(ngModel)]="data.weight" readonly>
+	</mat-form-field>
+
+	<mat-form-field class="w-100" appearance="outline">
+		<mat-label>Processing fees {{data.currency_symbol}}</mat-label>
+	<input matInput placeholder="Processing fees" name="commission" [(ngModel)]="data.commission" readonly>
+</mat-form-field>
+
+	<mat-form-field class="w-100" appearance="outline">
+			<mat-label>Total Payment {{data.currency_symbol}}</mat-label>
+		<input matInput placeholder="Payment" name="payment" [(ngModel)]="data.totalPayment" readonly>
+	</mat-form-field>
+
+	<!-- <mat-dialog-actions class="select_exchanges" align="center">
+		<button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>Cancel</button>
+	  <button mat-button class="btn-save btn btn-primary" (click)="confirmPayment()">Confirm Payment</button>
+	</mat-dialog-actions> -->
+</div>
+
+<div *ngIf="type=='assistance'">	
+	<mat-form-field class="w-100" appearance="outline">
+		<mat-label>Amount {{data.currency_symbol}}</mat-label>
+		<input matInput placeholder="Amount" name="amount" [(ngModel)]="data.budget" readonly>
+	</mat-form-field>	
+
+	<mat-form-field class="w-100" appearance="outline">
+		<mat-label>Processing fees {{data.currency_symbol}}</mat-label>
+	<input matInput placeholder="Processing fees" name="commission" [(ngModel)]="data.commission" readonly>
+</mat-form-field>
+
+	<mat-form-field class="w-100" appearance="outline">
+			<mat-label>Total Payment {{data.currency_symbol}}</mat-label>
+		<input matInput placeholder="Payment" name="payment" [(ngModel)]="data.totalPayment" readonly>
+	</mat-form-field>
+
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="select_exchanges mb-0" align="center">
+		<button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>Cancel</button>
+	  <button mat-button class="btn-save btn btn-primary" (click)="confirmPayment()">Confirm Payment</button>
+</mat-dialog-actions>
+

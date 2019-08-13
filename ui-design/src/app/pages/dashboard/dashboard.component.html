@@ -1,0 +1,367 @@
+<app-profileheader></app-profileheader>
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-tab">
+      <div class="tern-title prosettings">
+        <h5 class="{{trip_type == 'courier' ? 'active' : ''}}" (click)="onSelect('courier')">Courier <span
+            class="bluecirc"></span></h5>
+        <h5 class="{{trip_type == 'assistance' ? 'active' : ''}}" (click)="onSelect('assistance')">Assistance <span
+            class="bluecirc"></span></h5>
+        <!-- <h5 class="{{trip_type == 'companion' ? 'active' : ''}}" (click)="onSelect('companion')">Companion <span
+            class="bluecirc"></span></h5> -->
+      </div>
+    </div>
+    <div class="courier" id="courier">
+      <div class="row">
+        <div class="col-md-3">
+          <ul class="nav nav-pills dash-pills" id="pills-tab" role="tablist">
+            <li class="nav-item"> <a class="{{req_type == 'incoming' ? 'nav-link active' : 'nav-link'}}" id="pills-home-tab"
+                data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"
+                (click)="onVerticalTabSelect('incoming')">Incoming
+              Request</a> </li>
+            <li class="nav-item"> <a class="{{req_type == 'sendrequest' ? 'nav-link active' : 'nav-link'}}" id="pills-profile-tab"
+                data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"
+                (click)="onVerticalTabSelect('sendrequest')">Sent
+              Request</a> </li>
+            <li class="nav-item"> <a class="{{req_type == 'mytrips' ? 'nav-link active' : 'nav-link'}}" id="pills-contact-tab"
+                data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"
+                (click)="onVerticalTabSelect('mytrips')">My
+              Trips</a> </li>
+          </ul>
+        </div>
+        <div class="col-md-9 animated fadeIn" id="pills-home" *ngIf="incoming">
+          <div class="text-center grayscale" *ngIf="isLoading"> <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg">
+            <defs>
+              <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+                <stop offset="0%">
+                  <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                      repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%">
+                  <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                      repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+              <clipPath id="clip">
+                <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+              </clipPath>
+            </defs>
+            <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+            </svg> </div>
+          <div class="dash-triplist  animated fadeIn" *ngIf="!isLoading">
+            <div *ngIf="noIncomingTrips" class="text-center">
+              <div class="nodatacls"> <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+                <h5>No Incoming Request </h5>
+              </div>
+            </div>
+            <mat-accordion>
+              <mat-expansion-panel
+                *ngFor="let incomingTrip of incomingTrips  | paginate: { itemsPerPage: 5, currentPage: p}">
+                <mat-expansion-panel-header class="row"> 
+                  <!--<mat-panel-title class="col-md-6 m-0"> 
+                     <span class="smalltxt totxt">{{incomingTrip.trip_name}} </span> |                     
+                  </mat-panel-title>-->
+                  <mat-panel-description class="col-md-8 m-0">
+                    <div class="w-100">
+                      <p class="tern-bold text-uppercase mb-1">{{incomingTrip.departure}} <span
+                          class="smalltxt totxt">to</span> {{incomingTrip.destination}}</p>
+                      <p *ngIf="incomingTrip.trip_plan=='planned'" class="tern-bold text-uppercase mb-0"> {{incomingTrip.start_date}}<span
+                          class="smalltxt">{{incomingTrip.start_suffixval}}</span>{{incomingTrip.start_month}} <span class="smalltxt totxt">to</span> {{incomingTrip.end_date}}<span
+                          class="smalltxt">{{incomingTrip.end_suffixval}}</span> {{incomingTrip.end_month}}</p>
+                      <p *ngIf="incomingTrip.trip_plan=='unplanned'" class="tern-bold text-uppercase mb-0"> {{incomingTrip.unplanned_days}}
+                        days</p>
+                    </div>
+                  </mat-panel-description>
+                  <mat-panel-description class="col-md-4 justify-content-end  m-0">
+                    <button mat-button matTooltip="View Trip" (click)="gotoTripDetails(incomingTrip , 'incomingTrip')"
+                      class="btn btn-primary btnsm dashbtntrip mr-2">View Trip</button>
+                    <span class="alert alert-danger  py-1 px-2 small mb-0 tern-bold mr-2 defaultcursor dashbtntrip  text-uppercase rounded-pill"
+                       *ngIf="incomingTrip.trip_status=='cancel'">Cancelled</span> </mat-panel-description>
+
+                </mat-expansion-panel-header>
+                <ul class="list-unstyled">
+                  <li class="row" *ngFor="let user of incomingTrip.incomingUserLists">
+                    <div class="col-md-6">
+                      <div class="reqname uname d-inline-block" matTooltip="View Profile"
+                        (click)="viewProfile(user, incomingTrip, 'incomingTrip');"> 
+                        <!-- <img src="../../../assets/images/top-profile-icon.webp"/> --> 
+                        <span *ngIf="user.profile_image" class="img"> <img src={{user.profile_image}} /> </span> <span *ngIf="!user.profile_image" class="img"> <img src="../../../assets/images/profile.webp" /> </span> {{user.user_name}}</div>
+                      <span *ngIf="user.type=='courier'"> | <span class="tern-bold">{{user.weight}}{{incomingTrip.weight_unit}}
+                      {{incomingTrip.can_show_profile}}</span> | <span class="tern-bold">{{user.currency_symbol}}
+                      {{user.total_charge}}</span> </span> <span *ngIf="user.type=='assistance'"> | <span class="tern-bold">{{user.members}} members</span> | <span
+                          class="tern-bold">{{user.currency_symbol}} {{user.assistance_budget}}</span> </span> </div>
+
+                    <div class="col-md-6 text-right" *ngIf="incomingTrip.trip_status != 'cancel'">
+                      <button mat-button class="btn btn-outline-danger btnsm tren-bold defaultcursor"
+                        *ngIf="user.status == 'Rejected'">{{user.status}}</button>
+                      <button mat-button class="btn btn-outline-success btnsm tren-bold defaultcursor"
+                        *ngIf="user.status == 'Accepted'">Connected</button>
+
+                      <button mat-button class="btn btn-outline-success btnsm tren-bold"
+                        *ngIf="user.status == 'Accepted' && incomingTrip.payment_mode =='offline' && user.package_status!='delivered' && incomingTrip.type =='courier'"
+                        (click)="checkDelivered(user)">Is delivered</button>
+                      <div *ngIf="user.package_status!='delivered'">
+                        <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase rounded-pill"
+                          *ngIf="user.status == 'Paid'">Paid</span>
+                        
+                        <button mat-button class="btn btn-outline-success btnsm tren-bold "
+                          *ngIf="user.status == 'Paid' && incomingTrip.type =='courier'"
+                          (click)="checkDelivered(user)">Is delivered</button>
+
+                      </div>
+                      <div *ngIf="user.package_status=='delivered'">
+                        <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase rounded-pill"
+                          *ngIf="user.status == 'Paid'">Delivered</span>
+                      </div>
+                      <button mat-button class="btn btn-outline-success btnsm tren-bold mr-2"
+                        (click)="updateStatusRequest(user, incomingTrip, 'accepted')"
+                        *ngIf="user.status != 'Rejected' && user.status != 'Accepted' && user.status != 'Paid' && user.status != 'Delivered'">{{user.status}}</button>
+
+                      <button mat-button class="btn btn-outline-danger btnsm tren-bold"
+                        *ngIf="user.status != 'Rejected' && user.status != 'Accepted' && user.status != 'Paid'  && user.status != 'Delivered' && user.status != 'Withdraw'"
+                        matTooltip="Reject Request"
+                        (click)="updateStatusRequest(user, incomingTrip, 'rejected')">Reject</button>
+
+                       <button mat-button class="btn btn-warning btnsm tren-bold" *ngIf="user.status == 'Withdraw'">Withdraw</button>
+
+                      <!-- <a href="javascript:void(0)" matTooltip="View Profile"
+                        (click)="viewProfile(user, incomingTrip.id, 'incomingTrip');"><i class="far fa-eye"></i></a>
+                      <a matTooltip="View Profile" (click)="gotoBasicProfile(user.from_user_id, user.status);" --> 
+                      <!-- *ngIf="user.status!='Accepted'"><i class="far fa-eye"></i></a> --> 
+                      <!-- <a href="" matTooltip="Chat"><i class="far fa-comment-alt"></i></a> 
+
+                      <a href="javascript:void(0);" *ngIf="user.status != 'Rejected' && user.status != 'Accepted' && user.status != 'Paid'" matTooltip="Delete Request" (click)="updateStatusRequest(user, incomingTrip, 'rejected')"><i class="far fa-trash-alt"></i></a>--> 
+                    </div>
+                  </li>
+                </ul>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+          <div class="nxtprelinks w-100 mt-3 mb-5" *ngIf="incomingTrips.length > 5">
+            <div class="row">
+              <div class="col-sm-12"> 
+                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+                <pagination-controls (pageChange)="changePange($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9" id="pills-profile" *ngIf="sendrequest">
+          <div class="text-center grayscale" *ngIf="isLoading"> <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg">
+            <defs>
+              <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+                <stop offset="0%">
+                  <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                      repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%">
+                  <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                      repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+              <clipPath id="clip">
+                <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+              </clipPath>
+            </defs>
+            <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+            </svg> </div>
+          <div class="dash-triplist  animated fadeIn" *ngIf="!isLoading">
+            <div *ngIf="noSendRequestTrips" class="text-center">
+              <div class="nodatacls"> <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+                <h5>No Sent Request</h5>
+              </div>
+            </div>
+            <div class="dashtriplist"
+              *ngFor="let sentTrip of requestSentTrips  | paginate: { itemsPerPage: 5, currentPage: p}">
+              <div class="row">
+                <div class="col-sm-9">
+                  <p class="tern-bold text-uppercase mb-1">{{sentTrip.departure}} <span class="smalltxt totxt">to</span> {{sentTrip.destination}}</p>
+                  <p *ngIf="sentTrip.trip_plan!='unplanned'" class="tern-bold text-uppercase mb-0"> {{sentTrip.start_date}}<span class="smalltxt">{{sentTrip.start_suffixval}}</span> {{sentTrip.start_month}} <span class="smalltxt totxt">to</span> {{sentTrip.end_date}}<span
+                      class="smalltxt">{{sentTrip.end_suffixval}}</span> {{sentTrip.end_month}}</p>
+                  <p *ngIf="sentTrip.trip_plan=='unplanned'" class="tern-bold text-uppercase mb-0"> {{sentTrip.unplanned_days}} days</p>
+                </div>
+                <div class="col-sm-3 text-right"><a href="javascript:void(0);" matTooltip="View Trip"
+                    (click)="gotoTripDetails(sentTrip , 'sentTrip')"><i class="far fa-eye"></i></a></div>
+              </div>
+            </div>
+          </div>
+          <div class="nxtprelinks w-100 mt-3" *ngIf="requestSentTrips.length > 5">
+            <div class="row">
+              <div class="col-sm-12"> 
+                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+                <pagination-controls (pageChange)="changePange($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+          
+          <!-- <mat-accordion>
+              <mat-expansion-panel *ngFor="let sentTrip of requestSentTrips" hideToggle="true">
+                <mat-expansion-panel-header class="row">
+                  <mat-panel-title class="col-md-6 m-0">
+                    <span class="smalltxt totxt">{{sentTrip.trip_name}} </span> |
+                    {{sentTrip.departure}} <span class="smalltxt totxt">to</span> {{sentTrip.destination}}
+                  </mat-panel-title>
+                 <mat-panel-description class="col-md-4  m-0">
+                    {{sentTrip.start_date}}<span class="smalltxt">{{sentTrip.start_suffixval}}</span>
+                    {{sentTrip.start_month}}
+                    <span class="smalltxt totxt">to</span> {{sentTrip.end_date}}<span
+                      class="smalltxt">{{sentTrip.end_suffixval}}</span> {{sentTrip.end_month}}
+                  </mat-panel-description>
+                  <mat-panel-description class="col-md-2 justify-content-end  m-0">
+                  	<a matTooltip="View Trip" (click)="gotoTripDetails(sentTrip , 'sentTrip')"><i class="far fa-eye"></i></a>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <ul class="list-unstyled">
+                  <li class="row">
+                    <div class="col-md-6">
+                      <div class="reqname">{{sentTrip.user_name}}</div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                      
+                        <button mat-button class="btn btn-outline-success btnsm tren-bold"
+                        *ngIf="sentTrip.status=='pending'">Request Sent</button>
+
+                        <button mat-button class="btn btn-outline-success btnsm tren-bold"
+                        *ngIf="sentTrip.status=='accepted'">Connected</button>
+
+                      <button mat-button class="btn btn-outline-danger btnsm tren-bold defaultcursor"
+                        *ngIf="sentTrip.status=='rejected'">{{sentTrip.status}}</button>
+
+                      <a matTooltip="View Profile" (click)="viewProfile(sentTrip , sentTrip.id, 'sentTrip')"><i class="far fa-eye"></i></a>
+                   
+                    </div>
+                  </li>
+                </ul>
+              </mat-expansion-panel>
+            </mat-accordion>--> 
+        </div>
+        <div class="col-md-9" id="pills-contact" *ngIf="mytrips" hideToggle>
+          <div class="text-center grayscale" *ngIf="isLoading"> <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg">
+            <defs>
+              <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+                <stop offset="0%">
+                  <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                      repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%">
+                  <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                      repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+              <clipPath id="clip">
+                <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+                <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+              </clipPath>
+            </defs>
+            <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+            </svg> </div>
+          <div class="dash-triplist mytrips animated fadeIn" *ngIf="!isLoading">
+            <div *ngIf="noMyTrips" class="text-center">
+              <div class="nodatacls"> <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+                <h5>No My Trips</h5>
+                <a routerLink="/createtrip" class="btn btn-outline-primary tern-bold">Create Trip</a> </div>
+            </div>
+            <div class="dashtriplist" *ngFor="let myTrip of myTrips  | paginate: { itemsPerPage: 5, currentPage: p}">
+              <div class="row">
+                <div class="col-sm-9">
+                  <p class="tern-bold text-uppercase mb-1">{{myTrip.departure}} <span class="smalltxt totxt">to</span> {{myTrip.destination}}</p>
+                  <p *ngIf="myTrip.trip_plan!='unplanned'" class="tern-bold text-uppercase mb-0"> {{myTrip.start_date}}<span class="smalltxt">{{myTrip.start_suffixval}}</span> {{myTrip.start_month}} <span class="smalltxt totxt">to</span> {{myTrip.end_date}}<span
+                      class="smalltxt">{{myTrip.end_suffixval}}</span> {{myTrip.end_month}}</p>
+                  <p *ngIf="myTrip.trip_plan=='unplanned'" class=" tern-bold text-uppercase mb-0"> {{myTrip.unplanned_days}} days </p>
+                </div>
+                <div class="col-sm-3 text-right">
+                  <div *ngIf="myTrip.trip_status=='close'">
+                  <span
+                        class="alert alert-danger  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase rounded-pill"
+                      matTooltip="Trip closed">Closed</span>
+                      
+                  <a href="javascript:void(0);" matTooltip="View Trip" (click)="gotoTripDetails(myTrip, 'myTrip')"><i
+                        class="far fa-eye"></i></a>
+                   
+                  </div>
+                  <div *ngIf="myTrip.trip_status=='open'"> <a href="javascript:void(0);" matTooltip="View Trip" (click)="gotoTripDetails(myTrip, 'myTrip')"><i
+                        class="far fa-eye"></i></a> <a href="javascript:void(0);" matTooltip="Trip is connected" class="ml-3"
+                      *ngIf="myTrip.invites_status == 'accepted' || myTrip.invites_status == 'pending' || myTrip.invites_status == 'delivered'"><i
+                        class="fa fa-info-circle"></i></a> <a href="javascript:void(0);" matTooltip="Edit Trips" class="ml-3" *ngIf="!myTrip.invites_status"
+                      (click)="editTrip(myTrip.service_log_id)"><i class="far fa-edit"></i></a> <a href="javascript:void(0);" matTooltip="Delete Trip" class="ml-3"
+                      *ngIf="myTrip.invites_status != 'accepted' && myTrip.invites_status != 'pending'"
+                      (click)="deleteTrip(myTrip.id)"><i class="far fa-trash-alt"></i></a> </div>
+                  <div *ngIf="myTrip.trip_status=='cancel'"> <a href="javascript:void(0);" matTooltip="View Trip" (click)="gotoTripDetails(myTrip, 'myTrip')"><i
+                        class="far fa-eye"></i></a> </div>
+                </div>
+              </div>
+            </div>
+            <div class="nxtprelinks w-100 mt-3" *ngIf="myTrips.length > 5">
+              <div class="row">
+                <div class="col-sm-12"> 
+                  <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+                  <pagination-controls (pageChange)="changePange($event)"></pagination-controls>
+                </div>
+              </div>
+            </div>
+            
+            <!-- <mat-accordion>
+              <mat-expansion-panel *ngFor="let myTrip of myTrips">
+                <mat-expansion-panel-header class="row">
+                  <mat-panel-title class="col-md-6  m-0">
+                   <span class="smalltxt totxt">{{myTrip.trip_name}} </span> 
+                    {{myTrip.departure}} <span class="smalltxt totxt">to</span> {{myTrip.destination}}
+                  </mat-panel-title>
+                  <mat-panel-description class="col-md-4  m-0">
+                    {{myTrip.start_date}}<span class="smalltxt">{{myTrip.start_suffixval}}</span> {{myTrip.start_month}}
+                    <span class="smalltxt totxt">to</span> {{myTrip.end_date}}<span
+                      class="smalltxt">{{myTrip.end_suffixval}}</span> {{myTrip.end_month}}
+                  </mat-panel-description>
+
+                  <mat-panel-description class="col-md-2 justify-content-end m-0">
+                    <a matTooltip="View Trip" (click)="gotoTripDetails(myTrip, 'myTrip')"><i
+                        class="far fa-eye"></i></a>
+                    <a matTooltip="Edit Trip" class="ml-3" (click)="editTrip(myTrip.id)"><i class="far fa-edit"></i></a>
+                    <a matTooltip="Delete Trip" class="ml-3"  (click)="deleteTrip(myTrip.id)"><i class="far fa-trash-alt"></i></a>
+                  </mat-panel-description>
+
+                </mat-expansion-panel-header>
+
+                 <ul class="list-unstyled">                 
+                  <li class="row">
+                    <div class="col-md-6">
+                      <div class="reqname">John David</div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                      <button mat-button class="btn btn-outline-success btnsm tren-bold">Accept Request</button>
+                      <a href="" matTooltip="View Profile"><i class="far fa-eye"></i></a>
+                      <a href="" matTooltip="Chat"><i class="far fa-comment-alt"></i></a>
+                      <a href="" matTooltip="Delete Request"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                  </li>
+                </ul>
+              </mat-expansion-panel>
+            </mat-accordion>  --> 
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

@@ -1,0 +1,19 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+<mat-dialog-content class="mat-typography" >
+<div class="col-md-12 text-center mb-5">
+
+	<div class="nodatacls">
+    <img src="../../../assets/images/no-data.webp" width="200" class="mb-5"/>
+    <h5 class="text-muted"><strong>{{data.name}} is already connected with {{data.count}} <span *ngIf="data.count == 1"> person. </span><span *ngIf="data.count > 1"> persons.</span></strong></h5>
+  </div>
+</div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="select_exchanges mb-0" align="center">
+	  <button mat-button class="btn-save btn btn-primary" (click)="continueReq()"><strong>Continue</strong></button>
+</mat-dialog-actions>

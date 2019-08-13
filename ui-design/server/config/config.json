@@ -1,0 +1,13 @@
+{
+  "development": {
+    "username": "root",
+    "password": "blaze.ws",
+    "database": "ternster",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": true
+	},
+	"AuthenticationURL" :{
+    "url" : "http://localhost:3001"
+  }
+}

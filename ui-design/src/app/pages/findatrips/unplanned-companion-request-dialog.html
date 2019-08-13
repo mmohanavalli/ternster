@@ -1,0 +1,56 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">Unplanned Trip
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+<form [formGroup]="unplanned_days_form" (ngSubmit)="onSubmitUnplanned()">
+<mat-dialog-content class="mat-typography" >
+<div class="frmcustom">
+  
+    <div class="row request_dialog">
+      <div class="plannedsec w-100 mb-3">
+					<span> You are requesting to an unplanned Ternster, so kindly enter your trip start date and end date again for
+							confirmation for {{unplanned_days}} days
+					</span>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="fromdate" [min]=fromDate  placeholder="From" 
+              formControlName="from_date" required="" readonly="" (dateChange)="addEvent($event)" (click)="fromdate.open()">
+              <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+              <mat-datepicker #fromdate ></mat-datepicker>
+              <mat-error *ngIf="unplanned_days_form.controls.from_date.errors?.required">Select From Date</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="todate" [min]="unplanned_days_form.controls.from_date.value" [max]=toDate placeholder="To" formControlName="to_date" required="" 
+              readonly="" (click)="todate.open()">
+              <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+              <mat-datepicker #todate></mat-datepicker>
+              <mat-error *ngIf="unplanned_days_form.controls.to_date.errors?.required">Select To Date</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 text-center">
+            <div class="d-block w-100">
+              <mat-form-field class="example-full-width txtarea w-100">
+                <textarea matInput formControlName="message" placeholder="Message"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+</div>
+</mat-dialog-content>
+
+
+  <mat-dialog-actions class="select_exchanges m-0" align="center">
+    <button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>CLOSE</button> 
+        <button mat-button type="submit" class="btn-save btn btn-primary">SUBMIT</button>
+  </mat-dialog-actions>
+  </form>

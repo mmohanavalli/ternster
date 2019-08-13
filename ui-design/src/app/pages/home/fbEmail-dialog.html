@@ -1,0 +1,12 @@
+<h5 class="text-center text-uppercase tern-bold mb-3">Email is not found from Facebook</h5>
+<div class="text-center mb-3"><img src="../../../assets/images/no-data.webp" width="200" class="mb-5"/></div>
+<h6 class="text-center  mb-5">Please enter the email</h6>
+
+<form [formGroup]="emailIdForm">
+	<mat-form-field class="w-100 my-3">
+		<input matInput placeholder="Email" formControlName="email">
+	</mat-form-field>
+	<span style="color: red" *ngIf="isemailValid">Please enter a valid email address </span>
+	<span style="color: red" *ngIf="isemail">Email is <strong>required</strong></span>
+	<div class="text-center"><button mat-button type="submit" class="btn btn-primary" (click)="submitEmail()">SUBMIT</button></div>
+</form>

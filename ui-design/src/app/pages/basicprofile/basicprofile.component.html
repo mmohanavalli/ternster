@@ -1,0 +1,118 @@
+<!--<app-profileheader></app-profileheader>-->
+
+<div class="profile_header" [style.backgroundImage]="'url('+ cover_picture +')'">
+  <div class="proimagesdetail">
+    <!-- <img src="../../../assets/images/top-profile-icon.webp" /> -->
+    <img src="{{userData.profile}}" />
+  </div>
+    <div class="profile_details">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <h3 class="uname">{{userData.first_name}} {{userData.last_name}}</h3>
+            <p class="uname">{{userData.services}}</p>
+          </div>
+          <div class="col-sm-6 text-right">
+            <!-- <div class="profil_social">
+              <a href="https://facebook.com/" target="_blank" *ngIf="facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/" target="_blank" *ngIf="twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://instagram.com/" target="_blank" *ngIf="instagram"><i class="fab fa-instagram"></i></a>
+             </div> -->
+              <div class="report_profile pb-3">
+                <!-- <a href=""><i class="far fa-envelope"></i></a>  -->
+                <a href="javascript:void(0);"><i class="fas fa-share-alt"></i></a> 
+                <!-- <a href="javascript:void(0);"><i class="far fa-heart"></i></a>  -->
+                <a href="javascript:void(0);" class="rebrd">Report this profile?</a> 
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-content animated fadeIn">
+      <div class="persondets">
+      
+       <div class="text-right mb-5"> 
+          <!-- <a href="#" class="btn btn-success tern-bold text-uppercase" *ngIf="requestStatus!='Rejected'" (click)="sendRequest();">{{requestStatus}}</a>
+          <a class="btn btn-danger tern-bold text-uppercase" *ngIf="requestStatus == 'Rejected'">{{requestStatus}}</a> --> 
+        </div>
+      
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <div class="fulllined">
+              <div class="row">
+                 <div class="col-md-12">
+                  <h5><span class="tern-bold">About</span></h5>
+                  <hr />
+                </div> 
+              </div>
+            </div>
+
+            <h4 class="uname">{{userData.username}}</h4>
+            <table class="table">
+              <tr>
+                <td width="130">Country</td>
+                <td width="40">:</td>
+                <td>{{userData.country ? userData.country : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Home Town</td>
+                <td>:</td>
+                <td>{{userData.home_town ? userData.home_town : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Age / Gender</td>
+                <td>:</td>
+                <td *ngIf="userData.age">{{userData.age}} Years old / {{userData.gender}}</td>
+                <td *ngIf="!userData.age">-</td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td>:</td>
+                <td>{{userData.languages ? userData.languages : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Services</td>
+                <td>:</td>
+                <td>{{userData.services ? userData.services : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Interest</td>
+                <td>:</td>
+                <td>{{userData.interest ? userData.interest : '-'}}</td>
+              </tr>
+            </table>
+
+            <!-- <span class="btn btn-outline-primary btnsm mr-3">
+              <i class="fas fa-check text-success " *ngIf="userData.isKycVerified"></i>
+              <i class="fas fa-times text-danger " *ngIf="!userData.isKycVerified"></i> KYC Verified</span>
+            <span class="btn btn-outline-primary btnsm mr-3">
+              <i class="fas fa-check text-success " *ngIf="userData.isSocialVerified"></i>
+
+              <i class="fas fa-times text-danger " *ngIf="!userData.isSocialVerified"></i> Social Verified</span> -->
+
+            <span class="btn btn-outline-primary btnsm mr-3" *ngIf="is_kyc_verified">
+              <i class="fas fa-check text-success"></i> KYC Verified</span>
+            <span class="btn btnsm mr-3" style="border: 1px solid grey !important;color: grey !important;cursor: not-allowed;"
+              *ngIf="!is_kyc_verified">
+              KYC Verified</span>
+            <span class="btn btn-outline-primary btnsm mr-3" *ngIf="userData.isSocialVerified">
+              <i class="fas fa-check text-success"></i> Social Verified</span>
+            <span class="btn btnsm mr-3" style="border: 1px solid grey !important;color: grey !important;cursor: not-allowed;"
+              *ngIf="!userData.isSocialVerified">
+              Social Verified</span>
+
+
+            <h5 class="ratingtag d-inline-block"><strong>{{ratings}}</strong>/<span class="small">5</span></h5>
+            <p class="text-justify mt-3">{{userData.about_me}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

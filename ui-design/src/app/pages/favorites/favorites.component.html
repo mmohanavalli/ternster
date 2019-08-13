@@ -1,0 +1,130 @@
+<!-- <div class="tern-loader" style="display:block;" *ngIf="isMainLoading">
+  <div class="imgcls"><img src="../../assets/images/loader.gif"/>LOADING...</div>
+</div> -->
+
+<app-profileheader></app-profileheader>
+
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-tab">
+      <div class="tern-title prosettings">
+        <h5 class="{{trip_type == 'favtrips' ? 'active' : ''}}" (click)="onSelect('favtrips')">Trips <span
+            class="bluecirc"></span></h5>
+        <h5 class="{{trip_type == 'favperson' ? 'active' : ''}}" (click)="onSelect('favperson')">Persons <span
+            class="bluecirc"></span></h5>
+      </div>
+    </div>
+    <div class="favtrips animated fadeIn" id="favtrips" *ngIf="favtrips">
+        <div class="text-center grayscale" *ngIf="isLoading">
+        <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg>
+        </div>
+        <div class="dash-triplist mytrips  animated fadeIn" *ngIf="!isLoading">
+          <div class="table-responsive favtripstable" *ngIf="favoriteTripLists" >
+          <table class="table table-striped table-hover">
+            <tr *ngFor="let favTrip of favoritesTripLists">
+              <!-- <td>{{favTrip.trip_name}}</td> -->
+              <td>{{favTrip.departure}} <span class="smalltxt totxt">to</span> {{favTrip.destination}} | <span class="smalltxt totxt" style="text-transform: capitalize;">{{favTrip.type}}</span></td>
+              <td>{{favTrip.start_date}}<span class="smalltxt">{{favTrip.start_suffixval}}</span> {{favTrip.start_month}}
+                <span class="smalltxt totxt">to</span> {{favTrip.end_date}}<span class="smalltxt">{{favTrip.end_suffixval}}</span> {{favTrip.end_month}} 
+              </td>
+              <td class="text-right" width="100">
+                <span class="favdeactive smallfav animated fadeIn" *ngIf="favdeactive">
+                  <button mat-button class="btn btn-outline-secondary btnsm icotip ml-3" (click)="onSelectFavStatus('favactive')" matTooltip="Favourite"><i class="far fa-heart"></i></button>
+                </span> 
+                <span class="favactive smallfav  animated fadeIn" *ngIf="favactive">
+                  <!-- <button mat-button class="btn btn-danger btnsm icotip ml-3" (click)="onSelectFavStatus('favdeactive')" matTooltip="Favourite"><i class="fas fa-heart"></i></button> -->
+                  <button mat-button class="btn btn-danger btnsm icotip defaultcursor ml-3"><i class="fas fa-heart"></i></button>
+                </span> 
+                <a (click)="gotoTripDetails(favTrip, 'favTrip')" matTooltip="View Trip" class="mr-3 ml-3">
+                <i class="far fa-eye"></i></a> 
+                <a matTooltip="Delete Trip" (click)="removeTripFromFavorites(favTrip.id)"><i class="far fa-trash-alt"></i></a>
+              </td>
+            </tr>
+          </table>
+          </div>
+          
+        	<!-- <div *ngIf="favoritesTripLists.length == 0"*ngIf="favoriteTripLists"  class="text-center mb-5 d-inline-block w-100"> -->
+            <div *ngIf="!favoriteTripLists"  class="text-center mb-5 d-inline-block w-100">
+        		<div class="nodatacls">
+              <img src="../../../assets/images/no-data.webp" width="200" class="mb-5"/>
+              <h5>No favorite trips</h5>
+              <a routerLink="/findatrips" class="btn btn-outline-primary  mt-3">FIND TRIPS</a>
+            </div>
+      		</div>
+        </div>
+      </div>
+
+      <div class="favtrips animated fadeIn" id="favtrips" *ngIf="favperson">
+        <div class="dash-triplist mytrips  animated fadeIn">
+          <div class="text-center grayscale" *ngIf="isLoading">
+          <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg>
+          </div>
+          <div class="row" *ngIf="!isLoading">
+            <div class="col-md-3 col-sm-6" *ngFor="let favUser of favoriteTripUsersLists">
+              <div class="favperson">
+                  <div class="favperimg" *ngIf="favUser.profile_image"><img src={{favUser.profile_image}} /></div>
+                <div class="favperimg" *ngIf="!favUser.profile_image"><img src="../../assets/images/profile.webp" /></div>
+                <div class="favpericons">
+                  <span class="favdeactive smallfav animated fadeIn" *ngIf="favdeactive">
+                    <button mat-button class="btn btn-outline-secondary btnsm icotip ml-3"
+                      (click)="onSelectFavStatus('favactive')" matTooltip="Favourite"><i class="far fa-heart"></i></button>
+                  </span> 
+                  <span class="favactive smallfav  animated fadeIn" *ngIf="favactive">
+                    <!-- <button mat-button class="btn btn-danger btnsm icotip ml-3" (click)="onSelectFavStatus('favdeactive')"
+                      matTooltip="Favourite"><i class="fas fa-heart"></i></button> -->
+                      <button mat-button class="btn btn-danger btnsm icotip defaultcursor ml-3"
+                      ><i class="fas fa-heart"></i></button>
+                  </span>
+                  <!-- <a href="javascript:void(0);" matTooltip="View Profile" class="mr-3 ml-3" (click)="gotoPersonDetails(favUser.person_id, favUser.id);" *ngIf="favUser.status=='accepted'"><i class="far fa-eye"></i></a>
+                  <a href="javascript:void(0);" matTooltip="View Profile" class="mr-3 ml-3" (click)="gotoBasicProfile(favUser.person_id);" *ngIf="favUser.status!='accepted'"><i class="far fa-eye"></i></a> -->
+
+                  <a href="javascript:void(0);" matTooltip="View Profile" class="mr-3 ml-3" (click)="viewProfile(favUser);"><i class="far fa-eye"></i></a>
+
+                  <a href="javascript:void(0);" matTooltip="Delete" (click)="removeUserFromFavorites(favUser)"><i class="far fa-trash-alt"></i></a>
+                </div>
+                <div class="favperdet">
+                  <h4 class="uname">{{favUser.username}}</h4>
+                  <!-- <h4 class="uname">{{favUser.type}}</h4> -->
+                  <h6>3/5</h6>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="favoriteTripUsersLists.length == 0"  class="text-center mb-5 d-inline-block w-100">
+              <div class="nodatacls">
+                <img src="../../../assets/images/no-person.webp" width="200" class="mb-5"/>
+                <h5>No favorite persons are available</h5>
+                <a routerLink="/findatrips" class="btn btn-outline-primary mt-3">FIND PERSONS</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

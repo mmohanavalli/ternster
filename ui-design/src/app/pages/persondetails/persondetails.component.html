@@ -1,0 +1,421 @@
+<!--<app-profileheader></app-profileheader>-->
+
+<div class="profile_header" [style.backgroundImage]="'url('+ cover_picture +')'">
+<div class="proimagesdetail">
+  <!-- <img src="../../../assets/images/top-profile-icon.webp" /> -->
+  <img src="{{userData.profile}}" />
+</div>
+  <div class="profile_details">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>{{userData.first_name}} {{userData.last_name}}</h3>
+          <p class="uname">{{userData.services}}</p>
+        </div>
+        <div class="col-sm-6 text-right">
+          <div class="profil_social">
+              <a href="https://facebook.com/" target="_blank" *ngIf="facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/" target="_blank" *ngIf="twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://instagram.com/" target="_blank" *ngIf="instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+		        <div class="report_profile pb-3">
+               <span *ngIf="is_message">
+                 <a href="javascript:void(0);" routerLink="/accounts/messages"><i class="far fa-envelope"></i></a>
+              </span>
+               <a href="javascript:void(0);"><i class="fas fa-share-alt"></i></a> 
+               <!-- <a href="javascript:void(0);" (click)="onSelect('favactive',fav_user_id)"><i class="far fa-heart"></i></a>  -->
+
+               <span class="favdeactive animated fadeIn" *ngIf="favdeactive">
+                <a href="javascript:void(0);"
+                  (click)="onSelect('favdeactive',fav_user_id)" matTooltip="Favourite">
+                  <i style="color: #E323AA; font-size: 16px;" class="fas fa-heart"></i>
+               </a>
+              </span>
+              <span class="favactive  animated fadeIn" *ngIf="favactive">
+                <a href="javascript:void(0);" 
+                  (click)="onSelect('favactive',fav_user_id)" matTooltip="Favourite">
+                  <i style="font-size: 16px;" class="fas fa-heart"></i>
+              </a>
+              </span>
+
+               <a href="" class="rebrd">Report this profile?</a> 
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-content animated fadeIn">
+      <div class="persondets">
+        <div class="text-right mb-5"> 
+          <!-- <a href="#" class="btn btn-success tern-bold text-uppercase" *ngIf="requestStatus!='Rejected'" (click)="sendRequest();">{{requestStatus}}</a>
+          <a class="btn btn-danger tern-bold text-uppercase" *ngIf="requestStatus == 'Rejected'">{{requestStatus}}</a> --> 
+        </div>
+        
+        <!-- <div>
+          <h5><span>Profile is available only for {{setting_user}} Users !!</span></h5>
+          <hr />
+          <br />
+        </div> --> 
+        
+        <!-- <div *ngIf="!showTrips">
+          <h5><span>Trips is available only for {{setting_user}} Users !!</span></h5>
+          <hr />
+          <br />
+        </div> -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="fulllined">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5><span class="tern-bold">About</span></h5>
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <h4>{{userData.username}}</h4>
+            <table class="table">
+              <tr>
+                <td width="130">Country</td>
+                <td width="40">:</td>
+                <td>{{userData.country ? userData.country : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Home Town</td>
+                <td>:</td>
+                <td>{{userData.home_town ? userData.home_town : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Age / Gender</td>
+                <td>:</td>
+                <td *ngIf="userData.age > 0">{{userData.age}} Years old / {{userData.gender}}</td>
+                <td *ngIf="userData.age == 0">-</td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td>:</td>
+                <td>{{userData.languages ? userData.languages : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Services</td>
+                <td>:</td>
+                <td>{{userData.services ? userData.services : '-'}}</td>
+              </tr>
+              <tr>
+                <td>Interest</td>
+                <td>:</td>
+                <td>{{userData.interest ? userData.interest : '-'}}</td>
+              </tr>
+            </table>
+            
+            <!-- <i class="fas fa-times text-danger "></i>  --> 
+            <!-- <span class="btn btn-outline-primary btnsm mr-3">
+              <i class="fas fa-check text-success " *ngIf="userData.isKycVerified"></i>
+              <i class="fas fa-times text-danger " *ngIf="!userData.isKycVerified"></i> KYC Verified</span>
+            <span class="btn btn-outline-primary btnsm mr-3">
+              <i class="fas fa-check text-success " *ngIf="userData.isSocialVerified"></i>
+              <i class="fas fa-times text-danger " *ngIf="!userData.isSocialVerified"></i> Social Verified</span> --> 
+            
+            <span class="btn btn-outline-primary btnsm mr-3" *ngIf="is_kyc_verified"> <i class="fas fa-check text-success"></i> KYC Verified</span> <span class="btn btnsm mr-3"
+              style="border: 1px solid grey !important;color: grey !important;cursor: not-allowed;"
+              *ngIf="!is_kyc_verified"> KYC Verified</span> <span class="btn btn-outline-primary btnsm mr-3" *ngIf="userData.isSocialVerified"> <i class="fas fa-check text-success"></i> Social Verified</span> <span class="btn btnsm mr-3"
+              style="border: 1px solid grey !important;color: grey !important;cursor: not-allowed;"
+              *ngIf="!userData.isSocialVerified"> Social Verified</span> 
+            
+            <h5 class="ratingtag d-inline-block"><strong>{{ratings}}</strong>/<span class="small">5</span></h5>
+           
+            <p class="text-justify mt-3">{{userData.about_me}}</p>
+            
+            
+            
+          <div class="fulllined mt-5">
+              <h5>Write a <span class="tern-bold">Review</span></h5>
+              <hr />
+            </div>
+            <div class="commetinputbox text-center">
+              <!-- <form [formGroup]="comment_form" (ngSubmit)="sendFeedback(comment_form)">
+                <mat-form-field class="example-full-width w-100 txtarea">
+                  <textarea matInput placeholder="Leave a comment" rows="3" formControlName="comment_msg"></textarea> -->
+                  <!-- <mat-error *ngIf="comment_form.controls.comment_msg.hasError('required')">
+                    Please give the comment...</mat-error> --> 
+                <!-- </mat-form-field>
+              </form> -->
+
+            <mat-form-field class="example-full-width w-100 txtarea">
+                <textarea matInput placeholder="Leave a comment" rows="3" [(ngModel)]="comment_msg"></textarea>
+              </mat-form-field>
+              <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+              <button class="toolButtons emoji btn btn-outline-primary" (click)="toggle()"> <i class="material-icons">face</i> </button>
+              
+              <button class="btn btn-outline-primary" (click)="sendFeedback(comment_msg)" type="submit">Submit <i class="fas fa-paper-plane"></i></button>
+            </div> 
+            
+
+            
+           
+           
+            
+          </div>
+          <div class="col-md-6">
+            <div class="fulllined">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Recently<span class="tern-bold"> Created Trips</span></h5>
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <div class="triplistdet">
+              <ul class="list-unstyled" *ngIf="userTripsData.length == 0">
+                <li class="text-center text-muted" style="border-bottom: none">
+                  No Trips Found..
+                </li>
+              </ul>
+              <ul class="list-unstyled" *ngIf="userTripsData.length > 0">
+                <li *ngFor="let trip of userTripsData" (click)="gotoTripDetails(trip)" style="cursor: pointer;"> <a (click)="gotoTripDetails(trip)">{{trip.departure}} <span class="smalltxt totxt">to</span> {{trip.destination}} |
+                  {{trip.start_date}}<span class="smalltxt">{{trip.start_suffixval}}</span> {{trip.start_month}} <span
+                      class="smalltxt totxt">to</span> {{trip.end_date}}<span
+                      class="smalltxt">{{trip.end_suffixval}}</span> {{trip.end_month}}
+                  &nbsp;| <span style="text-transform: capitalize; color: grey">{{trip.type}}</span></a>
+                  <p class="text-justify small trip-description">{{trip.description}}</p>
+                </li>
+              </ul>
+              <div class="text-right" *ngIf="favData.length >= 4"> <a href="javascript:" (click)="gotoUserTrips(fav_user_id, fav_trip_id);" class="btn btn-primary">All Trips</a> </div>
+            </div>
+            
+            
+               <div class="fulllined  mt-5">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Top Most <span class="tern-bold">Requested Trips</span></h5>
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <div class="triplistdet">
+              <ul class="list-unstyled" *ngIf="user_invites.length == 0">
+                <li class="text-center text-muted" style="border-bottom: none">
+                  No Trips Found..
+                </li>
+              </ul>
+              <ul class="list-unstyled" *ngIf="user_invites.length > 0">
+                <li *ngFor="let invites of user_invites | orderBy: order:reverse | slice:0:3;"
+                  (click)="gotoTripDetails(invites)" style="cursor: pointer;"> <a (click)="gotoTripDetails(invites)">{{invites.departure}} <span
+                      class="smalltxt totxt">to</span> {{invites.destination}} |
+                  {{invites.start_date}}<span class="smalltxt">{{invites.start_suffixval}}</span> {{invites.start_month}} <span class="smalltxt totxt">to</span> {{invites.end_date}}<span
+                      class="smalltxt">{{invites.end_suffixval}}</span> {{invites.end_month}} </a>
+                  <p class="text-justify small trip-description">{{invites.description}}</p>
+                </li>
+              </ul>
+              <!-- <div class="text-right"> <a routerLink="/usertrips" (click)="gotoPersonDetails(fav_user_id, fav_trip_id);" class="btn btn-primary">All Trips</a> </div> --> 
+            </div>
+          
+          </div>
+          
+          
+        <div class="col-md-12">
+        	
+                       
+             <div class="fulllined mt-5">
+              <h5><span class="tern-bold">Reviews</span></h5>
+              <hr />
+            </div>
+
+            <ul class="list-unstyled" *ngIf="comments_lists.length == 0">
+              <li class="text-center text-muted">No comments...</li>
+            </ul>
+            <ul id="comments-list" class="comments-list list-unstyled" *ngFor="let list of comments_lists">
+              <div class="comment-main-level">
+                <div class="comment-avatar"><img [src]="list.profile" alt=""></div>
+                <div class="comment-box">
+                  <div class="comment-head">
+                    <h6 class="comment-name by-author">{{list.user_name}}
+                    </h6>
+                    <span>{{list.time}}</span> <i class="fa fa-reply" (click)="replyComment(list)"></i> <i *ngIf="!list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 1)"></i> <i *ngIf="list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 0)" style="color: red;"></i> </div>
+                  <div class="comment-content"> {{list.message}} </div>
+                </div>
+              </div>
+              <ul class="comments-list reply-list" *ngFor="let rlist of list.reply_msgs">
+                <li>
+                  <div class="comment-avatar"><img [src]="rlist.profile" alt=""></div>
+                  <div class="comment-box">
+                    <div class="comment-head">
+                      <h6 class="comment-name by-author">{{rlist.user_name}}</h6>
+                      <span>{{rlist.time}}</span> <i class="fa fa-heart"></i> </div>
+                    <div class="comment-content"> {{rlist.message}} </div>
+                  </div>
+                </li>
+              </ul>
+              <ul class="comments-list reply-list" id="reply-list-{{list.id}}" style="display: none;">
+                <li>
+                  <div class="comment-avatar"><img src="./assets/images/profile.webp" alt=""></div>
+                  <div class="comment-box">
+                    <div class="comment-content">
+                      <!-- <form [formGroup]="reply_comment_form" (ngSubmit)="sendReplyComment(reply_comment_form, list)">
+                        <mat-form-field class="example-full-width w-100">
+                          <textarea matInput placeholder="Leave a reply comment"
+                            formControlName="reply_comment_msg" rows="3"></textarea>
+                          <mat-error *ngIf="reply_comment_form.controls.reply_comment_msg.hasError('required')"> Please give the reply...</mat-error>
+                        </mat-form-field>
+                        <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+              <button class="toolButtons emoji btn btn-outline-primary" (click)="toggle()"> <i class="material-icons">face</i> </button>
+                        <button class="btn btn-outline-primary" type="submit">Submit <i
+                            class="fas fa-paper-plane"></i></button>
+                      </form> -->
+
+
+<div class="commetinputbox text-center">
+              <!-- <form [formGroup]="comment_form" (ngSubmit)="sendFeedback(comment_form)">
+                <mat-form-field class="example-full-width w-100 txtarea">
+                  <textarea matInput placeholder="Leave a comment" rows="3" formControlName="comment_msg"></textarea> -->
+                  <!-- <mat-error *ngIf="comment_form.controls.comment_msg.hasError('required')">
+                    Please give the comment...</mat-error> --> 
+                <!-- </mat-form-field>
+              </form> -->
+
+           <mat-form-field class="example-full-width w-100">
+                        <textarea matInput placeholder="Leave a comment" rows="3" [(ngModel)]="reply_comment_msg"></textarea>
+                      </mat-form-field>
+             <emoji-mart *ngIf="show_dialog1" (emojiSelect)="addEmoji1($event)" class="emojimart"></emoji-mart>
+                      <button class="toolButtons emoji btn btn-outline-primary" (click)="showEmoji()"> <i class="material-icons">face</i> </button>
+                      
+                      <button class="btn btn-outline-primary" (click)="sendReplyComment(reply_comment_msg, list)" type="submit">Submit <i class="fas fa-paper-plane"></i></button>
+            </div>
+
+
+
+
+
+                      
+                      
+
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ul> 
+             
+             
+            
+
+        </div>  
+
+          
+        </div>
+        
+       
+        
+        <!-- <div class="row mt-5">
+          <div class="col-md-12" *ngIf="showReviews">
+            
+            <div class="fulllined mt-5" *ngIf="shipment_data_lists.length != 0">
+              <h5><span class="tern-bold">Requirements</span></h5>
+              <hr />
+            </div>
+            <mat-accordion *ngIf="fav_type=='courier'">
+              <mat-expansion-panel *ngFor="let list of shipment_data_lists">
+                <mat-expansion-panel-header class="row">
+                  <mat-panel-title class="col-md-4"> <strong>{{list.package_name}}</strong> </mat-panel-title>
+                  <mat-panel-description> <span class="smalltxt">{{list.weight}} Kg</span> </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div>
+                  <p><strong>Item Name: </strong> {{list.package_name}}</p>
+                  <p><strong>Item Description: </strong> {{list.package_description}} </p>
+                  <p><strong>Weight: </strong> {{list.weight}} Kg</p>
+                  <p><strong>Images: </strong></p>
+                  <p><span *ngFor="let img of list.images"> <img [src]="img.img" class="item_images"> &nbsp; </span></p>             
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion *ngIf="fav_type=='assistance'">
+              <mat-expansion-panel *ngFor="let list of shipment_data_lists">
+                <mat-expansion-panel-header class="row">
+                  <mat-panel-title class="col-md-4"> <strong style="text-transform: uppercase">{{list.from_date}} <span style="text-transform: lowercase;font-weight: normal">to</span> {{list.to_date}} </strong> </mat-panel-title>
+                  <mat-panel-description> <span class="smalltxt">{{list.members}} <strong> members</strong></span> </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div>
+                  <p><strong>From Date &nbsp;&nbsp;: </strong> {{list.from_date}} </p>
+                  <p><strong>To Date : </strong> {{list.to_date}} </p>
+                  <p><strong>Description : </strong> {{list.description}} </p>
+                  <p><strong>Requested &nbsp;: </strong> {{list.requested}}</p>
+                  <p><strong>Members &nbsp;: </strong> {{list.members}}</p>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class=" d-block w-100 city_bg_allpage"></div>
+
+<!-- <li>
+                <div class="comment-main-level">
+                  <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+                  <div class="comment-box">
+                    <div class="comment-head">
+                      <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Agustin Ortiz</a></h6>
+                      <span>hace 20 minutos</span>
+                      <i class="fa fa-reply"></i>
+                      <i class="fa fa-heart"></i>
+                    </div>
+                    <div class="comment-content">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                    </div>
+                  </div>
+                </div>
+                <ul class="comments-list reply-list">
+                  <li>
+                    <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
+                    <div class="comment-box">
+                      <div class="comment-head">
+                        <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
+                        <span>hace 10 minutos</span>
+                        <i class="fa fa-reply"></i>
+                        <i class="fa fa-heart"></i>
+                      </div>
+                      <div class="comment-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+                    <div class="comment-box">
+                      <div class="comment-head">
+                        <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Agustin Ortiz</a></h6>
+                        <span>hace 10 minutos</span>
+                        <i class="fa fa-reply"></i>
+                        <i class="fa fa-heart"></i>
+                      </div>
+                      <div class="comment-content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <div class="comment-main-level">
+                  <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
+                  <div class="comment-box">
+                    <div class="comment-head">
+                      <h6 class="comment-name"><a href="http://creaticode.com/blog">Lorena Rojero</a></h6>
+                      <span>hace 10 minutos</span>
+                      <i class="fa fa-reply"></i>
+                      <i class="fa fa-heart"></i>
+                    </div>
+                    <div class="comment-content">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                    </div>
+                  </div>
+                </div>
+              </li> -->

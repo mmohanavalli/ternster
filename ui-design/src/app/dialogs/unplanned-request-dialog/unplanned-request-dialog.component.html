@@ -1,0 +1,116 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase"> {{data.trip.type}} Request
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+<mat-dialog-content class="mat-typography">
+<div class="list_details">
+  <h5 class="uname mb-3">{{data.trip.username}} | {{data.trip.trip_name}} | <span class="py-1 px-2 alert alert-primary btnsm"><strong> {{data.trip.type}}</strong></span>
+
+    <!-- <span class="py-1 px-2 alert alert-warning btnsm"><strong>$35 </strong>per Kg</span> 
+                        <span class="py-1 px-2 alert alert-info btnsm"><strong>50</strong> Kg</span> -->
+
+    <span *ngIf="data.trip.type == 'courier'">
+      <span class="py-1 px-2 alert alert-warning btnsm"><strong>{{data.trip.currency_symbol}}
+          {{data.trip.courier_budget}}
+        </strong>per {{data.trip.weight_unit}}</span>
+      <span class="py-1 px-2 alert alert-info btnsm"><strong>{{data.trip.balance_weight}}</strong>
+        {{data.trip.weight_unit}}</span>
+    </span>
+
+    <span *ngIf="data.trip.type == 'assistance'">
+      <span class="py-1 px-2 alert alert-warning btnsm"><strong>{{data.trip.currency_symbol}}
+          {{data.trip.assistance_budget}}
+        </strong></span>
+    </span>
+
+  </h5>
+  <h5>{{data.trip.departure}} <span class="smalltxt totxt">to</span> {{data.trip.destination}}</h5>
+  <h5> {{data.trip.unplanned_days}} days</h5>
+  <span> <strong>Your Chosen date : </strong> <b>{{unplanned_req_from_date}}</b> <span class="smalltxt"> to</span>
+    <b>{{unplanned_req_to_date}}</b></span>
+</div>
+
+  <div *ngIf="data.type === 'courier'">
+    <div *ngIf="courier_request_lists.length > 0">
+      <div class="font-italic text-muted mb-3">List of packages. Please select any one for this trip.</div>
+
+
+      <div class="checkbox">
+        <!-- <mat-checkbox (change)="checkRequestLists($event, list)" [value]="list.id">{{list.package_name}} &nbsp; |
+            <strong>{{list.weight}} Kg </strong> | <span>{{list.start_date}}<span
+                class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+                class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+              {{list.end_month}} {{list.end_year}}</span></mat-checkbox> -->
+
+        <div class="package_lists">
+          <mat-radio-group aria-label="Select an option" class="" (change)="checkRequestLists($event)">
+            <mat-radio-button *ngFor="let list of courier_request_lists" [value]="list.id" class="w-100 d-block">
+              {{list.package_name}} &nbsp; |
+              <strong>{{list.package_weight}} <span class="uname">{{list.weight_unit}}</span> </strong>
+              <!-- | <span>{{list.start_date}}<span
+                  class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+                  class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+                {{list.end_month}} {{list.end_year}}</span> -->
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <!-- <div class="d-block text-right my-3" *ngIf="courier_request_lists.length ==1"> <a href="javascript:void(0)" (click)="unselect()"
+            class="btn btn-outline-primary">Unselect</a> </div> -->
+
+        </div>
+      </div>
+      <!--<div class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="viewRequest(data.type)"
+            class="btn btn-outline-primary">View All Request</a> </div>-->
+    </div>
+    <div class="package_lists text-center" *ngIf="courier_request_lists.length === 0">
+      <div class="text-muted">No Packages</div>
+    </div>
+  </div>
+  <div *ngIf="data.type === 'assistance'">
+    <div class="package_lists" *ngIf="assistance_request_lists.length > 0">
+      <div class="font-italic text-muted mb-3 d-block">List of assistance. Please select any one for this
+        trip.</div>
+      <!-- <div class="checkbox" *ngFor="let list of assistance_request_lists">
+          <mat-checkbox (change)="checkRequestLists($event, list)" [value]="list.id">
+            <strong> {{list.members}} Members </strong>
+            <h5>{{list.start_date}}<span class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+                class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+              {{list.end_month}} {{list.end_year}}</h5>
+          </mat-checkbox>
+        </div> -->
+      <div class="checkbox">
+        <mat-radio-group aria-label="Select an option" class="" (change)="checkRequestLists($event)">
+          <mat-radio-button *ngFor="let list of assistance_request_lists" [value]="list.id">
+            <strong> {{list.members}} members</strong>
+            <!-- <h5>{{list.start_date}}<span class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+                class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+              {{list.end_month}} {{list.end_year}}</h5> -->
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>      
+
+      <!--<div class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="viewRequest(data.type)"
+          class="btn btn-outline-light">View All Request</a> </div>-->
+    </div>
+    <div class="package_lists text-center" *ngIf="assistance_request_lists.length === 0">
+      <div class="text-muted">No Passenger Details</div>
+    </div>
+  </div>
+  <div *ngIf="data.type === 'courier'" class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="createNewRequest(data)"
+      class="btn btn-light btnsm"><i class="fas fa-plus"></i> Create New Package</a> </div>
+
+  <div *ngIf="data.type === 'assistance'" class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="createNewRequest(data)"
+    class="btn btn-light btnsm"><i class="fas fa-plus"></i> Create New</a> </div>
+
+  <!-- <div class="d-block w-100">
+        <mat-form-field class="example-full-width txtarea w-100">
+          <textarea matInput [(ngModel)]="message" placeholder="Message"></textarea>
+        </mat-form-field>
+      </div> -->
+
+</mat-dialog-content>
+<mat-dialog-actions class="select_exchanges py-4" align="center">
+  <button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>CLOSE</button>
+  <button mat-button class="btn-save btn btn-primary" (click)="selectRequests(data)">SUBMIT</button>
+</mat-dialog-actions>

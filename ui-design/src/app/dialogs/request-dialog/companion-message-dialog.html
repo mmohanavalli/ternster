@@ -1,0 +1,18 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">Companion Request
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+
+<mat-dialog-content class="mat-typography" >
+<div class="col-md-12 text-center mb-5">
+  	<mat-form-field class="example-full-width txtarea w-100">
+      <textarea matInput [(ngModel)]="message" placeholder="Message"></textarea>
+    </mat-form-field>
+</div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="select_exchanges m-0" align="center">
+  <button mat-button class="btn-save btn btn-secondary" (click)="submitMsg()">Skip</button>
+    <button mat-button class="btn-save btn btn-primary" (click)="submitMsg()">Submit</button>
+</mat-dialog-actions>

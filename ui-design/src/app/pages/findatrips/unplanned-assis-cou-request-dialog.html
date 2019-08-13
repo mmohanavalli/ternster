@@ -1,0 +1,78 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase"> {{data.trip.type}} Request
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+<form [formGroup]="assis_cour_form" (ngSubmit)="onSubmitAssisCour()">
+ <mat-dialog-content class="mat-typography" >
+<div class="frmcustom">
+
+    <div class="list_details">
+        <h5 class="uname mb-3">{{data.trip.username}} | {{data.trip.trip_name}} | <span class="py-1 px-2 alert alert-primary btnsm"><strong> {{data.trip.type}}</strong></span>
+      
+          <!-- <span class="py-1 px-2 alert alert-warning btnsm"><strong>$35 </strong>per Kg</span> 
+                            <span class="py-1 px-2 alert alert-info btnsm"><strong>50</strong> Kg</span> -->
+      
+          <span *ngIf="data.trip.type == 'courier'">
+            <span class="py-1 px-2 alert alert-warning btnsm"><strong>{{data.trip.currency_symbol}}
+                {{data.trip.courier_budget}}
+              </strong>per {{data.trip.weight_unit}}</span>
+            <span class="py-1 px-2 alert alert-info btnsm"><strong>{{data.trip.weight}}</strong>
+              {{data.trip.weight_unit}}</span>
+          </span>
+      
+          <span *ngIf="data.trip.type == 'assistance'">
+            <span class="py-1 px-2 alert alert-warning btnsm"><strong>{{data.trip.currency_symbol}}
+                {{data.trip.assistance_budget}}
+              </strong></span>
+          </span>
+      
+        </h5>
+        <h5>{{data.trip.departure}} <span class="smalltxt totxt">to</span> {{data.trip.destination}}</h5>
+        <h5> {{unplanned_days}} days trip</h5>
+      </div>
+
+	
+    <div class="row request_dialog">
+      <div class="plannedsec w-100 mb-3">
+					<span> You are requesting to an unplanned Ternster, so kindly enter your trip start date and end date again for
+							confirmation for {{unplanned_days}} days
+					</span>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="fromdate" [min]=fromDate  placeholder="From" 
+              formControlName="from_date" required="" readonly="" (dateChange)="addEvent($event)" (click)="fromdate.open()">
+              <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+              <mat-datepicker #fromdate ></mat-datepicker>
+              <mat-error *ngIf="assis_cour_form.controls.from_date.errors?.required">Select From Date</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="todate" [min]="assis_cour_form.controls.from_date.value" [max]=toDate placeholder="To" formControlName="to_date" required="" 
+              readonly="" (click)="todate.open()">
+              <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+              <mat-datepicker #todate></mat-datepicker>
+              <mat-error *ngIf="assis_cour_form.controls.to_date.errors?.required">Select To Date</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+
+      
+    </div>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions class="select_exchanges mb-0" align="center">
+  <div class="col-md-12 text-center">
+        <button mat-button class="btn-save btn btn-outline-danger mr-0" (click)="closePopup()">CLOSE</button> 
+        <button mat-button type="submit" class="btn-save btn btn-primary">SUBMIT</button>
+      </div>
+</mat-dialog-actions>
+  </form>
+
+  

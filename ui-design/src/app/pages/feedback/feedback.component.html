@@ -1,0 +1,61 @@
+<div class="tern-loader" style="display:block;" *ngIf="isMainLoading">
+  <div class="imgcls"><img src="../../assets/images/loader.gif" />LOADING...</div>
+</div>
+<div class="content-sec feedbacksec">
+  <div class="container">
+    <div class="feedfrmbox">
+      <div class="row">
+        <div class="col-md-6 gray">
+          <h4 class="tern-bold">Feel free to drop us a line and give us your feedback.</h4>
+          <p>We are looking forward to hearing back from you, Please do drop us a line if feel like it.</p>
+          <span class="line-foot"></span> <img src="../../../assets/images/feedback-img.webp" class="w-100" /> </div>
+        <div class="col-md-6 frmcls" *ngIf="isTokenVerified">
+          <h5 class="text-center tern-bold mb-5 pb-3">Send us Your Feedback</h5>
+          <div class="list_details"> <span class="userimge"><img src={{allTrips.profile_image}}/></span>
+            <p class="mb-3">{{allTrips.username}}</p>
+            <h5 class="tern-bold text-uppercase mb-1">{{allTrips.departure}} <span  class="smalltxt totxt">to</span> {{allTrips.destination}}</h5>
+            <h5 class="tern-bold text-uppercase mb-0">{{allTrips.start_date}}<span  class="smalltxt">th</span> {{allTrips.start_month}} <span  class="smalltxt totxt">to</span> {{allTrips.end_date}}<span  class="smalltxt">th</span> {{allTrips.end_month}}</h5>
+          </div>
+          <mat-form-field class="example-full-width txtarea-100 w-100">
+            <textarea matInput placeholder="Description" required [(ngModel)]="Feedbackdescription"></textarea>
+            <mat-error *ngIf="isFeedbackdescription">
+              Description is
+              <strong>required</strong>
+             </mat-error>
+          </mat-form-field>
+          <!-- <div class="smileybox">
+            <label for="r1" class="check">
+              <input type="checkbox" id="r1" (change)="ratingStar($event)"/>
+              <i class="far fa-meh"></i></label>
+            <label for="r2" class="check">
+              <input type="checkbox" id="r2" (change)="ratingStar($event)"/>
+              <i class="far fa-frown-open"></i></label>
+            <label for="r3" class="check">
+              <input type="checkbox" id="r3" (change)="ratingStar($event)"/>
+              <i class="far fa-smile"></i></label>
+            <label for="r4" class="check">
+              <input type="checkbox" id="r4" (change)="ratingStar($event)"/>
+              <i class="far fa-smile-wink"></i> </label>
+            <label for="r5" class="check">
+              <input type="checkbox" id="r5" (change)="ratingStar($event)"/>
+              <i class="far fa-grin-hearts"></i></label>
+          </div> -->
+
+          <div style="text-align:center">           
+            <star-rating value="0" checkedcolor="#f9a701" uncheckedcolor="grey" size="50px"    readonly="false" (rate)="onRate($event)"></star-rating>
+          </div>
+          <div class="text-center">
+            <button mat-button class="btn btn-primary" (click)="submit()">Submit</button>
+          </div>
+        </div>
+
+        <div class="col-md-6 frmcls" *ngIf="!isTokenVerified">
+          <h5 class="text-center tern-bold mb-5 pb-3">Token Expired</h5>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>
+

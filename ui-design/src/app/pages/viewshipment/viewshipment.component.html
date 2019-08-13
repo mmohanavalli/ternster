@@ -1,0 +1,204 @@
+<!-- <div class="tern-loader" style="display:block;" *ngIf="isMainLoading">
+  <div class="imgcls"><img src="../../assets/images/loader.gif"/>LOADING...</div>
+</div> -->
+
+<app-profileheader></app-profileheader>
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-content animated fadeIn">
+    
+    <div class="text-right viewbtnship mt-3">
+          <a routerLink="/createrequest" class="btn btn-primary tern-bold"><i class="fa fa-plus"></i> Create package</a>
+        </div>
+    
+      <div class="tern-title">
+        <h1>View <span>Request</span> <span class="bluecirc"></span></h1>
+      </div>
+      <div class="frmcustom">
+      	
+      
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="checkbocgrop"> <span class="tern-bold mr-3">Looking for</span>
+              <mat-radio-group name="opList" fxLayout="column" [(ngModel)]="selectedType">
+                <mat-radio-button *ngFor="let op of listOfOptions.list" [value]="op.name" name="opList" class="mr-4 uname" (change)="typeChange($event)">{{ op.name}}
+                </mat-radio-button>
+              </mat-radio-group>
+
+              <!-- <mat-radio-group aria-label="Select an option" (change)="typeChange($event)">
+                <mat-radio-button value="courier" checked class="mr-4">Courier</mat-radio-button>
+                <mat-radio-button value="assistance" class="mr-4">Assistance</mat-radio-button>
+              </mat-radio-group>               -->
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-12">
+            <mat-accordion *ngIf="selectedType == 'courier'">
+              <mat-expansion-panel *ngFor="let cour of courier_lists | paginate: { itemsPerPage: 5, currentPage: p}">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="col-md-6 m-0">
+
+                    <!-- <strong>{{cour.from_date}}</strong> <span class="smalltxt totxt">to</span>
+                    <strong>{{cour.to_date}}</strong> -->
+                    <strong>{{cour.package_name}}</strong>
+
+                  </mat-panel-title>
+                  <mat-panel-description class="col-md-3 m-0">
+                    
+                  </mat-panel-description>
+
+                  <mat-panel-description class="col-md-3 m-0 justify-content-end">
+                    <a class="mr-3" href="javascript:void(0)" matTooltip="Edit Request"
+                      (click)="editRequest(cour.courier_id, cour.selectedType)" *ngIf="!cour.assigned_trip_id"><i
+                        class="far fa-edit"></i></a>
+                    <a href="javascript:void(0)" matTooltip="Delete Request" (click)="deleteCourierRequest(cour); $event.stopPropagation();"
+                      *ngIf="!cour.assigned_trip_id"><i class="far fa-trash-alt"></i></a>
+                    <a href="javascript:void(0)" matTooltip="This Request in connected to a trip"
+                      *ngIf="cour.assigned_trip_id"><i class="fa fa-info-circle"></i></a>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <ul class="list-unstyled">
+                  <li class="row">
+                    <div class="col-md-12" style="padding: 0 2em;">
+                      <p class="text-justify"><b>Package Description : </b> {{cour.package_description}}</p>
+                      <!-- <p class="text-justify"><b>Package Size : </b> {{cour.size}} &nbsp;&nbsp;
+                        <b>Package Weight : </b> {{cour.package_weight}} {{cour.weight_unit}}</p>
+                      <span *ngFor="let img of cour.package_images; let i=index" id="img_{{i}}" class="uploadimgcls mt-2" 
+                      style="width:100px; height:100px;">
+                        <img [src]="img">
+                      </span> -->
+
+                      <div class="itemboxssec">
+                          <div class="itemboxcontent">
+                          <div class="row">
+                            <div class="col-md-3 pt-3 tern-bold mt-2">Package Info</div>
+                            <div class="col-md-3 pt-3 mt-2"><b>Size : </b> {{cour.size}}</div>
+                            <div class="col-md-3 pt-3 mt-2"><b>Weight : </b> {{cour.package_weight}} {{cour.weight_unit}}</div>
+                            <div class="col-md-3 text-right"><b>Image :&nbsp;&nbsp; </b>
+                                <span>
+                                  <img [src]="cour.package_images" style="width:65px; height:65px;">
+                                </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="padding: 5px 15px; margin-bottom: 10px;">
+                          <div class="row">
+                              <div class="col-md-2 tern-bold pt-3 mt-2">Item No</div>
+                              <div class="col-md-4 tern-bold pt-3 mt-2">Item Name</div>
+                              <div class="col-md-2 tern-bold pt-3 mt-2">Item Weight</div>
+                              <div class="col-md-2 tern-bold pt-3 mt-2">Item Value</div>
+                              <div class="col-md-2 tern-bold pt-3 mt-2 text-right">Item Image</div>
+                            </div>
+                          </div>
+                      <div class="itemboxssec" *ngFor="let item of cour.item_lists; let i=index">
+                        <div class="itemboxcontent">
+                          <div class="row">
+                            <div class="col-md-2 tern-bold pt-3 mt-2">Item {{i+1}}</div>
+                            <div class="col-md-4 pt-3 mt-2">{{item.item_name}}</div>
+                            <div class="col-md-2 pt-3 mt-2">{{item.item_weight}}</div>
+                            <div class="col-md-2 pt-3 mt-2">{{item.item_value}}</div>
+                            <div class="col-md-2 text-right">
+                              <div class="itemimagesboxs">
+                                <span class="uploadimgcls">
+                                  <!-- <img src="../../../assets/images/profile.webp"> -->
+                                  <img [src]="item.item_images" style="width:65px; height:65px;">
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="itemboxssec">
+                        <div class="itemboxcontent">
+                        <div class="row">
+                          <div class="col-md-2 pt-3 tern-bold mt-2">Receiver Info</div>
+                          <div class="col-md-3 pt-3 mt-2"><b>Receiver name : </b> {{cour.receiver_name}}</div>
+                          <div class="col-md-3 pt-3 mt-2"><b>Mobile number : </b> {{cour.receiver_contact_no}}</div>
+                          <div class="col-md-3 pt-3 mt-2"><b>Email id : </b> {{cour.receiver_email_id}}</div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    </div>
+                  </li>
+                </ul>
+
+              </mat-expansion-panel>
+
+              <div *ngIf="courier_lists.length === 0" class="text-center">
+                <div class="nodatacls">
+                  <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+                  <h5>No Courier Requests Available</h5>
+                </div>
+              </div>
+
+            </mat-accordion>
+
+            <mat-accordion *ngIf="selectedType == 'assistance'">
+              <mat-expansion-panel *ngFor="let ass of assistance_lists | paginate: { itemsPerPage: 5, currentPage: p}">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="col-md-4 m-0">
+                    <!-- <strong>{{ass.departure}}</strong> <span class="smalltxt totxt">to</span> <strong>{{ass.destination}}</strong>  -->
+                    <!-- <strong>{{ass.from_date}}</strong> <span class="smalltxt totxt">to</span>
+                    <strong>{{ass.to_date}}</strong> -->
+                    <strong>{{ass.members}} Members</strong>
+                  </mat-panel-title>
+                  <mat-panel-description class="col-md-4 m-0 justify-content-end">
+                    
+                  </mat-panel-description>
+
+                  <mat-panel-description class="col-md-4 m-0 justify-content-end">
+                    <a class="mr-3" href="javascript:void(0)" matTooltip="Edit Request"
+                      (click)="editRequest(ass.assistance_id, ass.selectedType)" *ngIf="!ass.assigned_trip_id"><i
+                        class="far fa-edit"></i></a>
+                    <a href="javascript:void(0)" matTooltip="Delete Request" (click)="deleteAssistanceRequest(ass); $event.stopPropagation();"
+                      *ngIf="!ass.assigned_trip_id"><i class="far fa-trash-alt"></i></a>
+                    <a href="javascript:void(0)" matTooltip="This request is assigned to ternster trip"
+                      *ngIf="ass.assigned_trip_id"><i class="fa fa-info-circle"></i></a>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <ul class="list-unstyled">
+                  <li class="row">
+                    <div class="col-md-12" style="padding: 0 2em;">
+                      <p class="text-justify"><b>Assistance Description : </b> {{ass.description}}</p>
+                    </div>
+                  </li>
+                  <li class="row">
+                    <div class="col-md-12" style="padding: 0 2em;">
+                      <p class="text-justify"><b>Assistance Requested For : </b> {{ass.requested}}</p>
+                    </div>
+                  </li>
+                </ul>
+              </mat-expansion-panel>
+
+
+              <div *ngIf="assistance_lists.length === 0" class="text-center">
+                <div class="nodatacls">
+                  <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+                  <h5>No Assistance Requests Available</h5>
+                </div>
+              </div>
+            </mat-accordion>
+          </div>
+          <div class="nxtprelinks mt-3 w-100">
+            <div class="row">
+              <div class="col-sm-12">
+                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+                <pagination-controls (pageChange)="changePange($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

@@ -1,0 +1,209 @@
+<div class="mobmenuoverlap" [ngClass]="visibleovelay ? 'viewoverlay'  : ''"></div>
+<div class="header-top header-tag" *ngIf="!isLoggedIn" id="page-header">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg"> <a class="navbar-brand" href="#"> <img src="../../assets/images/logo.webp" height="75" /> </a>
+      <button (click)="visibleovelay = !visibleovelay" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" aria-expanded="false"> <i class="mobbar fas_t"></i> <i class="mobbar fas_c"></i> <i class="mobbar fas_b"></i> </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mr-0 mt-0">
+          <li class= "nav-item"> <a href="javascript:void(0);" class="btn btn-light mr-2"  (click)="closenav(); scrollToElement(true);">Signup</a> </li>
+          <li class= "nav-item"> <a href="javascript:void(0);" id="login" class="btn btn-light"  (click)="closenav(); scrollToElement(false);">Login</a> </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<div class="header-top header-tag" id="page-header" *ngIf="isLoggedIn">
+  <div class="container">
+  <nav class="navbar navbar-expand-lg"> <a class="navbar-brand" routerLink="/findatrips"> <img src="../../assets/images/logo.webp" height="75" /> </a>
+    <button (click)="visibleovelay = !visibleovelay" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation" aria-expanded="false"> <i class="mobbar fas_t"></i> <i class="mobbar fas_c"></i> <i class="mobbar fas_b"></i> </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="promobi"> <span class="profile_img" *ngIf="profile_picture"> <img src={{profile_picture}} /> </span>
+        <p class="text-center mb-1">Courier | Assistance | Companion</p>
+        <div class="text-center"> <a routerLink="/notifications" class="navbar-toggler m-0" > <i class="material-icons">notification_important</i> <span *ngIf="unread_messages.length > 0" class="indicator"></span> </a> <a href="javascript:void(0);" routerLink="/accounts/messages" class="navbar-toggler m-0"> <i class="material-icons">comment</i> <span *ngIf="unread_message_display_lists.length > 0" class="indicator"></span> </a> </div>
+      </div>
+      <ul class="navbar-nav ml-auto mr-0">
+        <li [class]="dashboard_header_tab ? 'nav-item active' : 'nav-item'" routerLinkActive="active" (click)="closenav(); visibleovelay = false" > <a href="javascript:void(0)" class="nav-link" (click)="gotoMainPages('dashboard', true)">Dashboard</a> </li>
+        <li [class]="create_header_tab ? 'nav-item active' : 'nav-item'" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a  href="javascript:void(0)" class="nav-link" (click)="gotoMainPages('createtrip', true)">Post a Trip</a> </li>
+        <li [class]="find_header_tab ? 'nav-item active' : 'nav-item'" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0)" class="nav-link" (click)="gotoMainPages('findatrips', true)">Find a Trip</a> </li>
+        <li [class]="fav_header_tab ? 'nav-item active' : 'nav-item'" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0)" class="nav-link" (click)="gotoMainPages('favorites', true)">Favourites</a> </li>
+        <li class="nav-item dropdown notification-dropdown mob-hidden"> <a class="nav-link beaf dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"> <i class="material-icons">notification_important</i>
+          <div *ngIf="unread_messages.length > 0" class="indicator"></div>
+          </a>
+          <div class="dropdown-menu nofify-dropdown-menu">
+          <ul id="notificationMenu" *ngIf="unread_messages.length == 0 && read_messages.length == 0" class="notifications  animated fadeIn">
+            <li class="titlebar"> <span class="title">Notifications</span></li>
+            <div class="notifbox">
+              <div class="text-center text-muted font-italic" style="font-size: 16px; padding: 1rem;">No notifications...</div>
+            </div>
+          </ul>
+          <ul class="unread-msg-list" id="notificationMenu" *ngIf="unread_messages.length > 0 || read_messages.length > 0" class="notifications  animated fadeIn">
+        <li class="titlebar"> <span class="title">Notifications</span></li>
+        <div class="notifbox">
+          <li class=" notif unread" *ngFor="let list of unread_messages">
+            <div *ngIf="list.is_from_cancelled_trip">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"   /> </div>
+              <div class="messageblock notify-content">
+                <div class="message"> <strong class="uname">{{list.user_name}}</strong> has closed the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+              </div>
+              <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span> </div>
+            </div>
+            <a class="view-trip-click"  href="javascript:void(0)" (click)="gotoTripDetails(list, list.is_comments, 'unread');">
+            <div *ngIf="list.request_status == 'pending' && !list.is_comments">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"   /> </div>
+              <div class="messageblock notify-content">
+                <div class="message" *ngIf="list.type == 'courier'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.weight}}</strong> {{list.weight_unit}} </div>
+                <div class="message" *ngIf="list.type == 'assistance'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong>for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.members}}</strong> members </div>
+                <div class="message" *ngIf="list.type == 'companion'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span> </div>
+              </div>
+            </div>           
+            <div *ngIf="list.is_comments">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"   /> </div>
+              <div class="messageblock notify-content">
+                <div class="message" *ngIf="!list.is_reply_comment && !list.is_liked_comment">You have a new comment from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="message" *ngIf="list.is_reply_comment && !list.is_liked_comment"> <strong class="uname">{{list.user_name}}</strong> has comment replied <br />
+                  for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="message" *ngIf="!list.is_reply_comment && list.is_liked_comment"> <strong class="uname">{{list.user_name}}</strong> has liked your comment for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span> </div>
+              </div>
+            </div>
+            </a>
+            <div *ngIf="(list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'rejected' || list.request_status == 'delivered' || list.request_status == 'cancelled' || list.request_status == 'withdraw') && !list.is_comments"> <a href="javascript:void(0)" (click)="gotoTripDetails(list, list.is_comments,'unread')">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"/> </div>
+              <div class="messageblock">
+                <div class="message" *ngIf="list.type == 'courier'">
+                   <strong class="uname">{{list.user_name}}</strong> has 
+                   <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'delivered'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected' ||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.weight}}</strong> {{list.weight_unit}} </div>
+                <div class="message" *ngIf="list.type == 'assistance'"> <strong class="uname">{{list.user_name}}</strong> has <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected'||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.members}}</strong> members </div>
+                <div class="message" *ngIf="list.type == 'companion'"> <strong class="uname">{{list.user_name}}</strong> has <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected'||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageinfo"> <i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+              </a> </div>
+          </li>
+          <li class="notif" *ngFor="let list of read_messages">
+            <div *ngIf="list.is_from_cancelled_trip">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"   /> </div>
+              <div class="messageblock notify-content">
+                <div class="message"> <strong class="uname">{{list.user_name}}</strong> has closed the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+              </div>
+              <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span> </div>
+            </div>
+            <a href="javascript:void(0)" (click)="gotoTripDetails(list, list.is_comments, 'read');">
+            <div *ngIf="list.request_status == 'pending' && !list.is_comments">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"/> </div>
+              <div class="messageblock notify-content">
+                <div class="message" *ngIf="list.type == 'courier'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.weight}}</strong> {{list.weight_unit}} </div>
+                <div class="message" *ngIf="list.type == 'assistance'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.members}}</strong> members </div>
+                <div class="message" *ngIf="list.type == 'companion'">You have a request from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span></div>
+              </div>
+            </div>
+            <div *ngIf="list.is_comments">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"   /> </div>
+              <div class="messageblock notify-content">
+                <div class="message" *ngIf="!list.is_reply_comment && !list.is_liked_comment">You have a new comment from<br />
+                  <strong class="uname">{{list.user_name}}</strong> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="message" *ngIf="list.is_reply_comment && !list.is_liked_comment"> <strong class="uname">{{list.user_name}}</strong> has comment replied <br />
+                  for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="message" *ngIf="!list.is_reply_comment && list.is_liked_comment"> <strong class="uname">{{list.user_name}}</strong> has liked your comment for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageaction text-right" > <span class="messageinfo pr-1 pt-3"> <i class="access_time"></i>{{list.time}} </span> </div>
+              </div>
+            </div>
+            </a>
+            <div *ngIf="(list.request_status == 'accepted' || list.request_status == 'rejected' || list.request_status == 'paid' || list.request_status == 'delivered' || list.request_status == 'cancelled' || list.request_status == 'withdraw') && !list.is_comments"> <a href="javascript:void(0)" (click)="gotoTripDetails(list, list.is_comments, 'read')">
+              <div class="imageblock"> <img [src]="list.profile" class="notifimage w-100"/> </div>
+              <div class="messageblock">
+                <div class="message" *ngIf="list.type == 'courier'"> <strong class="uname">{{list.user_name}}</strong> has <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'delivered'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected' || list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.weight}}</strong> {{list.weight_unit}} </div>
+                <div class="message" *ngIf="list.type == 'assistance'"> <strong class="uname">{{list.user_name}}</strong> has <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected' || list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> for <strong> {{list.members}}</strong> members </div>
+                <div class="message" *ngIf="list.type == 'companion'"> <strong class="uname">{{list.user_name}}</strong> has <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;"> <strong>{{list.request_status}}</strong> </span> <span *ngIf="list.request_status == 'rejected' || list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;"> <strong>{{list.request_status}}</strong> </span> for the trip <strong>{{list.departure}}</strong> to <strong>{{list.destination}}</strong> </div>
+                <div class="messageinfo"> <i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+              </a> </div>
+          </li>
+        </div>
+        <li *ngIf="notification_message_count > 5" class="seeall"> <a href="javascript:void(0)" routerLink="/notifications">See All</a> </li>
+      </ul>
+    </div>
+    </li>
+
+    <!---------------------Messages------------------------------->
+    <li class="nav-item dropdown  mob-hidden"> <a class="nav-link beaf dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" (click)="openMessageNotification()"> <i class="material-icons">comment</i>
+      <div *ngIf="unread_message_display_lists.length > 0" class="indicator"></div>
+      </a>
+      <div class="dropdown-menu">
+        <ul id="notificationMenu" *ngIf="unread_message_display_lists.length == 0 && read_message_display_lists.length == 0" class="notifications  animated fadeIn">
+          <li class="titlebar"> <span class="title">Messages</span> <span class="settings"> <i class="icon-cog"></i> </span> </li>
+          <div class="notifbox">
+            <div class="text-center text-muted font-italic" style="font-size: 16px; padding: 1rem;">No Messages...</div>
+          </div>
+        </ul>
+        <ul id="notificationMenu" *ngIf="unread_message_display_lists.length > 0 || read_message_display_lists.length > 0" class="notifications  animated fadeIn">
+          <li class="titlebar"> <span class="title">Messages</span> <span class="settings"> <i class="icon-cog"></i> </span> </li>
+          <div class="notifbox">
+            <li class="notif unread" *ngFor="let list of unread_message_display_lists"> <a href="javascript:void(0);" (click)="gotoMessage(list)">
+              <div class="imageblock"> <img src="{{list.profile}}" class="notifimage w-100"  /> </div>
+              <div class="messageblock">
+                <div class="message"><strong>{{list.count}}</strong> new message(s) from <strong class="uname">{{list.user_name}}</strong>. </div>
+                <div class="messageinfo"> <i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+              </a> </li>
+            <li class="notif" *ngFor="let list of read_message_display_lists"> <a href="javascript:void(0);" (click)="gotoMessage(list)">
+              <div class="imageblock"> <img src="{{list.profile}}" class="notifimage w-100"  /> </div>
+              <div class="messageblock">
+                <div class="message"><strong>{{list.count}}</strong> new message(s) from <strong class="uname">{{list.user_name}}</strong>. </div>
+                <div class="messageinfo"> <i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+              </a> </li>
+          </div>
+          <li *ngIf="message_notification_count > 5" class="seeall"> <a href="javascript:click(0)" (click)="seeAllMessageNotification()">See All</a> </li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item dropdown mob-hidden"> <a class="nav-link beaf dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" > <span class="profile_img" *ngIf="profile_picture"> <img src={{profile_picture}} /> </span> </a>
+      <div class="dropdown-menu settingscus  animated fadeIn"> <a href="javascript:void(0);" class="dropdown-item" routerLink="/accounts/profile" >Profile</a> <a href="javascript:void(0);" class="dropdown-item" routerLink="/accounts/settings">Settings</a> <a href="javascript:void(0);" class="dropdown-item" routerLink="/accounts/wallet">Wallet</a> <a href="javascript:void(0);" class="dropdown-item" routerLink="/accounts/messages">Messages</a> <a href="javascript:void(0);" class="dropdown-item" routerLink="/accounts/changepassword">Change Password</a> <a class="dropdown-item" routerLink="/createrequest">Create Package</a>
+        <div class="dropdown-divider m-0"></div>
+        <a href="javascript:void(0);" class="dropdown-item" (click)="logout()">Logout</a> </div>
+    </li>
+    <li class="nav-item mob-visible" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" routerLink="/accounts/profile" >Profile</a> </li>
+    <li class="nav-item mob-visible" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" routerLink="/accounts/settings">Settings</a> </li>
+    <li class="nav-item mob-visible" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" routerLink="/accounts/wallet">Wallet</a> </li>
+    <li class="nav-item mob-visible" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" routerLink="/accounts/messages">Messages</a> </li>
+    <li class="nav-item mob-visible" routerLinkActive="active" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" routerLink="/accounts/changepassword">Change Password</a> </li>
+    <li class="nav-item mob-visible" routerLinkActive="active"> <a class="nav-link"  routerLink="/shipment">Shipment</a> </li>
+    <li class="nav-item mob-visible" (click)="closenav(); visibleovelay = false"> <a href="javascript:void(0);" class="nav-link" (click)="logout()">Logout</a> </li>
+    </ul>
+    </div>
+  </nav>
+</div>
+</div>
+<router-outlet ></router-outlet>
+<div class="footer-sec">
+  <div class="scrolltopfoot" id="scrolltopfoot" (click)="gotoTop()"> <a href="javascript:void(0);"><i class="fas fa-chevron-up"></i></a> </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5"> <img src="../../assets/images/foot-logo.webp" class="mb-3" />
+        <p class="text-justify">Ternster is an Australian travel startup platform that full-fills global needs of non-travellers. The Requester with the help of trusted travellers. Ternsters are travel enthusiasts who are ready to perform micro gigs to deliver a package, assist a co-traveller or be a companion.</p>
+      </div>
+      <div class="col-md-2">
+        <div class="foot-links"> <a routerLink="/about">About us</a> <a href="#">Blog</a> <a routerLink="/contact">Contact us</a> </div>
+      </div>
+      <div class="col-md-3">
+        <div class="foot-links"> <a href="#">Safety Policy</a> <a routerLink="/privacy">Privacy Policy</a> <a routerLink="/terms">Terms & Conditions</a> </div>
+      </div>
+      <div class="col-md-2">
+        <div class="social-links"> <a href="https://facebook.com/" target="_blank"> <i class="fab fa-facebook-f"></i> </a> <a href="https://twitter.com/" target="_blank"> <i
+                  class="fab fa-twitter"></i> </a> <a href="https://instagram.com/" target="_blank"> <i class="fab fa-instagram"></i> </a> </div>
+      </div>
+      <div class="col-md-12 small text-center">
+        <hr />
+        Ternster &copy; 2019. All Rights Reserved </div>
+    </div>
+  </div>
+</div>

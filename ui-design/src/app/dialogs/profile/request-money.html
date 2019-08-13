@@ -1,0 +1,30 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">Request Money
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+<form [formGroup]="accounts_form" (ngSubmit)="onSubmitAccounts()">
+  <mat-dialog-content class="mat-typography" >
+  	<div class="selbankaccount wallet-content">
+    
+     <mat-card class="mb-3"> 
+                       <img src="../../../assets/images/wallet.webp" width="60" class="float-left mr-3 mt-0 mb-3" />
+                        <p>Balance</p>
+                        <h5 class="tern-bold balpric">  <span class="smalltxt">$</span>5,242.00</h5>
+                       
+                      </mat-card>
+    
+    <h4 class="tern-bold mb-0">Select an Account</h4>
+  	<mat-radio-group aria-label="Select an Account" value="1">
+      <mat-radio-button value="1" class="d-block w-100"><strong>ICICI Bank</strong> <br />9876543210987654</mat-radio-button>
+      <mat-radio-button value="2" class="d-block w-100"><strong>IOB Bank</strong> <br />9876543210987654</mat-radio-button>
+    </mat-radio-group>
+	<div class="text-right w-100 d-block"><button type="button"  class="btn btn-light btnsm mt-3"><i class="fas fa-plus"></i> Add Account Details</button></div>
+	</div>
+</mat-dialog-content>
+ 
+   <mat-dialog-actions class="select_exchanges m-0" align="center">
+    <button mat-button type="submit"  class="btn btn-primary">submit</button>
+  </mat-dialog-actions>
+  
+</form>

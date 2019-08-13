@@ -1,0 +1,46 @@
+<app-profileheader></app-profileheader>
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-content animated fadeIn">
+      <div class="persondets">
+        <div class="text-right mb-5">
+          <!-- <a href="#" class="btn btn-success tern-bold text-uppercase" *ngIf="requestStatus!='Rejected'" (click)="sendRequest();">{{requestStatus}}</a>
+          <a class="btn btn-danger tern-bold text-uppercase" *ngIf="requestStatus == 'Rejected'">{{requestStatus}}</a> -->
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <div class="fulllined">
+              <div class="row">
+                <div class="col-md-12">
+                  <h4>{{userData.username}}</h4>
+                  <br />
+                  <h5><span class="tern-bold">All Trips</span></h5>
+                  <div class="triplistdet">
+                    <ul class="list-unstyled" style="cursor: pointer;">
+                      <li *ngFor = "let trip of userTripsData  | paginate: { itemsPerPage: 10, currentPage: page}"> 
+                        <a (click)="gotoTripDetails(trip)">{{trip.departure}} <span class="smalltxt totxt">to</span> {{trip.destination}}  | 
+                          {{trip.start_date}}<span class="smalltxt">{{trip.start_suffixval}}</span> {{trip.start_month}} <span class="smalltxt totxt">to</span> {{trip.end_date}}<span class="smalltxt">{{trip.end_suffixval}}</span> {{trip.end_month}} 
+                          &nbsp;| <span style="text-transform: capitalize; color: grey">{{trip.type}}</span></a>
+                        <p class="text-justify small">{{trip.description}}</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="nxtprelinks">
+          <div class="row">
+            <div class="col-sm-12">
+              <pagination-controls class="" maxSize="0" (pageChange)="onPageChanged($event)"></pagination-controls>
+            </div>              
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

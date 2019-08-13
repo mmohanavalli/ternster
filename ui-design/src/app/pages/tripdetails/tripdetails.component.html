@@ -1,0 +1,862 @@
+<app-searchtrip (radioChangeEmit)="radioChange($event)" [isAnywhereEnabled]="isAnywhereEnabled"
+  (changeAnyWhereEmit)="changeAnyWhere($event)" [departure]=departure [destination]=destination
+  (durationChangeEmit)="durationChange($event)" (customChangeEmit)="customChange($event)"
+  (dateChangeEventEmit)="dateChangeEvent($event)" [isAnywhereShow]="isAnywhereShow" [resetFilterShow]="resetFilterShow"
+  (changeDepartureLocationEmit)="changeDepartureLocation($event)"
+  (changeDestinationLocationEmit)="changeDestinationLocation($event)" (resetFiltersEmit)="resetFilter($event)"
+  [selectedDuration]=selectedDuration [selectedMode]=selectedMode [fromDate]=fromDate [toDate]=toDate [planned]=planned
+  [trip_from_date]="trip_from_date"
+  [othermodes]="othermodes">
+</app-searchtrip>
+
+<div class="container mt-5">
+  <div class="nxtprelinks">
+    <div class="row">
+      <div class="col-sm-12" *ngIf="showPagination">
+        <pagination-controls class="" maxSize="0" (pageChange)="onPageChanged($event)"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="listing-content detailpage ">
+  <div class="text-center grayscale" *ngIf="isLoading">
+    <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg">
+      <defs>
+        <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+          <stop offset="0%">
+            <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite" />
+          </stop>
+          <stop offset="100%">
+            <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite" />
+          </stop>
+        </linearGradient>
+        <clipPath id="clip">
+          <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+          <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+        </clipPath>
+      </defs>
+      <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+    </svg>
+  </div>
+  <div *ngIf="!isLoading">
+    <div class="container" *ngFor="let tripsData of allTrips | paginate: { itemsPerPage: 1, currentPage: page}">
+      <ul class="list-unstyled mb-0">
+        <li>
+          <div class="list_details helisdes">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="pro_img">
+                  <div class="imgsec">
+                    <a href="javascript:void(0)" matTooltip="View Profile" (click)="viewProfile(tripsData, 'viewtrip')">
+                      <span *ngIf="tripsData.profile_image">
+                        <img src={{tripsData.profile_image}} class="w-100" />
+                      </span>
+                      <span *ngIf="!tripsData.profile_image">
+                        <img src="../../../assets/images/profile.webp" class="w-100" />
+                      </span>
+                      <span class="new" *ngIf="tripsData.is_new && tripsData.trip_status=='open'">New</span>
+                    </a>
+                    <span class="new_danger" *ngIf="tripsData.trip_status=='close'">Closed</span>
+                  <span class="new_danger" *ngIf="tripsData.trip_status=='cancel'">Cancelled</span>
+
+                  </div>
+                  <div class="list_ico">
+                    <span class="tripicon">
+                      <img src={{tripsData.mode}} width="32px" />
+                    </span>
+
+
+                    <span class="verifiicon" *ngIf="tripsData.isKycVerified"><img
+                        src="../../../assets/images/verifi_icon.webp" width="26" /></span>
+                    <span class="verifiicon" *ngIf="!tripsData.isKycVerified"><img
+                        src="../../../assets/images/unverifi_icon.webp" width="26" /></span>
+
+                  </div>
+                </div>
+                <h6 class="pt-2">{{tripsData.trip_name}}</h6>
+                <h5 title="{{tripsData.departure}} to {{tripsData.destination}}">{{tripsData.departure}}
+                  <span class="smalltxt totxt">to</span> {{tripsData.destination}}
+                </h5>
+                <h5 *ngIf="tripsData.trip_plan=='planned'">{{tripsData.start_date}}
+                  <span class="smalltxt">{{tripsData.start_suffixval}}</span>
+                  {{tripsData.start_month}}
+                  <span class="smalltxt totxt">to</span> {{tripsData.end_date}}
+
+                  <span class="smalltxt">{{tripsData.end_suffixval}}</span> {{tripsData.end_month}}
+                  {{tripsData.end_year}}
+
+                </h5>
+                <h5 *ngIf="tripsData.trip_plan=='unplanned'">{{tripsData.unplanned_days}} Days</h5>
+                <p class="uname pt-2">
+                  <span class="pr-3">
+                    <strong>{{tripsData.username}}</strong>
+                  </span>-
+                  <span class="py-1 px-2 alert alert-primary"><strong>{{tripsData.type}}</strong></span> &nbsp;
+
+                  <span class="uname" *ngIf="tripsData.type !='companion'">
+                    <span class="px-3">
+                      <strong>Payment</strong>
+                    </span>-
+
+                    <span class="py-1 px-2 alert alert-success">
+                      <strong *ngIf="tripsData.payment_mode=='offline'">{{tripsData.payment_mode}}</strong>
+                      <strong *ngIf="tripsData.payment_mode!='offline'">Online</strong>
+                    </span>
+                  </span>
+                </p>
+
+              </div>
+              <div class="col-md-4">
+                <div class="det-foot text-center">
+
+                  <div class="detailcurrency">
+                    <div class="d-inline-block"
+                      *ngIf="tripsData.type!='companion' && tripsData.type!='assistance'&& tripsData.type == 'courier'">
+                      Charges - <span class="alert alert-primary py-1 px-2 mr-3">
+                        <span class="tern-bold">{{tripsData.currency_symbol}} {{tripsData.courier_budget}}</span> per
+                        {{tripsData.weight_unit}}</span>
+                    </div>
+
+                    <div class="d-inline-block"
+                      *ngIf="tripsData.type!='companion' && tripsData.type != 'courier' && tripsData.type == 'assistance'">
+
+                      Charges - <span class="tern-bold alert alert-primary py-1 px-2 mr-0">
+                        {{tripsData.currency_symbol}} {{tripsData.assistance_budget}}</span>
+                    </div>
+                    <div class="d-inline-block"
+                      *ngIf="tripsData.type!='companion' && tripsData.type!='assistance' && tripsData.type == 'courier'">
+                      Carry - <span class="alert alert-info py-1 px-2 mr-0">
+                        <span class="tern-bold">{{tripsData.weight}}</span> {{tripsData.weight_unit}}</span>
+                    </div>
+
+                    <div class="d-inline-block"
+                      *ngIf="tripsData.type =='companion' && tripsData.type!='assistance'&& tripsData.type!= 'courier'">
+                      <span class="alert alert-secondary py-1 px-2 mr-0 tern-bold">No Cost</span>
+                    </div>
+
+                  </div>
+
+
+                  <!-------------------!pageFromNotification---------------------->
+                  <button *ngIf="tripsData.trip_status=='close'" mat-button class="btn btn-danger tern-bold  mr-2"
+                    matTooltip="Trip closed">Closed</button>
+
+                  <span *ngIf="isButtonsEnabled && !pageFromNotification">
+                    <span *ngIf="tripsData.trip_status=='open'">
+                      <button mat-button class="btn btn-success tern-bold" (click)="sendRequest(tripsData)"
+                        *ngIf="tripsData.requestStatus=='Send Request'">Send
+                        Request
+                      </button>
+                      <span
+                        class="alert alert-warning  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='pending'">
+                        Request Sent
+                      </span>
+
+                      <span class="alert alert-danger  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='rejected'">
+                        {{tripsData.requestStatus}}
+                      </span>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='delivered'">
+                        {{tripsData.requestStatus}}
+                      </span>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='paid'">
+                        {{tripsData.requestStatus}}
+                      </span>
+                      <button mat-button class="btn btn-warning tern-bold mr-2"
+                        *ngIf="tripsData.requestStatus=='accepted' && tripsData.type!='companion' && tripsData.payment_mode == 'gateway' && isValidPayment && !pageFromNotification"
+                        (click)="openConfirmPayment(tripsData)">
+                        Pay
+                      </button>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='accepted' && tripsData.type!='companion' && tripsData.payment_mode == 'offline'"
+                        disabled>
+                        Connected
+                      </span>
+                      <button mat-button class="btn btn-success tern-bold"
+                        *ngIf="tripsData.requestStatus=='disconnect' && tripsData.type!='companion' && !isValidPayment">
+                        Send Request
+                      </button>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.requestStatus=='accepted' && tripsData.type=='companion'">
+                        Connected
+                      </span>
+                    </span>
+                  </span>
+
+                  <!------------------------------------------------------------->
+
+                  <!-------------------pageFromNotification---------------------->
+                  <span *ngIf="pageFromNotification && tripsData.trip_status!='cancel'">
+
+                    <span class="messageaction" *ngIf="tripsData.notification_request_status=='pending'">
+                      <a href="javascript:void(0);" class="btn btn-success tern-bold mr-2 "
+                        (click)="updateStatusRequest(tripsData, 'accepted')">accept</a>
+                      <a href="javascript:void(0);" class="btn btn-danger tern-bold mr-2"
+                        (click)="updateStatusRequest(tripsData, 'rejected')">decline</a>
+                    </span>
+
+                    <span class="messageaction" *ngIf="!isPayment && tripsData.notification_request_status=='accepted'">
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.type!='companion' && tripsData.package_status!='delivered'">Connected</span>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.type =='companion'">Connected</span>
+                    </span>
+
+                    <span class="messageaction" *ngIf="!isPayment && tripsData.type!='companion' && tripsData.payment_mode=='gateway' && 
+                      tripsData.notification_request_status=='paid'">
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.notification_request_status=='paid' && tripsData.package_status!='delivered'">Paid</span>
+                      <a href="javascript:void(0);" class="btn btn-success tern-bold mr-2"
+                        *ngIf="showIsDeliverButton && tripsData.notification_request_status=='paid' && tripsData.package_status=='assigned'"
+                        (click)="checkDelivered(tripsData);">Is Deliver</a>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.package_status=='delivered'">Delivered</span>
+                    </span>
+
+                    <!-----------Is delivered for offline payment mode----------------->
+                    <span class="messageaction"
+                      *ngIf="!isPayment && tripsData.type!='companion' && tripsData.payment_mode=='offline'">
+                      <a href="javascript:void(0);" class="btn btn-success tern-bold  mr-2"
+                        *ngIf="showIsDeliverButton &&  tripsData.notification_request_status=='accepted' && tripsData.payment_mode=='offline' && tripsData.package_status!='delivered'"
+                        (click)="checkDelivered(tripsData);">Is Deliver</a>
+                    </span>
+                    <!-----------Package Delivered----------------->
+                    <span class="messageaction"
+                      *ngIf="!isPayment && tripsData.type!='companion' && tripsData.package_status=='delivered'">
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.package_status=='delivered'">Delivered</span>
+                    </span>
+
+                    <span class="messageaction" *ngIf="isPayment">
+                      <a href="javascript:void(0);" class="btn btn-success tern-bold  mr-2"
+                        *ngIf="tripsData.type!='companion' && tripsData.package_status=='delivered'">Delivered</a>&nbsp;
+                      <a href="javascript:void(0);" class="btn btn-warning tern-bold  mr-2"
+                        *ngIf="tripsData.notification_request_status == 'accepted' && tripsData.type!='companion' && isValidPayment && tripsData.payment_mode=='gateway' && pageFromNotification"
+                        (click)="openConfirmPayment(tripsData, 'notificationpage')">Pay</a>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.notification_request_status == 'accepted' && tripsData.type!='companion' && tripsData.payment_mode=='offline'">Connected</span>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.notification_request_status == 'accepted' && tripsData.type =='companion'">Connected</span>
+                      <span
+                        class="alert alert-success  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                        *ngIf="tripsData.notification_request_status=='paid'">Paid</span>
+                    </span>
+                    <span class="alert alert-danger  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                      *ngIf="tripsData.notification_request_status=='rejected'">
+                      {{tripsData.requestStatus}}
+                    </span>
+                  </span>
+
+                  <!----------------------------------------->
+
+                  <!-------------------Close Button---------------------->
+                  <span *ngIf="tripsData.trip_status=='open' && tripsData.trip_status!='cancel'">
+                    <!-- <span *ngIf="!showCloseButtonEnabled && (tripsData.requestStatus=='accepted' 
+                  || tripsData.requestStatus=='paid' || tripsData.requestStatus=='delivered')">
+                      <button mat-button class="btn btn-danger tern-bold" matTooltip="Trip close"
+                        (click)="gotoTripAction(tripsData,shipment_data_lists)">
+                        Close</button>
+                    </span> 
+                   <span *ngIf="showCloseButtonEnabled && (trip_location=='incomingTrip' 
+                  || trip_location=='myTrip')">
+                      <button mat-button class="btn btn-danger tern-bold" matTooltip="Trip close"
+                        (click)="gotoTripAction(tripsData,shipment_data_lists)">
+                        Close</button>
+                    </span>
+                  -->
+                    <span *ngIf="!showCloseButtonEnabled && showCloseButton && (tripsData.requestStatus=='accepted' 
+                  || tripsData.requestStatus=='paid' || tripsData.requestStatus=='delivered')">
+                      <button mat-button class="btn btn-danger tern-bold" matTooltip="Trip close"
+                        (click)="gotoTripAction(tripsData,shipment_data_lists)">
+                        Close</button>
+                    </span>
+
+                    <span *ngIf="showCloseButtonEnabled && showCloseButton && (trip_location=='incomingTrip' 
+                  || trip_location=='myTrip')">
+                      <button mat-button class="btn btn-danger tern-bold" matTooltip="Trip close"
+                        (click)="gotoTripAction(tripsData,shipment_data_lists)">
+                        Close</button>
+                    </span>
+
+                    
+                  </span>
+                  <!----------------------------------------->
+                  <!------------------Cancel Button for ternster----------------------->
+                  <span *ngIf="tripsData.trip_status=='cancel'"
+                    class="alert alert-danger  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                    >
+                    Cancelled
+                  </span>
+                  <!----------------------------------------->
+                  <!------------------Cancel Button for requester----------------------->
+                  <span *ngIf="tripsData.notification_request_status=='withdraw' || tripsData.requestStatus=='withdraw'"
+                    class="alert alert-danger  py-1 px-2 small mb-0 tern-bold defaultcursor mr-2 text-uppercase"
+                    >
+                    Withdraw
+                  </span>
+                  <!----------------------------------------->
+
+                  <div class="d-block mt-3">
+                    <!-- <button mat-button class="btn-outline-secondary btnsm icotip ml-3" (click)="sendMsg(tripsData)"
+                      *ngIf="(tripsData.requestStatus!='pending' || tripsData.requestStatus!='disconnect' ) 
+                    && (trip_location!='myTrip' && tripsData.requestStatus!='rejected') && tripsData.requestStatus!='Send Request'"
+                      matTooltip="Send Message">
+                      <i class="far fa-envelope"></i>
+                    </button> -->
+                    <button mat-button class="btn-outline-secondary btnsm icotip ml-3" (click)="sendMsg(tripsData)"
+                      *ngIf="(tripsData.requestStatus =='paid' || tripsData.requestStatus=='delivered' ) 
+                    && (trip_location!='myTrip' && (tripsData.requestStatus =='paid' || tripsData.requestStatus=='delivered')) && tripsData.requestStatus!='Send Request'"
+                      matTooltip="Send Message">
+                      <i class="far fa-envelope"></i>
+                    </button>
+                    <span *ngIf="tripsData.trip_status!='close'">
+                      <span class="favdeactive animated fadeIn" *ngIf="tripsData.favdeactive && isButtonsEnabled">
+                        <button mat-button class="btn btn-outline-secondary btnsm icotip ml-3"
+                          (click)="onSelect('favactive',tripsData.id)" matTooltip="Favourite">
+                          <i class="far fa-heart"></i>
+                        </button>
+                      </span>
+                      <span class="favactive  animated fadeIn" *ngIf="tripsData.favactive && isButtonsEnabled ">
+                        <button mat-button class="btn  btn-danger btnsm icotip ml-3"
+                          (click)="onSelect('favdeactive',tripsData.id)" matTooltip="Favourite">
+                          <i class="fas fa-heart"></i>
+                        </button>
+                      </span>
+                    </span>
+                    <button mat-button class="btn-outline-secondary btnsm icotip ml-3" matTooltip="Share Trip">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+
+                    <span class="messageaction" *ngIf="tripsData.trip_status =='open'">
+                      {{tripsData.status}}
+                    <span *ngIf="pageFromNotification && isCancelledBtnEnabled">
+                      <a *ngIf="is_ternster" href="javascript:void(0);" class="text text-danger closttripreq"
+                        (click)="cancelTrip(tripsData , 'ternster')">Cancel Trip</a>
+                      <a *ngIf="is_requestor" href="javascript:void(0);" class="text text-danger closttripreq"
+                        (click)="cancelTrip(tripsData, 'requestor')">Cancel Request</a>
+                    </span>
+
+                    <span *ngIf="tripsData.isCancelTheTrip && !pageFromNotification">
+                      <a *ngIf="tripsData.is_ternster" href="javascript:void(0);" class="text text-danger closttripreq"
+                        (click)="cancelTrip(tripsData,'ternster')">Cancel Trip</a>
+                      <a *ngIf="tripsData.is_requestor" href="javascript:void(0);" class="text text-danger closttripreq"
+                        (click)="cancelTrip(tripsData,'requestor')"> Cancel Request</a>
+                    </span>
+
+                    <!-- <span *ngIf="tripsData.isCancelTheTrip && !pageFromNotification">
+                   <a href="javascript:void(0);"  class="text text-danger" (click)="cancelTrip(tripsData)">
+                    <span *ngIf="tripsData.is_ternster">Cancel Trip</span>
+                    <span *ngIf="tripsData.is_requestor">Cancel Request</span>
+                   </a>
+                </span>
+
+                  
+                  <span *ngIf="pageFromNotification">
+                    <a href="javascript:void(0);" class="text text-danger"
+                      *ngIf="isCancelledBtnEnabled" (click)="cancelTrip(tripsData)">
+                      <span *ngIf="is_ternster">Cancel Trip</span>
+                      <span *ngIf="is_requestor">Cancel Request</span>
+                    </a>
+                  </span> -->
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="list-debox">
+        <div class="list_details alertboxes">
+          <div
+            *ngIf="tripsData.requestStatus=='accepted' && tripsData.type!='companion' && tripsData.payment_mode=='gateway' && tripsData.trip_status=='open' && isPayment"
+            class="alert alert-warning text-center w-100" role="alert">
+            <span *ngIf="isValidPayment"> Please make payment within
+              <strong> {{_hours}} Hours {{_minutes}} Min {{_seconds}} Sec </strong> or the request will be expired!
+            </span>
+            <span *ngIf="tripsData.requestStatus=='disconnect' && !isValidPayment">Your request has expired! Please
+              send request again</span>
+          </div>
+
+          <div
+            *ngIf="tripsData.requestStatus=='accepted' && tripsData.type!='companion' && tripsData.payment_mode=='offline'"
+            class="alert alert-success text-center  w-100" role="alert">
+            <span *ngIf="isValidPayment"> Your request has
+              <strong> accepted. </strong> Please contact your ternster
+            </span>
+            <span *ngIf="tripsData.requestStatus=='disconnect' && !isValidPayment">Your request has expired! Please
+              send request again</span>
+          </div>
+
+          <div
+            *ngIf="tripsData.requestStatus=='disconnect' && tripsData.type!='companion' && tripsData.payment_mode=='gateway'"
+            class="alert alert-warning text-center  w-100" role="alert">
+            <span>Your request has expired! Please send request again</span>
+          </div>
+
+          <div
+            *ngIf="tripsData.requestStatus=='disconnect' && tripsData.type!='companion' && tripsData.payment_mode=='offline'"
+            class="alert alert-success text-center  w-100" role="alert">
+            <span>Your request has expired! Please send request again</span>
+          </div>
+
+
+          <div class="language_box" *ngIf="tripsData.language_arr.length != 0">
+            <p class="langandcase">
+              <span class="tern-bold">LANGUAGES KNOWN : </span>
+              <!-- <span *ngIf="tripsData.languages.length === 0"> </span> -->
+              <!-- <span *ngFor="let language of tripsData.languages" class="mr-2">{{language}}, </span> -->
+              <span class="mr-2">{{tripsData.languages}} </span>
+            </p>
+          </div>
+          <p class="text-justify"> {{tripsData.description}}</p>
+          <p class="perks mt-3" *ngIf="tripsData.type == 'companion'">
+            <span *ngIf="tripsData.perks_any != '0,0,0,0,0'">
+              <span class="tern-bold mr-3">PERKS : </span>
+              <span *ngFor="let perk of perks; let i = index">
+                <span *ngFor="let p of tripsData.perks_id">
+                  <span class="btn btn-outline-secondary btnsm" *ngIf="i+1==p">{{perk.name}}</span>
+                </span>
+              </span>
+            </span>
+          </p>
+
+
+          <!----- Requirement ------->
+          <div class="shipment_data_lists mt-5">
+            <div class="row ">
+              <div class="col-md-12">
+
+                <div class="fulllined" *ngIf="shipment_data_lists.length != 0">
+                  <!-- <h5><span class="tern-bold">Requirements</span></h5> -->
+                  <h5><span class="tern-bold" *ngIf="trip_type=='courier' || trip_type=='assistance'">Request Package
+                      Info</span></h5>
+                  <h5><span class="tern-bold" *ngIf="trip_type=='companion'">Trip Request Date</span></h5>
+                  <hr />
+                </div>
+                <mat-accordion *ngIf="trip_type=='courier'">
+                  <mat-expansion-panel *ngFor="let list of shipment_data_lists">
+                    <mat-expansion-panel-header class="row">
+                      <mat-panel-title class="col-md-4 m-0"><strong class="uname">{{list.user_name}}</strong>
+                      </mat-panel-title>
+                      <mat-panel-description class=" m-0">
+                        <strong class="smalltxt">{{list.package_weight}}
+                          {{tripsData.weight_unit}}</strong>
+                        <mat-panel-description class="col-md-3 justify-content-end  m-0">Status : <span class="uname">&nbsp; {{ list.package_status}}</span>
+                          <!-- <button mat-button class="btn btn-success btnsm dashbtntrip">Status : {{list.package_status}}</button> -->
+                        </mat-panel-description>
+
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="row mt-3">
+                      <div class="col-md-3 mb-3"><strong class="d-block w-100">Package Name: </strong>
+                        {{list.package_name}}
+                      </div>
+                      <div class="col-md-3 mb-3"><strong class="d-block w-100">Package Weight: </strong>
+                        {{list.package_weight}} {{list.weight_unit}}
+                      </div>
+                      <div class="col-md-3 mb-3"><strong class="d-block w-100">From Date: </strong>
+                        {{list.from_date}}
+                      </div>
+                      <div class="col-md-3 mb-3"><strong class="d-block w-100">To Date: </strong>
+                        {{list.to_date}}
+                      </div>
+                      <div class="col-md-12 mb-3"><strong class="d-block w-100">Package Description: </strong>
+                        {{list.package_description}}</div>
+
+                      <div class="col-md-12 mt-3 mb-5"><strong class="d-block w-100">Package Images: </strong>
+                        <div class="packimages">
+                          <span *ngFor="let img of list.package_images"> <img [src]="img.img" class="item_images"
+                              style="width:100px; height:100px;"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="itemboxssec" *ngFor="let item of list.item_lists; let i=index">
+                      <div class="itemboxcontent">
+                        <div class="row">
+                          <div class="col-md-2 tern-bold pt-3 mt-2">Item {{i+1}}</div>
+                          <div class="col-md-4 pt-3 mt-2">{{item.item_name}}</div>
+                          <div class="col-md-2 pt-3 mt-2">{{item.item_weight}}</div>
+                          <div class="col-md-2 pt-3 mt-2">{{item.item_value}}</div>
+                          <div class="col-md-2 text-right">
+                            <div class="itemimagesboxs">
+                              <span class="uploadimgcls">
+                                <!-- <img src="../../../assets/images/profile.webp"> -->
+                                <img [src]="item.item_images" style="width:65px; height:65px;">
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3"
+                      *ngIf="(tripsData.payment_mode=='offline' && (list.package_status=='assigned' || list.package_status=='delivered')) 
+                    || (tripsData.payment_mode=='gateway' && (list.package_status=='assigned' || list.package_status=='delivered'))">
+
+                      <h6 class="mb-3 tern-bold">Receiver Details</h6>
+                      <div class="row">
+                        <div class="col-md-4">
+                          {{list.receiver_name}}
+                        </div>
+
+                        <div class="col-md-4">
+                          {{list.receiver_contact_no}}
+                        </div>
+
+                        <div class="col-md-4">
+                          {{list.receiver_email_id}}
+                        </div>
+                      </div>
+                    </div>
+
+                  </mat-expansion-panel>
+                </mat-accordion>
+                <mat-accordion *ngIf="trip_type=='assistance'">
+                  <mat-expansion-panel *ngFor="let list of shipment_data_lists">
+                    <mat-expansion-panel-header class="row">
+                      <mat-panel-title class="col-md-4 m-0">
+
+                        <strong class="uname">{{list.user_name}}
+                          <!-- <strong>{{list.from_date}}
+                          <span>to</span> {{list.to_date}} -->
+                        </strong> </mat-panel-title>
+                      <mat-panel-description class="m-0"> <span class="smalltxt">{{list.members}} <strong>
+                            members</strong></span>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="row mt-3">
+                      <div class="row mt-3">
+                        <div class="col-md-4"><strong class="d-block w-100">From Date: </strong>
+                          {{list.from_date}}
+                        </div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">To Date: </strong>
+                          {{list.to_date}}</div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">Description: </strong>
+                          {{list.description}}
+                        </div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">Requested: </strong>
+                          {{list.requested}}
+                        </div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">Members: </strong>
+                          {{list.members}}</div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+                <mat-accordion *ngIf="trip_type=='companion'">
+                  <mat-expansion-panel *ngFor="let list of shipment_data_lists">
+                    <mat-expansion-panel-header class="row">
+                      <mat-panel-title class="col-md-4 m-0">
+
+                        <strong class="uname">{{list.user_name}}
+                          <!-- <strong>{{list.from_date}}
+                          <span>to</span> {{list.to_date}} -->
+                        </strong> </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row mt-3">
+                      <div class="row mt-3">
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">From Date: </strong>
+                          {{list.from_date}}
+                        </div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">To Date: </strong>
+                          {{list.to_date}}</div>
+                        <div class="col-md-4 mb-3"><strong class="d-block w-100">Message: </strong>
+                          {{list.description}}
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+            </div>
+          </div>
+
+          <!-------------------------->
+          <div *ngIf="isFromMyTrip || trip_location == 'notification'">
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div class="fulllined mt-5">
+                  <h5>Write a
+                    <span class="tern-bold">Comment</span>
+                  </h5>
+                </div>
+                <div class="commetinputbox text-center">
+                  <!-- <form [formGroup]="comment_form" (ngSubmit)="sendComment(comment_form, tripsData)">
+                    <mat-form-field class="example-full-width w-100">
+                      <textarea matInput placeholder="Leave a comment" id="comment_area" (keydown)="onKeydown($event, comment_form, tripsData, 'send')" rows="5"
+                        formControlName="comment_msg" [(ngModel)]="comment_msg"></textarea>
+                    </mat-form-field>
+                    <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+                    <button class="toolButtons emoji btn btn-outline-primary" (click)="toggle()"> <i
+                        class="material-icons">face</i> </button>
+                    <button class="btn btn-outline-primary" type="submit">Submit
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </form> -->
+
+                  <mat-form-field class="example-full-width w-100">
+                    <textarea matInput placeholder="Leave a comment" rows="5" (keydown)="onKeydown($event, comment_msg, tripsData, 'send')" [(ngModel)]="comment_msg"></textarea>
+                  </mat-form-field>                 
+                  <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+                  <button class="toolButtons emoji btn btn-outline-primary" (click)="toggle()"> <i
+                      class="material-icons">face</i> </button>
+                  <button class="btn btn-outline-primary" (click)="sendComment(comment_msg, tripsData)"
+                    type="submit">Submit
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+                <div class="fulllined  mt-5">
+                  <h5>
+                    <span class="tern-bold">Comments</span>
+                  </h5>
+                  <hr />
+                </div>
+                <ul class="list-unstyled" *ngIf="comments_lists.length == 0">
+                  <li class="text-center text-muted">No comments...</li>
+                </ul>
+                <ul id="comments-list" class="comments-list list-unstyled" *ngFor="let list of comments_lists">
+                  <div class="comment-main-level">
+                    <div class="comment-avatar">
+                      <img [src]="list.profile" alt="">
+                    </div>
+                    <div class="comment-box">
+                      <div class="comment-head">
+                        <h6 class="comment-name by-author">
+                          <a href="javascript:void(0)" matTooltip="View Profile"
+                            (click)="viewProfile(tripsData, 'viewtrip')">{{list.user_name}}</a>
+                        </h6>
+                        <span>{{list.time}}</span>
+                        <i class="fa fa-reply" (click)="replyComment(list)"></i>
+                        <i *ngIf="!list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 1, list)"></i>
+                        <i *ngIf="list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 0, list)"
+                          style="color: red;"></i>
+                      </div>
+                      <div class="comment-content">
+                        <pre> {{list.message}}</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="comments-list reply-list" *ngFor="let rlist of list.reply_msgs">
+                    <li>
+                      <div class="comment-avatar">
+                        <img [src]="rlist.profile" alt="">
+                      </div>
+                      <div class="comment-box">
+                        <div class="comment-head">
+                          <h6 class="comment-name by-author">
+                            <a href="javascript:void(0)" matTooltip="View Profile"
+                              (click)="viewProfile(tripsData, 'viewtrip')">{{rlist.user_name}}</a>
+                          </h6>
+                          <!-- <span>hace {{rlist.time}}</span> -->
+                          <span>{{rlist.time}}</span>
+                          <i *ngIf="!rlist.is_liked" class="fa fa-heart"
+                            (click)="clickLikeForReply(rlist.id, 1, rlist)"></i>
+                          <i *ngIf="rlist.is_liked" class="fa fa-heart" (click)="clickLikeForReply(rlist.id, 0, rlist)"
+                            style="color: red;"></i>
+                        </div>
+                        <div class="comment-content">
+                          <pre>{{rlist.message}}</pre>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="comments-list reply-list" id="reply-list-{{list.id}}" style="display: none;">
+                    <li>
+                      <div class="comment-avatar">
+                        <img [src]="reply_profile_picture" alt="">
+                      </div>
+                      <div class="comment-box">
+                        <div class="comment-content">
+                          <form [formGroup]="reply_comment_form"
+                            (ngSubmit)="sendReplyComment(reply_comment_form, list)">
+                            <mat-form-field class="example-full-width w-100">
+                              <textarea matInput placeholder="Leave a reply comment"
+                                formControlName="reply_comment_msg" (keydown)="onKeydown($event, reply_comment_form, list, 'reply')" rows="3"></textarea>
+                              <mat-error *ngIf="reply_comment_form.controls.reply_comment_msg.hasError('required')">
+                                Please give the reply...
+                              </mat-error>
+                            </mat-form-field>
+                            <button class="btn btn-outline-primary" type="submit">Submit
+                              <i class="fas fa-paper-plane"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!isFromMyTrip">
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div class="fulllined mt-5">
+                  <h5>Write a
+                    <span class="tern-bold">Comment</span>
+                  </h5>
+                </div>
+                <div class="commetinputbox text-center">
+                  <!-- <form [formGroup]="comment_form" (ngSubmit)="sendComment(comment_form, tripsData)">
+                    <mat-form-field class="example-full-width w-100">
+                      <textarea matInput placeholder="Leave a comment" rows="5"
+                        formControlName="comment_msg"></textarea>
+                    </mat-form-field>
+                    <button (click)="toggle()">
+                      <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)"></emoji-mart>🙂
+                    </button>
+
+                      <span *ngFor="let emo of emoji">
+                        <p>{{emo.selectedEmoji}}</p>
+                      </span>
+                    
+                    <ngx-emoji [emoji]="selectedEmoji" size="16"></ngx-emoji>
+                    <button class="btn btn-outline-primary" type="submit">Submit
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </form> -->
+
+                  <mat-form-field class="example-full-width w-100">
+                    <textarea matInput placeholder="Leave a comment" rows="5" (keydown)="onKeydown($event, comment_msg, tripsData, 'send')" [(ngModel)]="comment_msg"></textarea>
+                  </mat-form-field>
+
+
+
+
+                  <!--<button (click)="ngxemoji = !ngxemoji"> 
+                   <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)"></emoji-mart>
+                   <emoji-mart (emojiSelect)="addEmoji($event)"></emoji-mart>
+                   </button>
+
+                   <ngx-emoji [emoji]="selectedEmoji" size="16" *ngIf="ngxemoji"></ngx-emoji> -->
+                  <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+                  <button class="toolButtons emoji btn btn-outline-primary" (click)="toggle()"> <i
+                      class="material-icons">face</i> </button>
+                  <button class="btn btn-outline-primary" (click)="sendComment(comment_msg, tripsData)"
+                    type="submit">Submit
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+                <div class="fulllined mt-5">
+                  <h5>
+                    <span class="tern-bold">Comments</span>
+                  </h5>
+                </div>
+                <ul class="list-unstyled" *ngIf="tripsData.comments.length == 0">
+                  <li class="text-center text-muted">No comments...</li>
+                </ul>
+                <ul id="comments-list" class="comments-list list-unstyled" *ngFor="let list of tripsData.comments">
+                  <div class="comment-main-level">
+                    <div class="comment-avatar">
+                      <img [src]="list.profile" alt="">
+                    </div>
+                    <div class="comment-box">
+                      <div class="comment-head">
+                        <h6 class="comment-name by-author">
+                          <a href="javascript:void(0)" matTooltip="View Profile"
+                            (click)="viewProfile(tripsData, 'viewtrip')">{{list.user_name}}</a>
+                        </h6>
+                        <span>{{list.time}}</span>
+                        <i class="fa fa-reply" (click)="replyComment(list)"></i>
+                        <i *ngIf="!list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 1, list)"></i>
+                        <i *ngIf="list.is_liked" class="fa fa-heart" (click)="clickLike(list.id, 0, list)"
+                          style="color: red;"></i>
+                      </div>
+                      <div class="comment-content">
+                        <pre>{{list.message}}</pre>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="comments-list reply-list" *ngFor="let rlist of list.reply_msgs">
+                    <li>
+                      <div class="comment-avatar">
+                        <img [src]="rlist.profile" alt="">
+                      </div>
+                      <div class="comment-box">
+                        <div class="comment-head">
+                          <h6 class="comment-name by-author">
+                            <a href="javascript:void(0)" matTooltip="View Profile"
+                              (click)="viewProfile(tripsData, 'viewtrip')">{{rlist.user_name}}</a>
+                          </h6>
+
+                          <span>{{rlist.time}}</span>
+                          <i *ngIf="!rlist.is_liked" class="fa fa-heart"
+                            (click)="clickLikeForReply(rlist.id, 1,rlist)"></i>
+                          <i *ngIf="rlist.is_liked" class="fa fa-heart" (click)="clickLikeForReply(rlist.id, 0, rlist)"
+                            style="color: red;"></i>
+                        </div>
+                        <div class="comment-content">
+                          <pre>{{rlist.message}}</pre>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="comments-list reply-list" id="reply-list-{{list.id}}" style="display: none;">
+                    <li>
+                      <div class="comment-avatar">
+                        <img [src]="reply_profile_picture" alt="">
+                      </div>
+                      <div class="comment-box">
+                        <div class="comment-content">
+                          <!-- <form [formGroup]="reply_comment_form"
+                            (ngSubmit)="sendReplyComment(reply_comment_form, list)">
+                            <mat-form-field class="example-full-width w-100">
+                              <textarea matInput placeholder="Leave a reply comment"
+                                formControlName="reply_comment_msg"></textarea>
+                              <mat-error *ngIf="reply_comment_form.controls.reply_comment_msg.hasError('required')">
+                                Please give the reply...
+                              </mat-error>
+                            </mat-form-field>
+                            <button class="btn btn-outline-primary" type="submit">Submit
+                              <i class="fas fa-paper-plane"></i>
+                            </button>
+                          </form> -->
+                          <div class="commetinputbox text-center">
+                            <mat-form-field class="example-full-width w-100">
+                              <textarea matInput placeholder="Leave a comment" rows="5"
+                                [(ngModel)]="reply_comment_msg" (keydown)="onKeydown($event, reply_comment_msg, list, 'reply')"></textarea>
+                            </mat-form-field>
+                            <emoji-mart *ngIf="show_dialog1" (emojiSelect)="addEmoji1($event)" class="emojimart">
+                            </emoji-mart>
+                            <button class="toolButtons emoji btn btn-outline-primary" (click)="showEmoji()"> <i
+                                class="material-icons">face</i> </button>
+                            <button class="btn btn-outline-primary" (click)="sendReplyComment(reply_comment_msg, list)"
+                              type="submit">Submit
+                              <i class="fas fa-paper-plane"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

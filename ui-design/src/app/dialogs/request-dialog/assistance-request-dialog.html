@@ -1,0 +1,58 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">Create Assistance Info
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+
+<form [formGroup]="data" #formDirective="ngForm" (ngSubmit)="onSubmitAssistant(data, formDirective)">
+<mat-dialog-content class="mat-typography" >
+  <div class="row request_dialog">
+    <div class="plannedsec w-100 ">
+      <div class="row">
+        <!-- <div class="col-md-4 mb-3">
+          <mat-form-field>
+            <input matInput [min]="current_date" [max]="data.controls.to_date.value" [matDatepicker]="fromdate" placeholder="From" 
+              formControlName="from_date" required="" readonly="" (click)="fromdate.open()">
+            <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+            <mat-datepicker #fromdate></mat-datepicker>
+            <mat-error *ngIf="data.controls.from_date.errors?.required">Select From Date</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 mb-3">
+          <mat-form-field>
+            <input matInput [min]="data.controls.from_date.value" [matDatepicker]="todate" placeholder="To" 
+              formControlName="to_date" required="" readonly="" (click)="todate.open()">
+            <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+            <mat-datepicker #todate></mat-datepicker>
+            <mat-error *ngIf="data.controls.to_date.errors?.required">Select To Date</mat-error>
+          </mat-form-field>
+        </div> -->
+    <div class="col-md-12">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Number of members" formControlName="members" value="" required="">
+      </mat-form-field>
+    </div>
+        
+    <div class="col-md-12">
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Assistance Requested For" formControlName="requested" value="" required=""></textarea>
+      </mat-form-field>
+    </div>
+    
+    <div class="col-md-12">
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Assistance Description" formControlName="description" value="" required=""></textarea>
+      </mat-form-field>
+    </div>
+      </div>
+    </div>
+      
+  </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="select_exchanges m-0" align="center">
+  	 <button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>CLOSE</button>
+      <button mat-button type="submit" class="btn-save btn btn-primary">SUBMIT</button>
+  </mat-dialog-actions>
+  
+</form>

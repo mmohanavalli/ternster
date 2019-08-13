@@ -1,0 +1,86 @@
+.mainApp-chat{ border-collapse:collapse; padding: 0px 15px; }
+.searchchat {    padding: 10px 15px 0px 15px;    border-bottom: 1px solid #ddd;    margin-bottom: 0px;    float: left;    background: #fff; box-shadow: 0px 2px 5px rgba(0,0,0,0.1); height: 70px;}
+.select-chat{ width:100% !important; margin-top: 18%; text-align: center;}
+.leftPanel {position: relative;display: inline-block;left: 0px;width: 100%;height: 60vh;float: left;background: #FFF;border: 1px solid #DDD;overflow:hidden;}
+header {width: 100%;height: 70px;background: #FFF;}
+.trigger {float: left;width: 32px;height: 32px;margin: 20px 15px;margin-bottom: 0px;color: #BBB;cursor: pointer;opacity: 0.6;background: none;}
+.trigger:hover {opacity: 1;}
+.trigger > svg {width: 24px;height: 24px;fill: #888;}
+.searchChats {width: calc(100% - 85px);height: 40px;background: #EEE;float: left;padding: 8px;margin-top: 14px;border: none;border-radius: 4px;font-size: 14px;font-weight: 600;}
+.searchChats:focus {color: #444;border: 2px solid #419fd9;background: rgb(243, 243, 243);}
+.chats {width: 100%;height: calc(60vh - 70px);float: left;overflow-x: hidden;overflow-y: auto;}
+.chatButton {float: left;width: 100%;min-height: 80px;background: #FFF;color: #555;cursor: pointer;overflow: hidden;transition:all ease 0.75s;position:relative}
+.chatButton .proinfo {    position: absolute;    padding: 5px 0px;    top: 0px;    right: 0px;    background: #f9f9f7;    border-radius: 0;    z-index: 1;    box-shadow: 0px 0px 5px rgba(0,0,0,0.2);    width: 0px;    height: 100%; opacity:0px; overflow:hidden; transition:all linear 0.5s; box-sizing:border-box; text-align:center; }
+.chatButton:hover .proinfo { width:50px; padding: 5px;}
+.chatButton .proinfo a{ margin:0px 5px;}
+.chatButton .proinfo i{ font-size:20px; line-height: 30px;}
+.chatButton:hover{background:#eee;}
+.chatButton.active {color: #000;background: #DEF6FF;}
+.chatInfo {float: left;position:relative;}
+.chatInfo p {float: left;}
+.chatInfo .image {position: absolute;width: 50px;height: 50px;background-color: #DDD;background-size: cover;border-radius: 100%;margin: 13px 13px;}
+.chatInfo .name {margin-bottom:0px;float: left;font-weight: 600;margin-left: 80px;margin-top: 18px;letter-spacing: 1px;}
+.chatInfo .message {float: left;clear: left;margin-left: 80px;margin-top: 7px;}
+.status {width: 60px;height: 100%;position: relative;float: right;}
+.status .fixed {position: absolute;right: 10px;bottom: 10px;display: none;}
+div[class~="normal"] > .fixed {display: none;}
+div[class~="normal"] > .count {right: 10px;bottom: 7px;}
+div[class~="onTop"] > .fixed {display: block;width: 24px;height: 24px;fill: #FFF;}
+div[class~="onTop"] > .count {right: 49px;bottom: 7px;background: #FFF;color: #419fd9;}
+.status .count {    position: absolute;    right: 49px;    bottom: 7px;    width: auto;    height: auto;    padding: 0px 8px;    border-radius: 20px;    color: #fff;    background: rgb(70, 201, 252);    font-size: 12px;}
+.status .date {position: absolute;right: 12px;top: 12px;font-size: 12px;}
+.counttxt {    position: absolute;    right: 12px;    top: 12px;    font-size: 10px;    background: #45cafc;    color: #fff;    font-weight: bold;    border-radius: 30px;    padding: 2px 5px;    line-height: normal;}
+.status .read {	position: absolute;	right: 53px;	top: 6px;}
+.rightPanel {float: left;width: calc(100% - 321px);height: 60vh;background: #999;overflow:hidden;}
+.rightPanel .topBar {    position: relative;    width: 100%;    height: auto;    background: #FFF;    border: 1px solid #eee;    padding: 10px 10px;    box-sizing: border-box;    float: left; height: 70px;  box-shadow: 0px 2px 5px rgba(0,0,0,0.1); z-index: 1;  padding: 0px 10px;}
+.leftSide {display: inline-block;clear: none;float: left;width:100%;}
+.leftSide .chatName {margin-left: 0px;margin-top: 5px;color: #444;font-weight: 600;cursor: default;margin-bottom:0px;line-height: 28px;font-size:13px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.chatName > span {font-size: 12px;font-weight: 500;color: #BBB;margin-left: 10px;}
+.leftSide .chatStatus {   margin-left: 0px;    margin-top: 20px;    font-weight: 300;    cursor: default;    margin-bottom: 0px;}
+.rightSide {display: inline-block;clear: none;float: right;margin-right: 20px;}
+.tbButton, .otherTools .toolButtons {    width: 30px;    height: 30px;    margin-top: 10px;    background: #FFF;    color: #888;    border-radius: 100%;    display: inline-block;    position: relative;    top: 5px;    text-align: center;    padding: 0px;    line-height: 38px;    margin-right: 20px;}
+.otherTools .toolButtons i{ font-size:20px;}
+.tbButton:hover, .otherTools .toolButtons:hover {color: #555;background: #DDD;}
+.convHistory {float: left;position: relative;width: 100%;height: calc(60vh - 140px);background: #333;overflow-x: hidden;overflow-y: auto;}
+.userBg {background: #f9f9f7;}
+.msg {position: relative;width: auto;min-width: 200px;height: auto;padding: 10px;padding-bottom:35px;margin: 20px 15px;margin-bottom: 0px;background: #FFF;border-radius: 7px;clear: both;}
+.msg:nth-last-child(1) {margin-bottom: 20px;}
+.msg .timestamp {font-size: 11px;display: block;position: absolute;right: 10px;bottom: 6px;color: #AAA;user-select: none;}
+.messageReceived {float: left;background: #FFF;box-shadow: 0px 1px 3px rgba(0,0,0,0.2);}
+.messageSent {color:#fff;float: right;background: #46c9fc;box-shadow: 0px 1px 3px rgba(0,0,0,0.2);}
+.messageSent > .timestamp, .messageSent > .readStatus {bottom: 0px;right: 0px;color: #006890;user-select: none;width: 100%;padding: 5px 10px;}
+.messageSent > .readStatus {position: absolute;bottom: 10px;right: 12px;}
+.replyBar {width: 100%;height: 70px;float: left;background: #fff;border: 1px solid #eee;}
+.replyBar .attach {width: 70px;height: 70px;color: #777;background: #FFF;float: left;}
+.replyBar .attach:hover {color: #555;background: #DDD;}
+.replyBar .d45 {transform: rotate(45deg);font-size: 32px;}
+.replyBar .replyMessage {width: calc(100% - 140px);float: left;height: 70px;padding: 0px 8px;font-size: 16px;}
+.replyBar .otherTools {float: right;width: 140px;height: 70px;position: relative;}
+.emojimart{ position:absolute; right:0px; bottom:65px; z-index: 1;}
+.emoji-mart-bar:last-child{display: none;}
+.emojiBar {display: none;position: absolute;width: 325px;height: 200px;padding: 10px;right: 30px;bottom: 80px;border: 2px solid #DDD;border-radius: 3px;background: #FFF;}
+.emoticonType {width: 100%;height: 50px;}
+.emoticonType button {width: 105px;height: 36px;font-weight: 600;color: #555;background: none;}
+.emoticonType button:hover {color: #FFF;background: #419fd9;}
+.emojiList, .stickerList {width: 100%;height: 150px;overflow-x: hidden;overflow-y: auto;}
+.emojiList .pick {width: 50px;height: 50px;background: transparent;background-repeat: no-repeat;background-position: center;background-size: 70%;transition: all 0.15s ease-in-out;}
+.emojiList .pick:hover {background: #DDD;background-repeat: no-repeat;background-position: center;background-size: 70%;}
+.stickerList .pick {width: 80px;height: 80px;background: transparent;background-repeat: no-repeat;background-position: center;background-size: 65%;transition: all 0.15s ease-in-out;}
+.stickerList .pick:hover {background: #DDD;background-repeat: no-repeat;background-position: center;background-size: 65%;}
+.stickerList {display: none;}
+#smileface {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/grinning-face_1f600.webp);}
+#grinningface {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/grinning-face-with-smiling-eyes_1f601.webp);}
+#tearjoyface {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/face-with-tears-of-joy_1f602.webp);}
+#rofl {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/rolling-on-the-floor-laughing_1f923.webp);}
+#somface {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/smiling-face-with-open-mouth_1f603.webp);}
+#swfface {background-image: url(https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/smiling-face-with-open-mouth-and-smiling-eyes_1f604.webp);}
+.recivedname, .sentername{ font-size:14px; margin-bottom:10px; display:block; padding:0px 10px;}
+.recivedname{border-left:5px solid #555; color:#000; font-family: 'proxima_novaextrabold';}
+.sentername{border-left:5px solid #fff; color:#fff; font-family: 'proxima_novaextrabold';}
+.close-btn {background: none; border: none; color: #7b7878; font-size: 1rem;}
+.trip-description, .notify-content {display: block; display: -webkit-box; max-width: 100%; margin: 0 auto; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;}
+.contactlistarea {   min-height: 100%;}
+.contactlistarea .select-chat{ margin-top:35%;}
+.emoji-mart-category-label span{ font-size:14px; font-family: 'proxima_novaextrabold'}
+.emoji-mart-anchor-selected .emoji-mart-anchor-bar { background-color: #46c9fc !important;}
+.emoji-mart-anchor:hover, .emoji-mart-anchor-selected {    color: #61d2fe !important;}

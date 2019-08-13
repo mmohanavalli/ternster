@@ -1,0 +1,203 @@
+<!-- <div class="tern-loader" style="display:block;" *ngIf="isMainLoading">
+  <div class="imgcls"><img src="../../assets/images/loader.gif"/>LOADING...</div>
+</div> -->
+<!-- <app-profileheader></app-profileheader> -->
+
+<div class="content-sec pt-5 postatrip">
+  <div class="container  mt-5">
+    <div class="frmcustom  animated fadeInUp">
+      <div class="row">
+        <div class="col-md-10 offset-md-1">
+          <div class="tern-loader-blur" style="display:block;" *ngIf="isLoading">
+            <div class="imgcls"><img src="../../assets/images/loader.gif" /></div>
+          </div>
+          <div class="tern-title">
+            <h1>Post <span>Trip</span> <span class="bluecirc"></span></h1>
+          </div>
+          <form [formGroup]="form" (ngSubmit)="createTrip()">
+            <mat-radio-group aria-label="Select an option" class="radiocustom modes" value="6" formControlName="mode">
+              <mat-radio-button value="1" *ngIf="othermodes"><img src="../../../assets/images/bike.webp" /> Bike
+              </mat-radio-button>
+              <mat-radio-button value="2" *ngIf="othermodes"><img src="../../../assets/images/motor-bike.webp" /> Motor
+                Bike</mat-radio-button>
+              <mat-radio-button value="3"><img src="../../../assets/images/car.webp" /> Car</mat-radio-button>
+              <mat-radio-button value="5"><img src="../../../assets/images/train.webp" /> Train</mat-radio-button>
+              <mat-radio-button value="6" [checked]="true"><img src="../../../assets/images/flight.webp" /> Flight
+              </mat-radio-button>
+              <mat-radio-button value="8" *ngIf="!othermodes" (click)="showother(true)"><img
+                  src="../../../assets/images/arrow-right-circle.webp" /> Other Modes</mat-radio-button>
+              <mat-radio-button value="4" *ngIf="othermodes"><img src="../../../assets/images/bus.webp" /> Bus
+              </mat-radio-button>
+              <mat-radio-button value="7" *ngIf="othermodes"><img src="../../../assets/images/cruise.webp" /> Cruise
+              </mat-radio-button>
+            </mat-radio-group>
+            <div class="row mt-3 patfrm">
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label><img src="./assets/images/departure.webp" class="mr-1" width="25" /> Departure </mat-label>
+                  <input formControlName="departure" type="text" aria-label="Number" matInput [matAutocomplete]="auto1">
+                  <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete">
+                    <mat-option *ngFor="let option of departureFilteredOptions"
+                      [value]="option.full_name_nd+', '+option.country_name"> {{option.full_name_nd}},
+                      {{option.country_name}} </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field>
+                  <mat-label><img src="./assets/images/destination.webp" class="mr-1" width="25" /> Destination
+                  </mat-label>
+                  <input formControlName="destination" type="text" aria-label="Number" matInput
+                    [matAutocomplete]="auto2">
+                  <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
+                    <mat-option *ngFor="let option of destinationFilteredOptions"
+                      [value]="option.full_name_nd+', '+option.country_name"> {{option.full_name_nd}},
+                      {{option.country_name}} </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Give a Trip Title" value="" formControlName="trip_name">
+                  <mat-error *ngIf="form.controls.trip_name.errors?.required">Enter Trip Name</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-5 mb-3 mt-3"> <span class="tern-bold mr-1"><img
+                    src="../../../assets/images/calendar.webp" width="25" class="float-left mr-2 mt-1" /> My Trip
+                </span>
+                <mat-radio-group aria-label="Select an option" class="radiocustom plancustom" value="unplanned"
+                  formControlName="trip_plan">
+                  <mat-radio-button (click)="onSelect('planned')" value="planned">Planned</mat-radio-button>
+                  <mat-radio-button (click)="onSelect('unplanned')" value="unplanned" [checked]="true">Unplanned
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-md-7 mt-3">
+                <div *ngIf="unplanned" class="unplannedsec w-100 mb-3">
+                  <div class="row">
+                    <div class="col-md-12"> <span class="tern-bold mr-1"> I Am Travelling In </span>
+                      <mat-radio-group aria-label="Select an option" class="radiocustom plancustom" value="30"
+                        formControlName="unplanned_days" (change)="selectPlanOption()">
+                        <mat-radio-button value="7">1 Week</mat-radio-button>
+                        <mat-radio-button value="30">30 Days</mat-radio-button>
+                        <mat-radio-button value="custom">Custom</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="planned" class="plannedsec w-100 mb-3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input matInput readonly [min]="next_date" [matDatepicker]="fromdate" placeholder="From"
+                          formControlName="from_date" (click)="fromdate.open()">
+                        <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromdate></mat-datepicker>
+                        <mat-error *ngIf="form.controls.from_date.errors?.required">Select From Date</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field>
+                        <input matInput readonly [min]="form.controls.from_date.value" [matDatepicker]="todate"
+                          placeholder="To" formControlName="to_date" (click)="todate.open()">
+                        <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                        <mat-datepicker #todate></mat-datepicker>
+                        <mat-error *ngIf="form.controls.to_date.errors?.required">Select To Date</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <span class="tern-bold mb-2 d-block">I Can Act As </span>
+
+                <div class="row">
+                  <div class="col-md-6">
+
+                    <div class="{{is_courier_service  ? 'icanactasboxs active' : 'icanactasboxs'}}">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <mat-checkbox class="mt-0 mb-3" formControlName="is_courier"
+                            (change)="changeCourierEvent($event)">Courier </mat-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field>
+                            <mat-label>Base currency</mat-label>
+                            <input matInput [(ngModel)]="base_currency_code" readonly formControlName="currency_code">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field (click)="selectCourierWarn()">
+                            <mat-select formControlName="weight_unit" (selectionChange)="selectWeightUnit($event)"
+                              [(ngModel)]="weightUnit">
+                              <mat-option value="kg" selected>Kilogram</mat-option>
+                              <mat-option value="lb">Pound</mat-option>
+                              <mat-option value="oz">Ounce</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field class="example-margin" (click)="selectCourierWarn()">
+                            <mat-icon matPrefix> {{base_currency_symbol}} &nbsp;</mat-icon>
+                            <input matInput [(ngModel)]="courier_BudgetMinVal" formControlName="courier_budget" required
+                              placeholder="Per {{weightUnit}}" [readonly]="!is_courier_service">
+                            <mat-error *ngIf="form.controls.courier_budget.errors">Numbers only</mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Weight I Carry" [(ngModel)]="courier_weight" name="weight"
+                              formControlName="weight" [readonly]="!is_courier_service">
+                            <mat-icon matSuffix>{{weightUnit}}</mat-icon>
+                            <mat-error *ngIf="form.controls.weight.errors">Numbers only</mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="{{is_assistance_service  ? 'icanactasboxs active' : 'icanactasboxs'}}">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <mat-checkbox class="mt-0 mb-3" formControlName="is_assistance"
+                            (change)="changeAssistanceEvent($event)">Assistance </mat-checkbox>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field>
+                            <mat-label>Base currency</mat-label>
+                            <input matInput [(ngModel)]="base_currency_code" readonly formControlName="currency_code">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                          <mat-form-field class="example-margin" (click)="selectAssistanceWarn()">
+                            <mat-icon matPrefix> {{base_currency_symbol}} &nbsp;</mat-icon>
+                            <input matInput [(ngModel)]="assistance_BudgetMinVal" formControlName="assistance_budget"
+                              required="" placeholder="Charges" [readonly]="!is_assistance_service">
+                            <mat-error *ngIf="form.controls.assistance_budget.errors">Numbers only</mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width txtarea">
+                      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 text-center mt-5 mb-5">
+                <button mat-button type="submit" class="btn btn-primary">Create Trip</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

@@ -1,0 +1,85 @@
+<app-profileheader></app-profileheader>
+
+<div class="content-sec profile-boxsec">
+  <div class="container">
+    <div class="profile-tab">
+      <div class="tern-title prosettings">
+        <h4 [class]="profile ? 'active' : ''"  routerLink="/accounts/profile"><img
+            src="../../../assets/images/profile-icon.webp" class="proicons" /> <span class="protitcon">Profile</span>
+          <span class="bluecirc"></span></h4>
+        <h4 [class]="settings ? 'active' : ''" routerLinkActive routerLink="/accounts/settings" id="Settings"><img
+            src="../../../assets/images/profile-settings.webp" class="proicons" /> <span
+            class="protitcon">Settings</span> <span class="bluecirc"></span></h4>
+
+        <h4 [class]="wallet ? 'active' : ''"  routerLink="/accounts/wallet" id="Wallet"><img
+            src="../../../assets/images/wallet-mob.webp" class="proicons" /> <span class="protitcon">Wallet</span> <span
+            class="bluecirc"></span></h4>
+
+
+        <h4 [class]="messages ? 'active' : ''"  routerLink="/accounts/messages" id="Messages"><img
+            src="../../../assets/images/profile-message.webp" class="proicons" /> <span class="protitcon">Messages</span>
+          <span class="bluecirc"></span></h4>
+        <h4 [class]="change_pwd ? 'active' : ''"  routerLink="/accounts/changepassword" id="changepassword"><img
+            src="../../../assets/images/change-password.webp" class="proicons" /> <span class="protitcon">Change
+            Password</span> <span class="bluecirc"></span></h4>
+      </div>
+    </div>
+    <div class="settings-content animated fadeIn mb-5 pb-5" id="settings">
+      <div class="text-center grayscale" *ngIf="isLoading"><svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg>
+      </div>
+      <div *ngIf="!isLoading">
+        <div class="row">
+          <div class="col-md-4 offset-md-2">
+            <div class="fulllined  mt-5">
+              <h5>Profile <span class="tern-bold">Settings</span> </h5>
+              <hr />
+            </div>
+            <div class="checkbocgrop" *ngFor="let list of profile_settings">
+              <mat-checkbox (change)="updateSettings($event, list)" [value]="list.name"
+                [checked]="list.id === selectedProfileId">{{list.name}}</mat-checkbox>
+              <br>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fulllined  mt-5">
+              <h5>Notification <span class="tern-bold">Settings</span></h5>
+              <hr />
+            </div>
+            <div class="checkbocgrop">
+              <div class="w-100">
+                <mat-checkbox [(ngModel)]="on_new_request" (change)="updateSettings($event , '')">On New Requests
+                </mat-checkbox>
+              </div>
+              <div class="w-100">
+                <mat-checkbox [(ngModel)]="on_new_messages" (change)="updateSettings($event , '')">On New Messages
+                </mat-checkbox>
+              </div>
+              <div class="w-100">
+                <mat-checkbox [(ngModel)]="on_new_comments" (change)="updateSettings($event , '')">On New Comments
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-12 text-right mt-5 mb-5">
+            <button mat-button class="btn btn-primary" style="float :left">Update</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

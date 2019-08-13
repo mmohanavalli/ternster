@@ -1,0 +1,294 @@
+<div id="carouselExampleIndicators" class="carousel slide ternslide" data-ride="carousel" *ngIf="!isLoggedIn">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">Courier</li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1">Assistance</li>
+    <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2">Companion</li> -->
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row">
+            <div class="col-md-6">
+              <h1>get Connected to<span>Courier</span></h1>
+              <img src="../../assets/images/courier_slider.webp" class="d-block w-100" alt="..."> 
+            </div>
+            <div class="col-md-6">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <!-- <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary" (click)="scrollToElement(target,false)">POST</a></div> -->
+                  <div class="slidebtn"><a class="loginpg btn btn-primary tern-bold" (click)="scrollToElement(false)" href="javascript:void(0);">POST</a></div>
+
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <!-- <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary" (click)="scrollToElement(target,false)">FIND</a></div> -->
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" (click)="scrollToElement(false)" href="javascript:void(0);">FIND</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row mobordcon">
+            <div class="col-md-6 mobordfir">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" (click)="scrollToElement(false)"  href="javascript:void(0);">POST</a></div>
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" (click)="scrollToElement(false)"  href="javascript:void(0);">FIND</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6  mobordsec">
+              <h1>Find a Trusted<span>Travel Assistance</span></h1>
+              <img src="../../assets/images/travel-assistance-slide.webp" class="d-block w-100" alt="...">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="carousel-item">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row">
+            <div class="col-md-6">
+              <h1>Discover your<span>Travel Companion</span></h1>
+              <img src="../../assets/images/travel-companion-slider.webp" class="d-block w-100" alt="...">
+            </div>
+            <div class="col-md-6">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" (click)="scrollToElement(false)"  href="javascript:void(0);">POST</a></div>
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a class="loginpg btn btn-primary tern-bold" (click)="scrollToElement(false)"  href="javascript:void(0);">FIND</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <i class="material-icons">keyboard_arrow_left</i> <span class="sr-only">Previous</span> </a> <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"> <i class="material-icons">keyboard_arrow_right</i> <span class="sr-only">Next</span> </a> 
+</div>
+
+
+<div id="carouselExampleIndicators" class="carousel slide ternslide" data-ride="carousel" *ngIf="isLoggedIn">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">Courier</li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1">Assistance</li>
+    <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2">Companion</li> -->
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row">
+            <div class="col-md-6">
+              <h1>get Connected to<span>Courier</span></h1>
+              <img src="../../assets/images/courier_slider.webp" class="d-block w-100" alt="..."> 
+            </div>
+            <div class="col-md-6">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <!-- <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary" (click)="scrollToElement(target,false)">POST</a></div> -->
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" routerLink="/createtrip">POST</a></div>
+
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <!-- <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary" (click)="scrollToElement(target,false)">FIND</a></div> -->
+                  <div class="slidebtn"><a class="loginpg btn btn-primary  tern-bold" routerLink="/findatrips">FIND</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row mobordcon">
+            <div class="col-md-6 mobordfir">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary  tern-bold" routerLink="/createtrip">POST</a></div>
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary  tern-bold" routerLink="/findatrips">FIND</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6  mobordsec">
+              <h1>Find a Trusted<span>Travel Assistance</span></h1>
+              <img src="../../assets/images/travel-assistance-slide.webp" class="d-block w-100" alt="...">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="carousel-item">
+      <div class="container-fluid">
+        <div class="terninslide">
+          <div class="row">
+            <div class="col-md-6">
+              <h1>Discover your<span>Travel Companion</span></h1>
+              <img src="../../assets/images/travel-companion-slider.webp" class="d-block w-100" alt="...">
+            </div>
+            <div class="col-md-6">
+              <div class="slideicons">
+                <h3>I am a <span>Ternster</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-search.webp" /> Post A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Receive Requests</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary  tern-bold" routerLink="/createtrip">POST</a></div>
+                </div>
+              </div>
+              <div class="slideicons">
+                <h3>I am a <span>Requestor</span></h3>
+                <div class="icons"> <span><img src="../../assets/images/t-create-trip.webp" /> Find A Trip</span> <span><img src="../../assets/images/t-send-request.webp" /> Share your Requirements</span> <span><img src="../../assets/images/t-get-connect.webp" /> Get Connected</span>
+                  <div class="slidebtn"><a href="javascript:void(0)" class="loginpg btn btn-primary  tern-bold" routerLink="/findatrips">FIND</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <i class="material-icons">keyboard_arrow_left</i> <span class="sr-only">Previous</span> </a> <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"> <i class="material-icons">keyboard_arrow_right</i> <span class="sr-only">Next</span> </a> 
+</div>
+
+<div class="tern-loader-blur" style="display:block;" *ngIf="isLoading">
+    <div class="imgcls"><img src="../../assets/images/loader.gif" /></div>
+</div>
+  
+<div #target class="signandlogin" *ngIf="!isLoggedIn">
+  <div class="login_sec animated fadeIn" *ngIf="isSignuppage == false" id="login_login_sec" >
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="login_img"> <img src="../../assets/images/login_img.webp" class="d-block" alt="..." /> </div>
+        </div>
+        <div class="col-md-3">
+          <div class="loginfrm">
+            <h3 class="mb-5 text-uppercase">Login</h3>          
+
+            <form class="login-form" [formGroup]="_loginForm" (ngSubmit)="login(_loginForm)">
+              <mat-form-field>
+                <input matInput formControlName="useremail" type="email" placeholder="Email" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
+                <mat-error *ngIf="_loginForm.controls.useremail.hasError('required')">
+                 Email is
+                 <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type='password' formControlName="password" placeholder="Password" required="">
+                <mat-error *ngIf="_loginForm.controls.password.hasError('required')">
+                  Password is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <div class="form-footer mb-3 mt-3"> 
+                <a class="forgotpass small" style="cursor: pointer;" (click)="openAddressDialog()">Forgot Password?</a>
+                <div class="float-right">
+                  <button mat-button type="submit" color="primary" class="tern-bold">LOGIN</button>
+                </div>
+              </div>
+            </form>
+
+            <div class="mt-5 mb-5 mx-5 orclsmrg"> <span class="orcls">or</span>
+              <hr class="frmhr" />
+            </div>
+            <div class="sociallogin mx-5">
+              <button mat-button color="primary" (click)="scrollToElement(true)">Create a ternster account <i class="far fa-plus-square"></i></button>
+              <button mat-button color="primary" class="fbclr" (click)="socialSignIn('facebook')">Log in with facebook <i class="fab fa-facebook-square"></i></button>
+              <button mat-button color="primary" class="gmailclr" (click)="socialSignIn('google')">Log in with Gmail <i class="far fa-envelope"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login_sec animated fadeIn" *ngIf="isSignuppage == true" id="login_login_sec" >
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="login_img"> <img src="../../assets/images/login_img.webp" class="d-block" alt="..." /> </div>
+        </div>
+        <div class="col-md-3">
+          <div class="loginfrm">
+            <h3 class="mb-5 text-uppercase">Signup</h3>
+            <form class="register-form" [formGroup]="_registerForm" (ngSubmit)="onSubmitRegisterForm(_registerForm)">
+              <mat-form-field>
+               <!-- <input matInput type="text" placeholder="Email id" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  formControlName="email" required="">
+                 <mat-error *ngIf="(!_registerForm.controls.email.hasError('required')) && (_registerForm.controls.email.hasError('pattern'))"> 
+                Please enter a valid email address </mat-error> -->
+                <input matInput type="text" placeholder="Email id" formControlName="email" required="">
+                <mat-error *ngIf="_registerForm.controls.email.hasError('required')"> Email is <strong>required</strong> </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="text" placeholder="User name" formControlName="name" required="">
+                <mat-error *ngIf="_registerForm.controls.name.hasError('required')"> Name is <strong>required</strong> </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="password" placeholder="Password" formControlName="password" required="">
+                <mat-error *ngIf="_registerForm.controls.password.hasError('required')">
+                  Password is <strong>required</strong> </mat-error>
+                  <mat-error *ngIf="_registerForm.hasError('minlength',['password'])"> Password must be at least 6
+                    characters long. </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="password" placeholder="Confirm Password" formControlName="confirmpassword" required="" validateEqual="password" appBlockCopyPaste>
+                <mat-error *ngIf="_registerForm.controls.confirmpassword.hasError('required')"> Confirm password is <strong>required</strong> </mat-error>
+                <mat-error *ngIf="_registerForm.hasError('minlength',['confirmpassword'])">Confirm Password must be at
+                  least 6 characters long. </mat-error>
+                <mat-hint *ngIf="invalidpassword" style="color: red;" class="mat-error ng-star-inserted"> Confirm Password <strong>does not match</strong></mat-hint>
+              </mat-form-field>
+              <div class="form-footer mb-3 mt-3">
+                <div class="text-right">
+                  <button mat-button type="submit" color="primary" class=" tern-bold">SIGNUP</button>
+                </div>
+                
+              </div>
+            </form>
+            <div class="mt-5 mb-5  mx-5 orclsmrg"> <span class="orcls">or</span>
+              <hr class="frmhr" />
+            </div>
+            <div class="sociallogin  mx-5">
+              <!-- <button mat-button color="primary" (click)="scrollToElement(target,false)">Aleady have a account <i class="far fa-user"></i></button> -->
+              <button mat-button color="primary" (click)="scrollToElement(false)">Aleady have a account <i class="far fa-user"></i></button>
+              <button mat-button color="primary" class="fbclr" (click)="socialSignIn('facebook')">Log in with facebook <i class="fab fa-facebook-square"></i></button>
+              <button mat-button color="primary" class="gmailclr" (click)="socialSignIn('google')">Log in with Gmail <i class="far fa-envelope"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

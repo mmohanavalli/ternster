@@ -1,0 +1,64 @@
+<div class="tern-loader" style="display:block;" *ngIf="isMainLoading">
+  <div class="imgcls"><img src="../../assets/images/loader.gif" />LOADING...</div>
+</div>
+<div class="content-sec feedbacksec">
+  <div class="container">
+    <div class="feedfrmbox ">
+      <div class="row msp-bg">
+        
+        <div class="col-md-6 frmcls offset-md-3">
+        
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+        
+        
+         <h3 *ngIf="end_trip_date" class="tern-bold text-center mb-3">Your trip has been successfully ended {{allTrips.close_date}} days before.</h3>
+         <h3 *ngIf="!end_trip_date" class="tern-bold text-center mb-3">Trip is not complete , you can't able to close the trip now.</h3>
+
+          <div class="list_details py-4">
+            <h5 class="tern-bold text-uppercase mb-1">{{allTrips.departure}} <span  class="smalltxt totxt">to</span> {{allTrips.destination}}</h5>
+            <h5 class="tern-bold text-uppercase mb-0">{{allTrips.start_date}}<span  class="smalltxt">th</span> {{allTrips.start_month}} <span  class="smalltxt totxt">to</span> {{allTrips.end_date}}<span  class="smalltxt">th</span> {{allTrips.end_month}}</h5>
+          </div>   
+        </div>
+      </div>
+
+      <!-- <table *ngIf="completed_trip.length > 0">
+        <tbody>
+          <th class="col-md-1">Id</th>
+          <th class="col-md-1">Trip_Id</th>
+          <th class="col-md-2">Trip Name</th>
+          <th class="col-md-2">From_Date</th>
+          <th class="col-md-2">To_Date</th>
+          <th class="col-md-2">Status</th>
+          <tr *ngFor="let completed of completed_trip">
+              <td>1</td>
+              <td>{{completed.id}}</td>
+              <td>{{completed.trip_name}}</td>
+              <td>{{completed.from_date}}</td>
+              <td>{{completed.to_date}}</td>
+              <td>{{completed.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button *ngIf="completed_trip.length > 0" (click)="closeCompletedTrips(completed_trip)" mat-button class="btn btn-success">Close All Trips</button> -->
+      
+      <div class="row">
+      <div class="col-md-12 gray">
+        	
+          <!-- <div  class="text-center" *ngIf="end_trip_date"> -->
+              <div  class="text-center" *ngIf="end_trip_date">          
+        	 <h5 class="tern-bold mb-4">Do you continue or close the trip?</h5>
+             <button mat-button (click)="closeTrip(allTrips.from_user_id, allTrips.to_user_id)" class="btn btn-danger mr-3">Close</button> 
+             <button (click)="gotoContinue()" mat-button class="btn btn-success">Continue</button>
+          </div>
+
+          <div  class="text-center" *ngIf="!end_trip_date">          
+              <button (click)="tripActionContinue()" mat-button class="btn btn-success">Continue</button>
+           </div>
+        
+          </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

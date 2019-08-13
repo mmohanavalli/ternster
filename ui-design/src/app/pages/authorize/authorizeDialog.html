@@ -1,0 +1,43 @@
+<div class="container">
+<h4 class="text-center text-uppercase mb-3">
+Your Email Id has been <span class="tern-bold">verified</span><br />
+Please Enter Your <span class="tern-bold">Mobile Number</span> </h4>
+
+<div class="text-center">
+  <img src="../../../assets/images/one-time-password-filled.webp" width="125"  class="mb-5" />
+    
+  <form class="verification-form" [formGroup]="data" #formDirective="ngForm" (ngSubmit)="verifyMobile(data)">
+  <div class="popfrm pl-3 pr-3">
+  <form class="msgForm" [formGroup]="_mobForm" (ngSubmit)="mobileSubmit(_mobForm, false)">
+      <mat-form-field class="" style="width:80px; margin-right:10px;">
+      <mat-select formControlName="phone_code" (selectionChange)="selectphonecode($event)" [(ngModel)]="phoneCode" >         
+          <mat-option *ngFor="let pcd of phone_code_list" [value]="pcd.phonecode">
+            {{pcd.iso}}-{{pcd.phonecode}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="">
+      <input matInput type="text" placeholder="Enter Mobile Number" formControlName="mobile" required>
+ 
+      <!-- <span class="new_danger">*Note : Please enter phone number with country code. (ex: +919988774455-IND )</span> -->
+      <mat-error *ngIf="_mobForm.controls.mobile.hasError('invalidMobile')">Invalid mobile number</mat-error>
+      <mat-error *ngIf="_mobForm.controls.mobile.hasError('minlength')"> Please enter 5-digit valid mobile number.</mat-error>
+      <mat-error *ngIf="_mobForm.controls.mobile.hasError('maxlength')"> Please enter 20-digit valid mobile number.</mat-error>
+    </mat-form-field>
+    <span>
+    <button mat-button type="submit" class="btn btn-outline-primary tern-bold">Get OTP</button>
+    </span>
+  </form>
+  <div *ngIf="verificaton_info">Please enter the OTP received on your <br>
+    registered phone number to continue
+    <p><strong>{{_mobForm.controls.mobile.value}}</strong></p>
+  </div>
+  <mat-form-field class="">
+    <input matInput placeholder="Enter OTP" formControlName="otp">
+  </mat-form-field>
+  <button mat-button type="submit" class="btn btn-primary tern-bold text-uppercase">Verify</button>
+  <div *ngIf="isResendOtpEnabled"><a (click)="resendOtp(_mobForm, formDirective)">Not received the OTP yet? <strong style="color: #61d2fe; cursor: pointer;">Resend OTP</strong></a></div>
+</div>
+</form>
+</div>
+</div>

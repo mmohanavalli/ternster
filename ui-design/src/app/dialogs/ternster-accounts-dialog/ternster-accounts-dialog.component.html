@@ -1,0 +1,47 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase">Enter Your Account Details <div class="float-right">
+</div>
+</h1>
+
+<div mat-dialog-content>
+<form [formGroup]="accounts_form" (ngSubmit)="onSubmitAccounts()">
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="Bank Account Number" formControlName="account_no" value="">
+
+          <mat-error *ngIf="accounts_form.hasError('minlength',['account_no'])">account number must be at
+            least 10 characters long. </mat-error>
+  </mat-form-field>
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="Re-Type Bank Account Number" formControlName="retype_account_no" value="">
+
+      <mat-error *ngIf="accounts_form.hasError('minlength',['retype_account_no'])">retype account number must be at
+        least 10 characters long. </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="IFSC Code" formControlName="ifsc_code" value="">
+      <mat-error *ngIf="accounts_form.hasError('minlength',['retype_account_no'])">IFSC code must be at
+        least 5 characters long. </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="Receipient Name" formControlName="account_holder_name" value="">
+      <mat-error *ngIf="accounts_form.hasError('minlength',['retype_account_no'])">Receipient name must be at
+        least 4 characters long. </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="Bank Name" formControlName="bank_name" value="">
+      <mat-error *ngIf="accounts_form.hasError('minlength',['retype_account_no'])">Bank name must be at
+        least 5 characters long. </mat-error>
+  </mat-form-field>
+  <mat-form-field class="example-full-width w-100">
+      <input matInput placeholder="Bank Address" formControlName="bank_address" value="">
+      <mat-error *ngIf="accounts_form.hasError('minlength',['bank_address'])">Bank address must be at
+        least 10 characters long. </mat-error>
+  </mat-form-field>
+
+  <div class="col-md-12 text-center mt-5 mb-5">
+      <button mat-button type="submit" class="btn btn-primary">submit</button>
+  </div>
+</form>
+</div>

@@ -1,0 +1,323 @@
+<app-profileheader></app-profileheader>
+
+<div class="content-sec">
+  <div class="container">
+    <div class="tern-title">
+      <h1>All <span>Notificatoins</span> <span class="bluecirc"></span></h1>
+    </div>
+
+    <ul class="notifications  animated fadeIn allnotifi" id="notificationMenu">
+
+      <div class="notifbox">
+          <!-- <div *ngIf="unread_messages.length == 0 && read_messages.length == 0" class="text-center"> -->
+          <div *ngIf="!Notificationshow"  class="text-center">
+              <div class="nodatacls">
+                <img src="../../../assets/images/no-data.webp" width="200" class="mb-5"/>
+                <h5>No Notifications</h5>
+              </div>
+          </div>
+
+        <li class=" notif unread" *ngFor="let list of unread_messages">
+          <!-- <a href="javascript:void(0)" (click)="gotoTripDetails(list)"> -->
+            <div>
+              <div class="imageblock"><img class="notifimage w-100" [src]="list.profile"></div>
+
+              <div class="messageblock" *ngIf="list.is_from_cancelled_trip">
+                <div class="message">
+                  <strong>{{list.user_name}}</strong> has closed the trip <br />
+                  <strong>{{list.departure}}</strong> to
+                  <strong>{{list.destination}}</strong>
+                </div>
+
+                <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+
+              <div class="messageblock" *ngIf="list.is_comments">
+                <div class="message" *ngIf="!list.is_reply_comment && !list.is_liked_comment">
+                    You have a new comment from<br /> 
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                    <strong>{{list.user_name}}</strong></a> for the trip 
+                  <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                  <strong>{{list.departure}}</strong> to
+                  <strong>{{list.destination}}</strong> </a>
+                </div>
+                <div class="message" *ngIf="list.is_reply_comment && !list.is_liked_comment">
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                    <strong>{{list.user_name}}</strong></a> has comment replied for the trip <br />  
+                  <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                  <strong>{{list.departure}}</strong> to
+                  <strong>{{list.destination}}</strong> </a>
+                </div>
+                <div class="message" *ngIf="!list.is_reply_comment && list.is_liked_comment">
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                    <strong>{{list.user_name}}</strong></a> has liked your comment for the trip<br /> 
+                  <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                  <strong>{{list.departure}}</strong> to
+                  <strong>{{list.destination}}</strong> </a>
+                </div>
+
+                <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+              <div class="messageblock" *ngIf="list.request_status == 'pending' && !list.is_comments">
+                <div class="message" *ngIf="list.type == 'courier'">You have a request from<br /> 
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> for the trip 
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                        <strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong> </a> for
+                  <strong> {{list.weight}}</strong> {{list.weight_unit}}
+                </div>
+                <div class="message" *ngIf="list.type == 'assistance'">You have a request from<br /> 
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> for the trip 
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                        <strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong> </a> for
+                  <strong> {{list.members}}</strong> members
+                </div>
+
+                <div class="message" *ngIf="list.type == 'companion'">You have a request from<br /> 
+                  <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> for the trip 
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')">
+                        <strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong> </a>
+                </div>
+
+                <!-- <div class="messageaction"><a class="btn btn-success tern-bold btnsm"
+                    style="margin-top: 0px;">accept</a><a class="btn btn-danger tern-bold btnsm"
+                    style="margin-top: 0px;">decline</a>
+                </div> -->
+
+                <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+
+
+              <div class="messageblock" *ngIf="(list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'delivered' || list.request_status == 'rejected' || list.request_status == 'paid' ||list.request_status == 'cancelled' || list.request_status == 'withdraw') && !list.is_comments">
+                <!-- <div class="message">Request from<br /> <strong>Hema Lakshmi</strong> for the trip <strong>TRIP 1
+                    Chennai</strong></div> -->
+
+                    <!-- <div class="message">
+                      <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> has been 
+                              
+                                <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                                  <strong>{{list.request_status}}</strong>
+                                </span>
+                                <span *ngIf="list.request_status == 'rejected'" style="color: red;">
+                                  <strong>{{list.request_status}}</strong>
+                                </span>
+                                for the trip 
+                                <a href="javascript:void(0)" (click)="gotoTripDetails(list)"><strong>{{list.trip_name}}</strong></a>
+                    </div> -->
+
+                    <div class="message" *ngIf="list.type == 'courier'">
+                      <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> has
+                  
+                      <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'delivered'" style="color: green;">
+                        <strong>{{list.request_status}}</strong>
+                      </span>
+                      <span *ngIf="list.request_status == 'rejected' ||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;">
+                        <strong>{{list.request_status}}</strong>
+                      </span> for the trip
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')"><strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong></a>for
+                        <strong> {{list.weight}}</strong> {{list.weight_unit}}        
+                    </div>
+
+                    <div class="message" *ngIf="list.type == 'assistance'">
+                      <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> has
+                  
+                      <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                        <strong>{{list.request_status}}</strong>
+                      </span>
+                      <span *ngIf="list.request_status == 'rejected' ||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;">
+                        <strong>{{list.request_status}}</strong>
+                      </span> for the trip
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')"><strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong></a> for
+                        <strong> {{list.members}}</strong> members
+                    </div>
+
+                    <div class="message" *ngIf="list.type == 'companion'">
+                      <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> has
+                  
+                      <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                        <strong>{{list.request_status}}</strong>
+                      </span>
+                      <span *ngIf="list.request_status == 'rejected' ||list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;">
+                        <strong>{{list.request_status}}</strong>
+                      </span> for the trip
+                      <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'unread')"><strong>{{list.departure}}</strong> to
+                        <strong>{{list.destination}}</strong></a>
+                    </div>
+
+                <!-- <div class="messageaction"><a class="btn btn-success tern-bold btnsm"
+                    style="margin-top: 0px;">accept</a><a class="btn btn-danger tern-bold btnsm"
+                    style="margin-top: 0px;">decline</a>
+                </div> -->
+                <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+              </div>
+
+            </div>
+          <!-- </a> -->
+        </li>
+
+        <li class="notif" *ngFor="let list of read_messages">
+            <!-- <a href="javascript:void(0)" (click)="gotoTripDetails(list)"> -->
+              <div>
+                <div class="imageblock"><img class="notifimage w-100" [src]="list.profile"></div>
+
+                <div class="messageblock" *ngIf="list.is_from_cancelled_trip">
+                    <div class="message">
+                      <strong>{{list.user_name}}</strong> has closed the trip  <br />
+                      <strong>{{list.departure}}</strong> to
+                      <strong>{{list.destination}}</strong>
+                    </div>
+    
+                    <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+                  </div>
+
+                <div class="messageblock" *ngIf="list.is_comments">
+                  <div class="message" *ngIf="!list.is_reply_comment && !list.is_liked_comment">
+                      You have a new comment from<br /> 
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> for the trip 
+                    <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                    <strong>{{list.departure}}</strong> to
+                    <strong>{{list.destination}}</strong> </a>
+                  </div>
+                  <div class="message" *ngIf="list.is_reply_comment && !list.is_liked_comment">
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> has comment replied for the trip <br /> 
+                    <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                    <strong>{{list.departure}}</strong> to
+                    <strong>{{list.destination}}</strong> </a>
+                  </div>
+                  <div class="message" *ngIf="!list.is_reply_comment && list.is_liked_comment">
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                      <strong>{{list.user_name}}</strong></a> has liked your comment for the trip <br /> 
+                    <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                    <strong>{{list.departure}}</strong> to
+                    <strong>{{list.destination}}</strong> </a>
+                  </div>
+
+                  <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+                </div>
+  
+                <div class="messageblock" *ngIf="list.request_status == 'pending' && !list.is_comments">
+                  <div class="message" *ngIf="list.type == 'courier'">You have a request from<br /> 
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> for the trip 
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                          <strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong> </a> for
+                    <strong> {{list.weight}}</strong> {{list.weight_unit}}
+                  </div>
+                  <div class="message" *ngIf="list.type == 'assistance'">You have a request from<br /> 
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> for the trip 
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                          <strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong> </a> for
+                    <strong> {{list.members}}</strong> members
+                  </div>
+  
+                  <div class="message" *ngIf="list.type == 'companion'">You have a request from<br /> 
+                    <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                        <strong>{{list.user_name}}</strong></a> for the trip 
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')">
+                          <strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong> </a>
+                  </div>
+  
+                  <!-- <div class="messageaction"><a class="btn btn-success tern-bold btnsm"
+                      style="margin-top: 0px;">accept</a><a class="btn btn-danger tern-bold btnsm"
+                      style="margin-top: 0px;">decline</a>
+                  </div> -->
+  
+                  <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+                </div>
+  
+  
+                <div class="messageblock" *ngIf="(list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'rejected' || list.request_status == 'paid'||list.request_status == 'cancelled' || list.request_status == 'delivered' || list.request_status == 'withdraw') && !list.is_comments">
+                  <!-- <div class="message">Request from<br /> <strong>Hema Lakshmi</strong> for the trip <strong>TRIP 1
+                      Chennai</strong></div> -->
+  
+                      <!-- <div class="message">
+                        <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                          <strong>{{list.user_name}}</strong></a> has been 
+                                
+                                  <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                                    <strong>{{list.request_status}}</strong>
+                                  </span>
+                                  <span *ngIf="list.request_status == 'rejected'" style="color: red;">
+                                    <strong>{{list.request_status}}</strong>
+                                  </span>
+                                  for the trip 
+                                  <a href="javascript:void(0)" (click)="gotoTripDetails(list)"><strong>{{list.trip_name}}</strong></a>
+                      </div> -->
+  
+                      <div class="message" *ngIf="list.type == 'courier'">
+                        <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                          <strong>{{list.user_name}}</strong></a> has
+                    
+                        <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid' || list.request_status == 'delivered'" style="color: green;">
+                          <strong>{{list.request_status}}</strong>
+                        </span>
+                        <span *ngIf="list.request_status == 'rejected' ||list.request_status == 'cancelled'|| list.request_status == 'withdraw'" style="color: red;">
+                          <strong>{{list.request_status}}</strong>
+                        </span> for the trip
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')"><strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong></a> for
+                          <strong> {{list.weight}}</strong> {{list.weight_unit}}        
+                      </div>
+  
+                      <div class="message" *ngIf="list.type == 'assistance'">
+                        <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                          <strong>{{list.user_name}}</strong></a> has
+                    
+                        <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                          <strong>{{list.request_status}}</strong>
+                        </span>
+                        <span *ngIf="list.request_status == 'rejected' || list.request_status == 'cancelled'|| list.request_status == 'withdraw'" style="color: red;">
+                          <strong>{{list.request_status}}</strong>
+                        </span> for the trip
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')"><strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong></a> for
+                          <strong> {{list.members}}</strong> members
+                      </div>
+  
+                      <div class="message" *ngIf="list.type == 'companion'">
+                        <a href="javascript:void(0)" (click)="gotoPersonDetails(list)">
+                          <strong>{{list.user_name}}</strong></a> has
+                    
+                        <span *ngIf="list.request_status == 'accepted' || list.request_status == 'paid'" style="color: green;">
+                          <strong>{{list.request_status}}</strong>
+                        </span>
+                        <span *ngIf="list.request_status == 'rejected' || list.request_status == 'cancelled' || list.request_status == 'withdraw'" style="color: red;">
+                          <strong>{{list.request_status}}</strong>
+                        </span> for the trip
+                        <a href="javascript:void(0)" (click)="gotoTripDetails(list, 'read')"><strong>{{list.departure}}</strong> to
+                          <strong>{{list.destination}}</strong></a>
+                      </div>
+  
+                  <!-- <div class="messageaction"><a class="btn btn-success tern-bold btnsm"
+                      style="margin-top: 0px;">accept</a><a class="btn btn-danger tern-bold btnsm"
+                      style="margin-top: 0px;">decline</a>
+                  </div> -->
+                  <div class="messageinfo"><i class="icon-trophy"></i>{{list.time}} </div>
+                </div>
+  
+              </div>
+            <!-- </a> -->
+        </li>
+          
+      </div>
+    </ul>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

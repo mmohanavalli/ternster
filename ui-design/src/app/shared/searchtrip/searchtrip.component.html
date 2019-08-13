@@ -1,0 +1,145 @@
+<div class="lisingpage_header">
+  <div class="tern-title searchtitle">
+    <h1>Find <span>Trips</span></h1>
+  </div>
+  <div class="container">
+    <div class="frmcustom  animated fadeInUp mb-0">
+      <div class="row">
+        <div class="col-md-8">
+          <!-- <mat-radio-group aria-label="Select an option" class="radiocustom searchradio findtripsrch"
+            [(ngModel)]="selectedMode" (change)="triggerRadioChange($event)">
+            <mat-radio-button *ngFor="let list of mode_lists" [value]="list.id">
+              <img src="/assets/images/{{list.image}}"> {{list.mode_name}}
+            </mat-radio-button>
+          </mat-radio-group> -->
+          <mat-radio-group aria-label="Select an option" class="radiocustom modes text-left"  [(ngModel)]="selectedMode" (change)="triggerRadioChange($event)">
+              <mat-radio-button class="text-center" value="1" *ngIf="othermodes"><img src="../../../assets/images/bike.webp" /> Bike
+              </mat-radio-button>
+              <mat-radio-button class="text-center" value="2" *ngIf="othermodes"><img src="../../../assets/images/motor-bike.webp" /> Motor
+                Bike</mat-radio-button>
+              <mat-radio-button class="text-center" value="3"><img src="../../../assets/images/car.webp" /> Car</mat-radio-button>
+              <mat-radio-button class="text-center" value="5"><img src="../../../assets/images/train.webp" /> Train</mat-radio-button>
+              <mat-radio-button class="text-center" value="6" [checked]="true"><img src="../../../assets/images/flight.webp" /> Flight
+              </mat-radio-button>
+              <mat-radio-button class="text-center" value="8" *ngIf="!othermodes" (click)="showother(true)"><img
+                  src="../../../assets/images/arrow-right-circle.webp" /> Other Modes</mat-radio-button>
+              <mat-radio-button class="text-center" value="4" *ngIf="othermodes"><img src="../../../assets/images/bus.webp" /> Bus
+              </mat-radio-button>
+              <mat-radio-button class="text-center" value="7" *ngIf="othermodes"><img src="../../../assets/images/cruise.webp" /> Cruise
+              </mat-radio-button>
+            </mat-radio-group>
+          <div class="row mt-3">
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <mat-label><img src="../../../assets/images/departure.webp" class="mr-1" width="25" /> Departure
+                </mat-label>
+                <input matInput value="" [(ngModel)]="departure" [readonly]="isAnywhereEnabled"
+                  (input)="changeInput('departure', $event.target.value)">
+              </mat-form-field>
+            </div> -->
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label><img src="./assets/images/departure.webp" class="mr-1" width="25" /> Departure
+                </mat-label>
+                <input type="text" aria-label="Number" matInput [matAutocomplete]="auto1"
+                  (input)="triggerchangeDepartureLocationEmit($event.target.value)" [(ngModel)]="departure"
+                  [disabled]="isAnywhereEnabled">
+                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete"  (optionSelected)='triggerchangeDepartureLocationEmit($event.option.value)' >
+                  <mat-option *ngFor="let option of departureFilteredOptions"  [value]="option.full_name_nd+', '+option.country_name">
+                    {{option.full_name_nd}}, {{option.country_name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <mat-label><img src="../../../assets/images/destination.webp" class="mr-1" width="25" /> Destination
+                </mat-label>
+                <input matInput value="" [(ngModel)]="destination" [readonly]="isAnywhereEnabled"
+                  (input)="changeInput('destination', $event.target.value)">
+              </mat-form-field>
+            </div> -->
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label><img src="./assets/images/destination.webp" class="mr-1" width="25" /> Destination
+                </mat-label>
+                <input type="text" aria-label="Number" matInput [(ngModel)]="destination" [disabled]="isAnywhereEnabled"
+                  [matAutocomplete]="auto2" (input)="triggerchangeDestinationLocationEmit($event.target.value)">
+                <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete" (optionSelected)='triggerchangeDestinationLocationEmit($event.option.value)' >
+                  <mat-option *ngFor="let option of destinationFilteredOptions" [value]="option.full_name_nd+', '+option.country_name">
+                    {{option.full_name_nd}}, {{option.country_name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <div class="pt-3">
+                <mat-checkbox [checked]="isAnywhereEnabled" (change)="triggerChangeAnyWhere($event);">Any Where
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3 mt-3"> <span class="tern-bold mr-3 scaleicon"><img
+                  src="../../../assets/images/calendar.webp" width="25" /></span>
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedDuration"
+                (change)="triggerDurationChange($event)" class="radiocustom plancustom">
+                <mat-radio-button *ngFor="let dur of durations" [value]="dur.value">
+                  {{dur.name}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedDuration"
+                (change)="triggerCustomChange($event)" class="radiocustom plancustom">
+                <mat-radio-button (click)="planned = !planned" value="custom">Custom</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div *ngIf="planned" class="plannedsec w-100 mb-3">
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input matInput [min]="current_date" [matDatepicker]="fromdate" placeholder="From"
+                      [(ngModel)]="fromDate" (dateChange)="triggerDateChangeEvent('from', $event)"
+                      (click)="fromdate.open()" readonly="">
+                    <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                    <mat-datepicker #fromdate></mat-datepicker>
+                  </mat-form-field>
+
+                </div>
+
+                <div class="col-md-4">
+                  <!-- <mat-form-field *ngIf="!trip_from_date">
+                    <input matInput [min]="fromDate" [matDatepicker]="todate" placeholder="To" [(ngModel)]="toDate"
+                      (dateChange)="dateChangeEvent('to', $event)" (click)="todate.open()" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="todate" disabled></mat-datepicker-toggle>
+                    <mat-datepicker #todate disabled="false"></mat-datepicker>
+                  </mat-form-field> -->
+                  <mat-form-field>
+                    <input matInput [min]="fromDate" [matDatepicker]="todate" placeholder="To" [(ngModel)]="toDate"
+                      (dateChange)="triggerDateChangeEvent('to', $event)" (click)="todate.open()"
+                      [disabled]="!trip_from_date" readonly="">
+                    <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                    <mat-datepicker #todate></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12"><span class="btn btn-light btnsm pointcur mb-3 brdbtn"
+                (click)="triggerResetFilter($event)">Clear
+                Filters</span></div>
+          </div>
+
+          <!-- <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Departure" aria-label="Departure" matInput [formControl]="myControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='getPosts($event.option.value)'>
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field> -->
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

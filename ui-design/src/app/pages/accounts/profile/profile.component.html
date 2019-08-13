@@ -1,0 +1,371 @@
+<div class="profile_header currentuser" [style.backgroundImage]="'url('+ cover_picture +')'">
+  <div class="profile_details">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>{{header_first_name}} {{header_last_name}}</h3>
+          <p>{{header_country}}</p>
+        </div>
+        <div class="col-sm-6 text-right">
+          <div class="profil_social">
+              <a href="https://facebook.com/" target="_blank" *ngIf="facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/" target="_blank" *ngIf="twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://instagram.com/" target="_blank" *ngIf="instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content-sec profile-boxsec">
+  <div class="container">
+    <div class="profile-tab">
+      <div class="tern-title prosettings">
+        <h4 [class]="profile ? 'active' : ''" routerLinkActive routerLink="/accounts/profile"><img
+            src="../../../assets/images/profile-icon.webp" class="proicons" /> <span class="protitcon">Profile</span>
+          <span class="bluecirc"></span></h4>
+        <h4 [class]="settings ? 'active' : ''" routerLinkActive routerLink="/accounts/settings" id="Settings"><img
+            src="../../../assets/images/profile-settings.webp" class="proicons" /> <span
+            class="protitcon">Settings</span> <span class="bluecirc"></span></h4>
+
+        <h4 [class]="wallet ? 'active' : ''" routerLinkActive routerLink="/accounts/wallet" id="Wallet"><img
+            src="../../../assets/images/wallet-mob.webp" class="proicons" /> <span class="protitcon">Wallet</span> <span
+            class="bluecirc"></span></h4>
+
+
+        <h4 [class]="messages ? 'active' : ''" routerLinkActive routerLink="/accounts/messages" id="Messages"><img
+            src="../../../assets/images/profile-message.webp" class="proicons" /> <span class="protitcon">Messages</span>
+          <span class="bluecirc"></span></h4>
+        <h4 [class]="change_pwd ? 'active' : ''" routerLinkActive routerLink="/accounts/changepassword" id="changepassword"><img
+            src="../../../assets/images/change-password.webp" class="proicons" /> <span class="protitcon">Change
+            Password</span> <span class="bluecirc"></span></h4>
+      </div>
+    </div>
+    <div class="profile-content animated fadeIn">
+      <div class="text-center grayscale" *ngIf="isLoading"><svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg>
+      </div>
+      <div *ngIf="!isLoading">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="pro_uploadbox"> <img [src]="profile_picture" />
+              <h5>Profile <span class="tern-bold">Picture</span></h5>
+              <p class="mb-1 small">Profile picture file size : Max <strong>400 x 400 Pixel</strong> and <strong>1
+                  Mb</strong></p>
+              <p class="mb-1 small">Image Format : <strong>JPEG, PNG, GIF, WEBP</strong></p>
+              <label class="custom-file-upload btn btn-outline-primary-filled" (click)="cropImage()">
+                <!-- <input id="photo" name="photo" type="file" (change)="onFileChanged()" /> -->
+                <span>
+                  Upload Picture <i class="fas fa-upload"></i> </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pro_uploadbox"> <img [src]="cover_picture" />
+              <h5>Cover <span class="tern-bold">Picture</span></h5>
+              <p class="mb-1 small">Profile picture file size : Max <strong>1920 x 450 Pixel</strong> and <strong>1
+                  Mb</strong></p>
+              <p class="mb-1 small">Image Format : <strong>JPEG, PNG, GIF, WEBP</strong></p>
+              <label class="custom-file-upload btn btn-outline-primary-filled" (click)="cropCoverImage()">
+                <!-- <input id="coverphoto" name="coverphoto" type="file" (change)="onChangedCoverPicture()" /> -->
+                <span>
+                  Upload Picture <i class="fas fa-upload"></i> </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="fulllined mt-5">
+          <h5>Personal <span class="tern-bold">Informations</span></h5>
+          <hr />
+        </div>
+
+        <div class="frmcustom">
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="First Name" maxlength="25" [(ngModel)]="first_name" value="">
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Last Name" maxlength="25" [(ngModel)]="last_name" value="">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" [max]=maxDate (ngModelChange)="dob = $event; changeDOB()"
+                  placeholder="Date of Birth" [ngModel]="dob" readonly (click)="picker.open()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+              <!--  <mat-form-field class="example-full-width">
+              <input matInput type="date" [ngModel]="dob | date:'yyyy-MM-dd'" placeholder="Date of Birth"
+                (ngModelChange)="dob = $event; changeDOB()">
+
+            </mat-form-field> -->
+            </div>
+            <div class="col-md-2">
+              <mat-form-field class="example-full-width">
+                <input type="text" matInput name="age" [(ngModel)]="age" placeholder="Age" readonly>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Gender</mat-label>
+                <mat-select [(ngModel)]="gender">
+                  <mat-option value="male">Male</mat-option>
+                  <mat-option value="female">Female</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Country" maxlength="60" aria-label="Number" matInput
+                  [(ngModel)]="country" [formControl]="myCountryControl" [matAutocomplete]="auto1">
+                <mat-autocomplete #auto1="matAutocomplete" autoActiveFirstOption
+                  (optionSelected)="selectedOption($event.option.value)">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="example-full-width">
+                <input type="text" placeholder="State" maxlength="60" aria-label="Number" matInput [(ngModel)]="state"
+                  [formControl]="myStateControl" [matAutocomplete]="auto2">
+                <mat-autocomplete #auto2="matAutocomplete" autoActiveFirstOption
+                  (optionSelected)="selectedStateOption($event.option.value)">
+                  <mat-option *ngFor="let option of statefilteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="example-full-width">
+                <input type="text" placeholder="City" maxlength="60" aria-label="Number" matInput [(ngModel)]="town"
+                  [formControl]="myCityControl" [matAutocomplete]="auto3">
+                <mat-autocomplete #auto3="matAutocomplete" autoActiveFirstOption
+                  (optionSelected)="selectedCityOption($event.option.value)">
+                  <mat-option *ngFor="let option of cityfilteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <!-- <div class="col-md-3">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Home Town" maxlength="60" [(ngModel)]="town" value="">
+              </mat-form-field>
+            </div> -->
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Email Id" [(ngModel)]="email" value="" readonly>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Mobile Number" [(ngModel)]="mobile" value="" readonly>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="KYC Verify Link" [(ngModel)]="kyc" value="">
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <!-- <mat-form-field class="example-full-width">
+              <input type="text" placeholder="Language" aria-label="Number" matInput [formControl]="langMyControl" [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let option of langFilteredOptions | async" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field> -->
+              <mat-form-field class="example-chip-list">
+                <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let lang of selectedLanguages" [selectable]="selectable" [removable]="removable"
+                    (removed)="remove(lang)"> {{lang}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Languages" #langInput [formControl]="langMyControl" [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" maxlength="30">
+                </mat-chip-list>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let option of langFilteredOptions | async" [value]="option"> {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Interest" [(ngModel)]="interest" value="" maxlength="500"></textarea>
+              </mat-form-field>
+            </div>
+            <!--  <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Country" aria-label="Number" matInput [formControl]="myCountryControl" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div> -->
+          </div>
+
+          <div class="fulllined  mt-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>I can <span class="tern-bold">act as a</span></h5>
+                <hr />
+              </div>
+            </div>
+          </div>
+          <div class="checkbocgrop">
+            <mat-checkbox *ngFor="let list of purposeLists" (change)="OnChange($event)" [value]="list"
+              [checked]="purposeOfTrips.indexOf(list.toLowerCase()) >= 0">{{list}}</mat-checkbox>
+          </div>
+          <div class="fulllined  mt-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Verify <span class="tern-bold">KYC</span></h5>
+                <hr />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-left">
+            <div class="row">
+              <div class="col-md-2" *ngIf="kycstatus!='verified'"><button mat-button (click)="OpenDialog()" class="btn btn-primary mr-5 mb-3">Verify
+                  KYC</button></div>
+              <div class="col-md-10">
+                <span *ngIf="kycstatus=='verified' && is_kyc_verified==false"
+                  class=" alert alert-warning w-100 d-block mb-0 "><strong>KYC Docs</strong> Uploaded - Verify
+                  Processing
+                </span>
+                <span *ngIf="kycstatus=='verified' && is_kyc_verified==true"
+                  class=" alert alert-success w-100  d-block mb-0"><strong>KYC Docs</strong> Verified Successfully.
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="checkbocgrop">
+          <mat-radio-group aria-label="Select an option" [(ngModel)]="purposeOfTrip">
+            <mat-radio-button value="courier">Courier</mat-radio-button> &nbsp;
+            <mat-radio-button value="assistant">Assistant</mat-radio-button> &nbsp;
+            <mat-radio-button value="companion">Companion</mat-radio-button>
+          </mat-radio-group>
+        </div> -->
+
+
+
+          <!-- <div class="fulllined  mt-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Account <span class="tern-bold"> Details</span></h5>
+                <hr />
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-primary d-block w-100">
+            <div class="row ">
+              <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Bank Account Number" [(ngModel)]="account_no" value="">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Re-Type Bank Account Number" [(ngModel)]="retype_account_no" value="">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="IFSC Code" [(ngModel)]="ifsc_code" value="">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Receipient Name" [(ngModel)]="account_holder_name" value="">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Bank Name" [(ngModel)]="bank_name" value="">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-9">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Bank Address" [(ngModel)]="bank_address" value="">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+          </div> -->
+
+
+
+
+          <div class="row ">
+            <div class="col-md-6">
+              <div class="fulllined mt-5">
+                <h5>About <span class="tern-bold">Me</span></h5>
+                <hr />
+              </div>
+              <mat-form-field class="example-full-width txtarea">
+                <textarea matInput [(ngModel)]="aboutMe" placeholder="Description"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <div class="fulllined mt-5">
+                <h5>Social <span class="tern-bold">Links</span></h5>
+                <hr />
+              </div>
+              <mat-form-field class="example-full-width">
+                <input matInput [(ngModel)]="facebookLink" placeholder="Facebook" value="">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput [(ngModel)]="twitterLink" placeholder="Twitter" value="">
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput [(ngModel)]="instagramLink" placeholder="Instagram" value="">
+              </mat-form-field>
+            </div>
+            <div class="col-md-12 text-right mt-5 mb-5">
+              <span *ngIf="isDualLoading" class="grayscale"><img src="./assets/images/loading.webp"
+                  style="width: 35px;"></span>
+              <button mat-button class="btn btn-primary" (click)="updateProfile()">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

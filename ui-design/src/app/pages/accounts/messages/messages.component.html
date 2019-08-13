@@ -1,0 +1,110 @@
+<app-profileheader></app-profileheader>
+<div class="content-sec profile-boxsec">
+  <div class="container">
+    <div class="profile-tab">
+      <div class="tern-title prosettings">
+        <h4 [class]="profile ? 'active' : ''" routerLinkActive routerLink="/accounts/profile"><img
+            src="../../../assets/images/profile-icon.webp" class="proicons" /> <span class="protitcon">Profile</span> <span class="bluecirc"></span></h4>
+        <h4 [class]="settings ? 'active' : ''" routerLinkActive routerLink="/accounts/settings" id="Settings"><img
+            src="../../../assets/images/profile-settings.webp" class="proicons" /> <span
+            class="protitcon">Settings</span> <span class="bluecirc"></span></h4>
+        <h4 [class]="wallet ? 'active' : ''" routerLinkActive routerLink="/accounts/wallet" id="Wallet"><img
+            src="../../../assets/images/wallet-mob.webp" class="proicons" /> <span class="protitcon">Wallet</span> <span
+            class="bluecirc"></span></h4>
+        <h4 [class]="messages ? 'active' : ''" routerLinkActive routerLink="/accounts/messages" id="Messages"><img
+            src="../../../assets/images/profile-message.webp" class="proicons" /> <span class="protitcon">Messages</span> <span class="bluecirc"></span></h4>
+        <h4 [class]="change_pwd ? 'active' : ''" routerLinkActive routerLink="/accounts/changepassword" id="changepassword"><img
+            src="../../../assets/images/change-password.webp" class="proicons" /> <span class="protitcon">Change
+          Password</span> <span class="bluecirc"></span></h4>
+      </div>
+    </div>
+    <div class="messages-content animated fadeIn" id="messages">
+      <div class="text-center grayscale" *ngIf="isLoading"><svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg> </div>
+      <section class="mainApp-chat" *ngIf="!isLoading">
+        <div class="row">
+          <div class="leftPanel  col-md-4 pr-0 pl-0">
+            <header>
+              <mat-form-field class="example-full-width w-100 searchchat"> 
+                <input matInput placeholder="Search" [(ngModel)]="query">
+              </mat-form-field>
+            </header>
+            <div class="chats">
+              <div class="convHistory userBg contactlistarea" *ngIf="showContactsAvailable">
+                <div class="select-chat"> <span class="select-chat-bg"> <img src="../../../assets/images/contact-list.webp" width="50" /> No contacts available...</span></div>
+              </div>
+              <div *ngFor="let list of chat_lists | searchTrip:'user_name': query"> 
+                <div class="chatButton {{list.selected}}" (click)="selectChat(list)">
+                  <div class="proinfo"> 
+                    <a matTooltip="View Profile" (click)="viewProfile(list);"> <i class="material-icons">remove_red_eye</i></a> 
+                  </div>
+                  <div class="chatInfo"> 
+                    <div class="image" style="background-color: #fff;"> <img width="50" height="50" style="border-radius: 50%;" src={{list.profile_picture}} /> </div>
+                    <p class="name uname small"> {{list.user_name}} 
+                    <p *ngIf="list.last_msg != null" class="message mt-0 text-dark">{{list.last_msg}}</p>
+                    <p *ngIf="list.last_msg == null" class="message mt-0 text-dark font-italic text-muted">Let's Chat!</p>
+                  </div>
+                    <p class="counttxt" *ngIf="list.msg_count > 0"> {{list.msg_count}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rightPanel col-md-8 p-0" id="rightPanel">
+            <div class="topBar">
+              <div class="leftSide">
+                <div class="closechatmsg" (click)="closechatms()"><i class="fas fa-chevron-left"></i></div>
+                <p class="chatStatus uname"><span class="tern-bold text-uppercase">{{chat_user_name}}</span> 
+                
+                </p>
+              </div>
+            </div>
+            <div *ngIf="isSelectedAvailableChat"> 
+              <div class="convHistory userBg" #content *ngIf="chat_content_lists.length > 0">
+                <div #messageContainer *ngFor="let msg of chat_content_lists">
+                  <div *ngIf="msg.location == 'received'" class="msg messageReceived"> <span
+                      class="recivedname">{{msg.user_name}}</span><pre> {{msg.message}} </pre><span
+                      class="timestamp">{{msg.time}}</span> </div>
+                  <div *ngIf="msg.location == 'sent'" class="msg messageSent"> <span
+                      class="recivedname">{{msg.user_name}}</span><pre>{{msg.message}}</pre>  <span
+                      class="timestamp">{{msg.time}}</span> </div>
+                </div>
+              </div>
+              <div class="convHistory userBg" #content *ngIf="chat_content_lists.length== 0">
+                <div #messageContainer> 
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!isSelectedAvailableChat">
+              <div class="convHistory userBg">
+                <div class="select-chat text-center"> <span class="select-chat-bg"> <img src="../../../assets/images/no-messages.webp" /> Please select a chat to start messaging</span> </div>
+              </div>
+            </div>
+            <div class="replyBar">
+              <textarea matInput placeholder="Type your message..." id="message_input" [autofocus]="autoFocus" [(ngModel)]="inputMessage" value="" class="replyMessage" (keydown)="onKeydown($event)" [disabled]="!isInputMessageEnabled"></textarea>
+              <div class="otherTools">
+                <button class="toolButtons emoji" [disabled]="!isInputMessageEnabled" (click)="toggle()"> <i class="material-icons">face</i> </button>
+                <emoji-mart *ngIf="show_dialog" (emojiSelect)="addEmoji($event)" class="emojimart"></emoji-mart>
+                <button mat-button class="btn btn-primary tren-bold" [disabled]="!isInputMessageEnabled"
+                  (click)="sendMessage()">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>

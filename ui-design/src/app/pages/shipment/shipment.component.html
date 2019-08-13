@@ -1,0 +1,507 @@
+<app-profileheader></app-profileheader>
+<div class="content-sec">
+  <div class="container">
+    <div class="profile-content animated fadeIn">
+
+      <div class="text-right viewbtnship mt-3"> <a href="javascript:void(0);" (click)="gotoViewRequest()"
+          class="btn btn-primary tern-bold">VIEW ALL PACKAGES</a> </div>
+
+      <div class="tern-title">
+        <h1>Create <span>Package</span> <span class="bluecirc"></span></h1>
+      </div>
+      <div class="frmcustom">
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="checkbocgrop"> <span class="tern-bold mr-3">Looking for</span>
+              <mat-radio-group aria-label="Select an option" (change)="typeChange($event)">
+                <mat-radio-button value="courier" checked class="mr-4">Courier</mat-radio-button>
+                <mat-radio-button value="assistance" class="mr-4">Assistance</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedType == 'courier'">
+          <!-- <div class="text-center grayscale w-100" *ngIf="isLoading"><img src="../../assets/images/loading.webp"
+              width="100" /></div> -->
+          <div>
+            <form [formGroup]="courier_form" #formDirective="ngForm"
+              (ngSubmit)="onSubmitCourier(courier_form, formDirective)">
+              <div class="row">
+                <div class="plannedsec w-100 mb-3">
+                  <div class="row">
+                    <!-- <div class="col-md-4">
+                      <mat-form-field>
+                        <input matInput [min]="current_date"
+                          [matDatepicker]="fromdate" placeholder="From" formControlName="from_date" required=""
+                          readonly="" (click)="fromdate.open()">
+                        <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromdate disabled="false"></mat-datepicker>
+                        <mat-error *ngIf="courier_form.controls.from_date.errors?.required">Select From Date</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <input matInput [min]="courier_form.controls.from_date.value" [matDatepicker]="todate"
+                          placeholder="To" formControlName="to_date" required="" readonly="" (click)="todate.open()">
+                        <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                        <mat-datepicker #todate disabled="false"></mat-datepicker>
+                        <mat-error *ngIf="courier_form.controls.to_date.errors?.required">Select To Date</mat-error>
+                      </mat-form-field>
+                    </div>-->
+
+                    <div class="col-md-3 ">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Package Name" formControlName="package_name" value="" required>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                      <mat-form-field>
+                        <mat-select formControlName="weight_unit" (selectionChange)="selectWeightUnit($event)"
+                          [(ngModel)]="weightUnit">
+                          <mat-option value="kg" selected>Kilogram</mat-option>
+                          <mat-option value="lb">Pound</mat-option>
+                          <mat-option value="oz">Ounce</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Weight" formControlName="package_weight" value="" required>
+                        <mat-error *ngIf="courier_form.controls.package_weight.errors">Numbers only</mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                      <mat-form-field>
+                        <mat-label>Size</mat-label>
+                        <mat-select required="" formControlName="size">
+                          <mat-option value="small">Small</mat-option>
+                          <mat-option value="medium">Medium</mat-option>
+                          <mat-option value="large">Large</mat-option>
+                          <mat-option value="envelope">Envelope</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                      <mat-form-field class="example-full-width txtarea">
+                        <textarea matInput placeholder="Package Description" formControlName="package_description"
+                          value="" required></textarea>
+                      </mat-form-field>
+
+                    </div>
+                    <div class="col-md-6">
+                      <!--<h5 class="mb-3">Package<span class="tern-bold"> Images</span></h5>-->
+                      <!-- <div class="text-center grayscale w-100" *ngIf="isImageLoading"><img
+                          src="../../assets/images/loading.webp" width="100" /></div> -->
+                      <div class="w-100 text-center mb-5">
+                        <div class="packimgbox">
+                          <div class="row">
+                            <div class="col-md-8">
+                              <label class="custom-file-upload btn btn-outline-success tern-bold mt-5 ">
+                                <input id="photo" name="photo" type="file" (change)="onSelectFile($event)" />
+                                Upload Package Image <i class="fas fa-upload"></i> </label>
+                              <div *ngIf="isImageErrorEnabled" style="color: red; font-weight: 600;"> Please upload the
+                                image....</div>
+                            </div>
+                            <div class="col-md-4">
+                              <!-- <span *ngFor="let img of image_urls; let i=index" id="img_{{i}}" class="uploadimgcls">
+                                <img [src]="img.imagePath">
+                                <button class="uploadcls" type="button" (click)="delete(img.imageName,i)">X</button>
+                              </span> -->
+                              <span class="uploadimgcls">
+                                <span *ngIf="isPackageImageLoading" class="grayscale grayloader">
+                                  <svg width="15" height="15" viewBox="0 0 300 300" class="loadersvg">
+                                    <defs>
+                                      <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300"
+                                        x2="300" y2="0">
+                                        <stop offset="0%">
+                                          <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                                            repeatCount="indefinite" />
+                                        </stop>
+                                        <stop offset="100%">
+                                          <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                                            repeatCount="indefinite" />
+                                        </stop>
+                                      </linearGradient>
+                                      <clipPath id="clip">
+                                        <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                        <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90">
+                                        </rect>
+                                      </clipPath>
+                                    </defs>
+                                    <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+                                  </svg>
+                                </span>
+                                <img [src]="image_urls.imagePath" *ngIf="image_urls.imagePath">
+                                <img src="../../../assets/images/profile.webp" *ngIf="!image_urls.imagePath">
+                                <!-- <button class="uploadcls" type="button">X</button> -->
+                              </span>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+
+                  <h6 class="mb-3 tern-bold">Enter Item Details</h6>
+
+                  <div class="itemboxssec" formArrayName="items">
+
+                    <div class="itemboxcontent" *ngFor="let unit of courier_form.controls.items.controls; let i=index">
+                      <div class="row" [formGroupName]="i">
+                        <div class="col-md-1 tern-bold pt-3">Item {{i+1}}</div>
+                        <div class="col-md-3">
+
+                          <mat-form-field class="example-full-width">
+                            <input matInput formControlName="item_name" placeholder="Item Name" value="">
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-2">
+                          <mat-form-field class="example-full-width">
+                            <input matInput formControlName="item_weight" placeholder="Item Weight" value="">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                          <mat-form-field class="example-full-width">
+                            <input matInput formControlName="item_value" placeholder="Item Value" value="">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+
+                          <div class="itemimagesboxs">
+                            <label class="custom-file-upload btn btn-outline-secondary btnsm tern-bold ">
+                              <input id="itemphoto_{{i}}" formControlName="itemphoto" name="itemphoto" type="file"
+                                (change)="onSelectItemFile($event, i)" />
+                              Upload Image <i class="fas fa-upload"></i>
+                            </label>
+
+                            <!-- <span *ngFor="let img of item_image_urls; let i=index" id="img_{{i}}"
+                              class="uploadimgcls mt-2">
+                              <img [src]="img.imagePath">
+                              <button class="uploadcls" type="button"
+                                (click)="deleteItemImage(img.imageName,i)">X</button>
+                            </span>                                                         -->
+
+                            <!-- <span id="" 
+                            class="uploadimgcls mt-2">
+                            <img formControlName="item_images" [src]="">
+                            <button class="uploadcls" type="button"
+                              (click)="deleteItemImage(img.imageName,i)">X</button>
+                          </span>  -->
+                            <span class="uploadimgcls">
+                              <span *ngIf="item_image_loader[i].load" class="grayscale grayloader pt-2">
+                                <svg width="15" height="15" viewBox="0 0 300 300" class="loadersvg">
+                                  <defs>
+                                    <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300"
+                                      x2="300" y2="0">
+                                      <stop offset="0%">
+                                        <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                                          repeatCount="indefinite" />
+                                      </stop>
+                                      <stop offset="100%">
+                                        <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                                          repeatCount="indefinite" />
+                                      </stop>
+                                    </linearGradient>
+                                    <clipPath id="clip">
+                                      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                                      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90">
+                                      </rect>
+                                    </clipPath>
+                                  </defs>
+                                  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+                                </svg>
+                              </span>
+                              <img [src]="item_image_val[i].imagePath" *ngIf="item_image_val[i].imagePath">
+                              <img src="../../../assets/images/profile.webp" *ngIf="!item_image_val[i].imagePath">
+
+                            </span>
+
+                            <div *ngIf="isItemImageErrorEnabled" style="color: red; font-weight: 600;">
+                              Please upload the image....</div>
+                          </div>
+
+                        </div>
+                        <div class="col-md-1 text-right align-middle">
+                          <a href="javascript:void(0);" class="mt-3 d-inline-block" matTooltip="Remove Item"
+                            *ngIf="courier_form.controls.items.controls.length > 1" (click)="removeItem(i)"><i
+                              class="fa fa-minus"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-right mb-3">
+                      <!-- <button mat-button class="btn btn-dark addbtn btnsm" (click)="addItem()"><i
+                          class="fa fa-plus"></i> Add Items</button> -->
+                      <span style="cursor: pointer;" class="btn btn-dark addbtn btnsm" (click)="addItem()"><i
+                          class="fa fa-plus"></i> Add Items</span>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-md-12 mb-3">
+
+                  <h6 class="mb-3 tern-bold">Receiver Details</h6>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Receiver Name" formControlName="receiver_name" value="" required>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Mobile Number" formControlName="receiver_contact_no" value="" required>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Email id" formControlName="receiver_email_id" value=""
+                          pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
+                        <mat-error *ngIf="courier_form.controls.receiver_email_id.hasError('required')">
+                          Email is
+                          <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 text-center mt-5 mb-5">
+                  <button mat-button type="submit" class="btn btn-primary">submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+        <div *ngIf="selectedType == 'assistance'">
+          <div class="text-center grayscale w-100" *ngIf="isLoading">
+            <svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg">
+              <defs>
+                <linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+                  <stop offset="0%">
+                    <animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s"
+                      repeatCount="indefinite" />
+                  </stop>
+                  <stop offset="100%">
+                    <animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s"
+                      repeatCount="indefinite" />
+                  </stop>
+                </linearGradient>
+                <clipPath id="clip">
+                  <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+                  <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+                </clipPath>
+              </defs>
+              <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+            </svg>
+          </div>
+          <div *ngIf="!isLoading">
+            <form [formGroup]="assistant_form" #formDirective="ngForm"
+              (ngSubmit)="onSubmitAssistant(assistant_form, formDirective)">
+              <!-- <div class="row"> -->
+              <!-- <div class="col-md-6">
+                  <mat-form-field>
+                    <mat-label><img src="../../../assets/images/departure.webp" class="mr-1" width="25" /> Departure
+                    </mat-label>
+                    <input matInput value="" formControlName="departure" required="">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <mat-label><img src="../../../assets/images/destination.webp" class="mr-1" width="25" /> Destination
+                    </mat-label>
+                    <input matInput value="" formControlName="destination" required="">
+                  </mat-form-field>
+                </div> -->
+
+              <!-- <div class="plannedsec w-100 mb-3">
+                  <div class="row"> 
+                     <div class="col-md-4 mb-3">
+                      <mat-form-field>
+                        <input matInput [min]="current_date" [matDatepicker]="fromdate" placeholder="From"
+                          formControlName="from_date" required="" readonly="">
+                        <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromdate></mat-datepicker>
+                        <mat-error *ngIf="assistant_form.controls.from_date.errors?.required">Select From Date
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <mat-form-field>
+                        <input matInput [min]="assistant_form.controls.from_date.value" [matDatepicker]="todate"
+                          placeholder="To" formControlName="to_date" required="" readonly="">
+                        <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                        <mat-datepicker #todate></mat-datepicker>
+                        <mat-error *ngIf="assistant_form.controls.to_date.errors?.required">Select To Date</mat-error>
+                      </mat-form-field>
+                    </div> -->
+              <!-- <div class="plannedsec w-100 mb-3"> -->
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Number of members" formControlName="members" value="" required>
+                    <mat-error *ngIf="assistant_form.controls.members.errors">Numbers only</mat-error>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="col-md-8 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Assistance Requested For" formControlName="requested" value=""
+                      required="">
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <mat-form-field class="example-full-width txtarea">
+                    <textarea matInput placeholder="Assistance Description" formControlName="description" value=""
+                      required=""></textarea>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-12 text-center mt-5 mb-5">
+                  <button mat-button type="submit" class="btn btn-primary">submit</button>
+                </div>
+              </div>
+              <!-- </div>
+
+              </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class=" d-block w-100 city_bg_allpage"></div>
+
+<!-- <div class="content-sec city_bg">
+  <div class="container">
+    <div class="frmcustom  animated fadeIn">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="tern-title">
+            <h1>Create <span>Request</span> <span class="bluecirc"></span></h1>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <div class="checkbocgrop">
+              <span class="tern-bold mr-3">Looking for</span>
+              <mat-radio-group aria-label="Select an option" formControlName="type">
+                <mat-radio-button value="courier" checked class="mr-4">Courier</mat-radio-button>
+                <mat-radio-button value="assistance"  class="mr-4">Assistance</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Item Name" formControlName="package_name">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Item Name" formControlName="package_name">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <textarea matInput placeholder="Item Description" formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Weight" formControlName="weight">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <div class="fulllined">
+              <h5><span class="tern-bold">Address Information</span></h5>
+              <hr />
+            </div>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Flat No." formControlName="flatno">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Street Name" formControlName="street">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="City" formControlName="city">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="State" formControlName="state">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Zipcode" formControlName="state">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="contact" formControlName="contact">
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

@@ -1,0 +1,26 @@
+<!-- <div class="tern-loader" style="display:block;" *ngIf="isLoading">
+    <div class="imgcls"><img src="../../assets/images/loader.gif"/>LOADING...</div>
+  </div> -->
+<div class="profile_header" [style.backgroundImage]="'url('+ cover_picture +')'">
+  <div class="profile_details">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>{{user_data.first_name}} {{user_data.last_name}}</h3>
+          <p>{{user_data.country}}</p>
+        </div>
+        <div class="col-sm-6 text-right" >
+          <!-- User View-->
+          <div class="profil_social">
+              <a href="https://facebook.com/" target="_blank" *ngIf="facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/" target="_blank" *ngIf="twitter"><i class="fab fa-twitter"></i></a>
+              <a href="https://instagram.com/" target="_blank" *ngIf="instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+
+          <!-- Other Person View
+          <div class="report_profile"> <a href=""><i class="far fa-envelope"></i></a> <a href=""><i class="fas fa-share-alt"></i></a> <a href=""><i class="far fa-heart"></i></a> <a href="" class="rebrd">Report this profile?</a> </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

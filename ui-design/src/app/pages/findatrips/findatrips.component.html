@@ -1,0 +1,205 @@
+<app-searchtrip (radioChangeEmit)="radioChange($event)" (changeDepartureLocationEmit)="changeDepartureLocation($event)"
+  (changeDestinationLocationEmit)="changeDestinationLocation($event)"
+  [departureFilteredOptions]=departureFilteredOptions [destinationFilteredOptions]=destinationFilteredOptions
+  [isAnywhereEnabled]="isAnywhereEnabled" (changeAnyWhereEmit)="changeAnyWhere($event)" [departure]=departure
+  [destination]=destination (durationChangeEmit)="durationChange($event)" (customChangeEmit)="customChange($event)"
+  (dateChangeEventEmit)="dateChangeEvent($event)" [trip_from_date]="trip_from_date"
+  (resetFiltersEmit)="resetFilter($event)" [isAnywhereShow]="isAnywhereShow" [resetFilterShow]="resetFilterShow"
+  [selectedDuration]=selectedDuration [selectedMode]=selectedMode [fromDate]=fromDate [toDate]=toDate [planned]=planned
+  [othermodes]="othermodes">
+</app-searchtrip>
+
+<div class="threeoption">
+  <div class="container animated fadeInUp">
+    <h5 [class]="selectedType == 'courier' ? 'active' : ''" (click)="clickType('courier')">Courier</h5>
+
+    <h5 [class]="selectedType == 'assistance' ? 'active' : ''" (click)="clickType('assistance')">Assistance</h5>
+    <!-- <h5 [class]="selectedType == 'companion' ? 'active' : ''" (click)="clickType('companion')">Companion</h5> -->
+  </div>
+</div>
+
+<div class="filteroption">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="pt-3">Matched Trips For Your Search - <span class="tern-bold">{{allTrips.length}}</span></div>
+      </div>
+      <div class="col-md-8">
+        <div class="checkbocgrop text-right">
+          <mat-form-field class="mr-3 w-100px">
+            <mat-label>Language</mat-label>
+            <mat-select (ngModelChange)="onLanguageChange($event)" [(ngModel)]="selectedLanguage">
+              <mat-option *ngFor="let lang of languages" [value]="lang">{{lang}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-checkbox [(ngModel)]="confirm_trip" (change)="confirmTripChange($event)">Confirmed Trips</mat-checkbox>
+          <mat-checkbox [(ngModel)]="isIdVerified" (change)="idVerifyChange($event)">KYC Verified</mat-checkbox>
+          <mat-checkbox [(ngModel)]="isSocialVerified" (change)="isSocialVerify($event)">Social Verified
+          </mat-checkbox>
+          <mat-checkbox [(ngModel)]="anyTime" (change)="isanyTime($event)">Any Time</mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="listing-content  animated fadeIn">
+
+  <div class="container">
+    <div class="nxtprelinks" *ngIf="total_trip_count.length > 6">
+      <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+      <!-- <pagination-controls (pageChange)="changePange($event)"></pagination-controls> -->
+      <mat-paginator [length]=total_trip_count.length [pageSize]="6" (page)="onPaginateChange($event)">
+</mat-paginator>
+    </div>
+    <div class="text-center grayscale" *ngIf="isLoading">
+<svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+      <stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+	  <stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+    <clipPath id="clip">
+      <rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+      <rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+    </clipPath>
+  </defs>
+  <rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+</svg>
+    </div>
+    <div *ngIf="!isLoading">
+      <ul class="list-unstyled mb-0" *ngIf="findTrips">
+        <!-- <li *ngFor="let trip of allTrips | paginate: { itemsPerPage: 6, currentPage: p} let i=index; "> -->
+        <li *ngFor="let trip of allTrips">
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="pro_img">
+                <div class="imgsec">
+                  <a href="javascript:void(0)" matTooltip="View Profile" (click)="viewProfile(trip)">
+                    <span *ngIf="trip.profile_image">
+                      <img src={{trip.profile_image}} class="w-100" />
+                    </span>
+                    <span *ngIf="!trip.profile_image">
+                      <img src="../../../assets/images/profile.webp" class="w-100" />
+                    </span>
+                    <span class="new" *ngIf="trip.is_new && trip.trip_status=='open'">New</span>
+                  </a>
+                  <span class="new_danger" *ngIf="trip.trip_status=='close'">Closed</span>
+                  <span class="new_danger" *ngIf="trip.trip_status=='cancel'">Cancelled</span>
+
+                </div>
+                <div class="list_ico">
+                  <span class="tripicon"><img src={{trip.mode}} width="32px" /></span>
+                  <span class="verifiicon" *ngIf="trip.isKycVerified"><img src="../../../assets/images/verifi_icon.webp"
+                      width="26" /></span>
+                  <span class="verifiicon" *ngIf="!trip.isKycVerified"><img
+                      src="../../../assets/images/unverifi_icon.webp" width="26" /></span>
+                </div>
+              </div>
+
+              <div class="list_details listinglists">
+                <h6>{{trip.trip_name}}</h6>
+                <h5 title="{{trip.departure}} to {{trip.destination}}">{{trip.departure}} <span
+                    class="smalltxt totxt">to</span> {{trip.destination}}</h5>
+                <h5 *ngIf="trip.trip_plan!='unplanned'">{{trip.start_date}}<span
+                    class="smalltxt">{{trip.start_suffixval}}</span> {{trip.start_month}} <span
+                    class="smalltxt totxt">to</span> {{trip.end_date}}<span
+                    class="smalltxt">{{trip.end_suffixval}}</span>
+                  {{trip.end_month}} {{trip.end_year}}</h5>
+                <h5 *ngIf="trip.trip_plan=='unplanned'">{{trip.unplanned_days}} Days</h5>
+
+                <p class="uname mt-2"><span class="pr-3 float-left">
+                    <strong style="line-height: 27px;">{{trip.username}}</strong> - </span>
+                  <span class="py-1 px-2 alert alert-primary btnsm float-left"><strong>
+                      {{trip.type.toUpperCase()}}</strong></span>
+
+
+                  <span *ngIf="trip.type=='courier' && trip.courier_budget != 0" class="float-left">
+                    <span
+                      class="py-1 px-2 alert alert-warning btnsm"><strong>{{trip.currency_symbol}}{{trip.courier_budget}}
+                      </strong>per
+                      {{trip.weight_unit}}</span>
+                    <span class="py-1 px-2 alert alert-info btnsm"><strong>{{trip.balance_weight}}</strong>
+                      {{trip.weight_unit}}</span>
+                  </span>
+
+
+
+                  <span *ngIf="trip.type=='assistance'" class="float-left">
+                    <span
+                      class="py-1 px-2 alert alert-warning btnsm"><strong>{{trip.currency_symbol}}{{trip.assistance_budget}}</strong></span>
+                  </span>
+
+                  <span class="langandcase float-left"
+                    *ngIf="trip.type =='companion' && trip.type!='assistance'&& trip.type!= 'courier'">
+                    <span class="py-1 px-2 btn btn-dark btnsm text-uppercase ">No Cost</span></span>
+
+                  <span class="py-1 px-2 alert alert-secondary btnsm lanhideoverlap float-left"
+                    title="{{trip.languages}}"
+                    *ngIf="trip.languages  != ''  && trip.languages !=null">{{trip.languages}}</span>
+
+                </p>
+                <!--<p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;  width: 40rem;" class="m-0">{{trip.description}}</p>-->
+              </div>
+
+            </div>
+            <div class="col-sm-3">
+
+
+              <div class="list_button">
+                <button mat-button class="btn btn-primary  tern-bold  text-uppercase"
+                  (click)="gotoTripDetails(trip, i, 'findTrip')">View Trip</button>
+                <!-- <button mat-button class="btn btn-success tern-bold  text-uppercase" (click)="sendRequest(trip)"
+                  *ngIf="trip.requestStatus=='Send Request'">{{trip.requestStatus}}</button> -->
+                <span *ngIf="trip.trip_status=='open'">
+                  <button mat-button class="btn btn-success tern-bold  text-uppercase" (click)="sendRequest(trip)"
+                    *ngIf="trip.requestStatus=='Send Request' || trip.requestStatus=='disconnect'">Send Request</button>
+
+                  <!-- <button mat-button class="btn btn-outline-success btnsm tren-bold"
+                  *ngIf="trip.requestStatus!='Send Request' && trip.requestStatus!='rejected' && != 'pending'">
+                  <span>{{trip.requestStatus}}</span>
+                </button>-->
+                  <button mat-button class="btn btn btn-warning btn-disabled  tern-bold text-uppercase"
+                    *ngIf="trip.requestStatus == 'pending'">Request Sent</button>
+                  <button mat-button class="btn btn-outline-danger  tern-bold  text-uppercase"
+                    *ngIf="trip.requestStatus=='rejected'">{{trip.requestStatus}}</button>
+                  <button mat-button class="btn btn-outline-success  tern-bold  text-uppercase"
+                    *ngIf="trip.requestStatus=='accepted'">Connected</button>
+                  <button mat-button class="btn btn-success  tern-bold  text-uppercase"
+                    *ngIf="trip.requestStatus=='paid'">Paid</button>
+                  <button mat-button class="btn btn-success  tern-bold  text-uppercase"
+                    *ngIf="trip.requestStatus=='delivered'">Delivered</button>
+                    <button mat-button class="btn btn-outline-danger  tern-bold  text-uppercase"
+                    *ngIf="trip.requestStatus=='withdraw'">Withdraw</button>
+                </span>
+
+                <span *ngIf="trip.trip_status=='close'">
+                  <button mat-button class="btn btn-outline-danger  tern-bold  text-uppercase">Closed</button>
+                </span>
+
+                <span *ngIf="trip.trip_status=='cancel'">
+                  <button mat-button class="btn btn-outline-danger  tern-bold  text-uppercase">Cancelled</button>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div *ngIf="!findTrips" class="text-center">
+        <div class="nodatacls">
+          <img src="../../../assets/images/no-data.webp" width="200" class="mb-5" />
+          <h5>No Trips</h5>
+        </div>
+      </div>
+    </div>
+    <div class="nxtprelinks" *ngIf="allTrips.length > 6">
+      <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+      <pagination-controls (pageChange)="changePange($event)"></pagination-controls>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,154 @@
+<h1 mat-dialog-title class="text-center tern-bold text-uppercase"> {{data.trip.type}} Request
+  <div class="float-right">
+    <button class="close-btn" mat-dialog-close><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</h1>
+
+<div class="list_details">
+	<h5 class="uname mb-3">{{data.trip.username}} - {{data.trip.trip_name}} -
+		<span class="py-1 px-2 alert alert-primary btnsm">{{data.trip.type}}</span>
+
+		<!-- <span class="py-1 px-2 alert alert-warning btnsm"><strong>$35 </strong>per Kg</span> 
+                      <span class="py-1 px-2 alert alert-info btnsm"><strong>50</strong> Kg</span> -->
+
+		<span *ngIf="data.trip.type == 'courier'">
+			<span class="py-1 px-2 alert alert-warning btnsm">{{data.trip.currency_symbol}}
+					{{data.trip.courier_budget}}
+				    per {{data.trip.weight_unit}}</span>
+			<span class="py-1 px-2 alert alert-info btnsm">{{data.trip.balance_weight}}
+				{{data.trip.weight_unit}}</span>
+		</span>
+
+		<span *ngIf="data.trip.type == 'assistance'">
+			<span class="py-1 px-2 alert alert-warning btnsm">{{data.trip.currency_symbol}}
+					{{data.trip.assistance_budget}}
+				</span>
+		</span>
+
+	</h5>
+	<h5>{{data.trip.departure}} <span class="smalltxt totxt">to</span> {{data.trip.destination}}</h5>
+	<h5> {{data.trip.start_date}}<span class="smalltxt">{{data.trip.start_suffixval}}</span> {{data.trip.start_month}}
+		<span class="smalltxt totxt">to</span> {{data.trip.end_date}}<span
+			class="smalltxt">{{data.trip.end_suffixval}}</span> {{data.trip.end_month}}
+		{{data.trip.end_year}}</h5>
+</div>
+<mat-dialog-content class="mat-typography">
+	<div *ngIf="data.type === 'courier'">
+		<div class="text-center grayscale" *ngIf="isRequestLoading">
+			<svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+				<stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+				<stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+				<clipPath id="clip">
+					<rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+				</clipPath></defs>
+				<rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+			</svg>
+		</div>
+		<div *ngIf="!isRequestLoading">
+			<!-- <div *ngIf="courier_request_lists.length > 0"> -->
+					<div *ngIf="courier_reqlist">
+				<div class="font-italic text-muted mb-3">List of packages. Please select any one for this trip.</div>
+					<div class="checkbox">
+					<!-- <mat-checkbox (change)="checkRequestLists($event, list)" [value]="list.id">{{list.package_name}} &nbsp; |
+						<strong>{{list.weight}} Kg </strong> | <span>{{list.start_date}}<span
+						class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+						class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+					{{list.end_month}} {{list.end_year}}</span></mat-checkbox> -->
+
+						<div class="package_lists">
+							<mat-radio-group aria-label="Select an option" class="" (change)="checkRequestLists($event)">
+							<mat-radio-button *ngFor="let list of courier_request_lists" [value]="list.id" class="w-100 d-block mb-2">
+								{{list.package_name}} &nbsp; |
+							<strong>{{list.package_weight}} <span class="uname">{{list.weight_unit}}</span> </strong> 
+								<!-- | <span>{{list.start_date}}<span
+							class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+							class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+						{{list.end_month}} {{list.end_year}}</span> -->
+							</mat-radio-button>
+							</mat-radio-group>
+						</div>
+					</div>
+					<!--<div class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="viewRequest(data.type)"
+							class="btn btn-outline-primary">View All Request</a> </div>-->
+			</div>
+			<!-- <div class="package_lists text-center" *ngIf="courier_request_lists.length === 0"> -->
+					<div class="package_lists text-center" *ngIf="!courier_reqlist">
+				<div class="text-muted">No Packages</div>
+			</div>
+		</div>
+		
+	</div>
+	<div *ngIf="data.type === 'assistance'">
+		<div class="text-center grayscale" *ngIf="isRequestLoading">
+			<svg width="40" height="40" viewBox="0 0 300 300" class="loadersvg"><defs><linearGradient id="gradient-fill" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="300" y2="0">
+				<stop offset="0%"><animate attributeName="stop-color" values="#00E06B;#CB0255;#00E06B" dur="5s" repeatCount="indefinite"/></stop>
+				<stop offset="100%"><animate attributeName="stop-color" values="#04AFC8;#8904C5;#04AFC8" dur="8s" repeatCount="indefinite"/></stop></linearGradient>
+				<clipPath id="clip">
+					<rect class="square s1" x="0" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s2" x="100" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s3" x="200" y="0" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s4" x="0" y="100" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s5" x="200" y="100" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s6" x="0" y="200" rx="12" ry="12" height="90" width="90"></rect>
+					<rect class="square s7" x="100" y="200" rx="12" ry="12" height="90" width="90"></rect>
+				</clipPath></defs>
+				<rect class="gradient" clip-path="url('#clip')" height="300" width="300"></rect>
+			</svg>
+		</div>
+		<div *ngIf="!isRequestLoading">
+			<!-- <div class="package_lists" *ngIf="assistance_request_lists.length > 0"> -->
+					<div class="package_lists" *ngIf="assis_reqlist">
+				<div class="font-italic text-muted mb-3 d-block">List of assistance. Please select any one for this trip.</div>
+				<!-- <div class="checkbox" *ngFor="let list of assistance_request_lists">
+					<mat-checkbox (change)="checkRequestLists($event, list)" [value]="list.id">
+						<strong> {{list.members}} Members </strong>
+						<h5>{{list.start_date}}<span class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+								class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+							{{list.end_month}} {{list.end_year}}</h5>
+					</mat-checkbox>
+				</div> -->
+				<div class="checkbox">
+				<mat-radio-group aria-label="Select an option" class="" (change)="checkRequestLists($event)">
+					<mat-radio-button *ngFor="let list of assistance_request_lists" [value]="list.id" class="w-100 d-block">
+						<strong> {{list.members}} members</strong>
+						<!-- <h5>{{list.start_date}}<span class="smalltxt">{{list.start_suffixval}}</span> {{list.start_month}} <span
+								class="smalltxt totxt">to</span> {{list.end_date}}<span class="smalltxt">{{list.end_suffixval}}</span>
+							{{list.end_month}} {{list.end_year}}</h5> -->
+					</mat-radio-button>
+				</mat-radio-group>
+				</div>
+	
+				<!-- <div class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="viewRequest(data.type)"
+						class="btn btn-outline-primary">View All Request</a> </div> -->
+			</div>
+
+			<!-- <div class="package_lists text-center" *ngIf="assistance_request_lists.length === 0"> -->
+					<div class="package_lists text-center" *ngIf="!assis_reqlist">
+				<div class="text-muted">No Passenger Details</div>
+			</div>			
+		</div>
+	</div>
+
+  <div *ngIf="data.type === 'courier'" class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="createNewRequest(data)"
+		class="btn btn-light btnsm"><i class="fas fa-plus"></i> Create New Package</a> </div>
+
+<div *ngIf="data.type === 'assistance'" class="d-block text-right my-3"> <a href="javascript:void(0)" (click)="createNewRequest(data)"
+	class="btn btn-light btnsm"><i class="fas fa-plus"></i> Create New</a> </div>
+
+	<!-- <div class="d-block w-100">
+	  	<mat-form-field class="example-full-width txtarea w-100">
+        <textarea matInput [(ngModel)]="message" placeholder="Message"></textarea>
+      </mat-form-field>
+    </div> -->
+
+</mat-dialog-content>
+<mat-dialog-actions class="select_exchanges mb-0" align="center">
+	<button mat-button class="btn-save btn btn-outline-danger mr-2" mat-dialog-close>CLOSE</button>
+	<button mat-button class="btn-save btn btn-primary" (click)="selectRequests(data)">SUBMIT</button>
+</mat-dialog-actions>
